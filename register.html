@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - Wintoliz Farm</title>
+
+<style>
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(120deg,#0f3d2e,#145c46);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:#fff;
+}
+
+.box{
+background:#fff;
+color:#000;
+padding:30px;
+border-radius:10px;
+width:300px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:10px;
+background:#0f3d2e;
+color:#fff;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>Create Account</h2>
+
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="register()">Create Account</button>
+</div>
+
+<script>
+function register(){
+let email = document.getElementById("email").value;
+let password = document.getElementById("password").value;
+
+localStorage.setItem("user", JSON.stringify({email,password}));
+
+alert("Account created!");
+window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
