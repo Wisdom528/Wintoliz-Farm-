@@ -6,6 +6,9 @@
 
 <title>Wintoliz Farm | Sign In</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <style>
 
 *{
@@ -32,11 +35,9 @@ width:100%;
 min-height:100%;
 background:var(--bg);
 overflow-x:hidden;
-overflow-y:auto;
 scroll-behavior:smooth;
 }
 
-/* MAIN LAYOUT */
 body{
 display:flex;
 align-items:stretch;
@@ -58,7 +59,6 @@ overflow:hidden;
 min-height:100vh;
 }
 
-/* GLOW EFFECTS */
 .left::before{
 content:'';
 position:absolute;
@@ -83,7 +83,7 @@ border-radius:50%;
 filter:blur(20px);
 }
 
-/* LOGO AREA */
+/* LOGO */
 .logo-area{
 display:flex;
 align-items:center;
@@ -94,15 +94,15 @@ z-index:2;
 }
 
 .logo-image-wrapper{
-width:72px;
-height:72px;
+width:78px;
+height:78px;
 border-radius:20px;
 background:rgba(255,255,255,0.08);
 backdrop-filter:blur(12px);
 display:flex;
 align-items:center;
 justify-content:center;
-padding:8px;
+padding:10px;
 border:1px solid rgba(255,255,255,0.08);
 box-shadow:
 0 10px 30px rgba(0,0,0,0.15),
@@ -118,32 +118,12 @@ object-fit:contain;
 display:block;
 }
 
-
-/* CUSTOM BIRD LOGO */
-.logo-icon{
-width:64px;
-height:64px;
-border-radius:18px;
-background:linear-gradient(135deg,#ffb800,#ffcf40);
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:
-0 10px 25px rgba(255,184,0,0.35),
-0 0 0 6px rgba(255,255,255,0.05);
-position:relative;
-overflow:hidden;
-}
-
-.logo-icon::before{
-content:'🐔';
-font-size:32px;
-}
-
+/* FIXED LOGO TEXT */
 .logo-text{
 font-size:34px;
 font-weight:800;
 letter-spacing:-1px;
+line-height:1.1;
 }
 
 .logo-text span{
@@ -157,6 +137,7 @@ gap:12px;
 margin-bottom:35px;
 position:relative;
 z-index:2;
+flex-wrap:wrap;
 }
 
 .top-links a{
@@ -285,11 +266,6 @@ font-size:28px;
 margin-bottom:5px;
 }
 
-.stat-box p{
-font-size:13px;
-opacity:0.85;
-}
-
 /* TESTIMONIAL */
 .testimonial{
 margin-top:28px;
@@ -321,15 +297,6 @@ color:#000;
 font-size:15px;
 }
 
-.testimonial h4{
-font-size:15px;
-}
-
-.testimonial small{
-font-size:12px;
-opacity:0.8;
-}
-
 .quote{
 font-size:14px;
 line-height:1.7;
@@ -349,7 +316,7 @@ min-height:100vh;
 border-left:1px solid #e7ece9;
 }
 
-/* FORM CARD */
+/* FORM */
 .form-box{
 width:100%;
 max-width:370px;
@@ -375,7 +342,6 @@ background:rgba(255,184,0,0.08);
 border-radius:50%;
 }
 
-/* FORM HEADER */
 .form-logo{
 font-size:16px;
 font-weight:800;
@@ -422,10 +388,6 @@ font-weight:700;
 color:#222;
 }
 
-.input-wrapper{
-position:relative;
-}
-
 .input-wrapper input{
 width:100%;
 padding:16px;
@@ -442,7 +404,6 @@ outline:none;
 border-color:var(--primary);
 background:#fff;
 box-shadow:0 0 0 5px rgba(15,61,46,0.08);
-transform:translateY(-1px);
 }
 
 /* ROW */
@@ -469,26 +430,37 @@ gap:8px;
 color:#555;
 }
 
-/* LOGIN BUTTON */
-.login-btn{
+/* BUTTONS */
+.login-btn,
+.google-btn{
 width:100%;
-padding:17px;
+padding:16px;
 border:none;
 border-radius:16px;
-background:linear-gradient(135deg,#0f3d2e,#145c46);
-color:#fff;
-font-size:16px;
+font-size:15px;
 font-weight:800;
 cursor:pointer;
 transition:0.3s ease;
+}
+
+.login-btn{
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+color:#fff;
 box-shadow:0 12px 24px rgba(15,61,46,0.2);
-position:relative;
-z-index:2;
+margin-bottom:16px;
 }
 
 .login-btn:hover{
 transform:translateY(-3px);
-box-shadow:0 18px 30px rgba(15,61,46,0.25);
+}
+
+.google-btn{
+background:#fff;
+border:1px solid #ddd;
+}
+
+.google-btn:hover{
+background:#f7f7f7;
 }
 
 /* DIVIDER */
@@ -496,11 +468,9 @@ box-shadow:0 18px 30px rgba(15,61,46,0.25);
 display:flex;
 align-items:center;
 gap:10px;
-margin:26px 0;
+margin:22px 0;
 font-size:13px;
 color:#999;
-position:relative;
-z-index:2;
 }
 
 .divider::before,
@@ -511,34 +481,12 @@ height:1px;
 background:#e6e6e6;
 }
 
-/* GOOGLE BUTTON */
-.google-btn{
-width:100%;
-padding:15px;
-border-radius:16px;
-border:1px solid #ddd;
-background:#fff;
-font-size:15px;
-font-weight:700;
-cursor:pointer;
-transition:0.3s ease;
-position:relative;
-z-index:2;
-}
-
-.google-btn:hover{
-background:#f7f7f7;
-transform:translateY(-2px);
-}
-
 /* SIGNUP */
 .signup-link{
 margin-top:24px;
 text-align:center;
 font-size:14px;
 color:#666;
-position:relative;
-z-index:2;
 }
 
 .create-account-btn{
@@ -560,7 +508,22 @@ transition:0.3s ease;
 .create-account-btn:hover{
 background:var(--primary);
 color:#fff;
-transform:translateY(-2px);
+}
+
+/* MESSAGE */
+.message{
+margin-top:14px;
+font-size:14px;
+font-weight:600;
+text-align:center;
+}
+
+.success{
+color:green;
+}
+
+.error{
+color:red;
 }
 
 /* RESPONSIVE */
@@ -581,7 +544,6 @@ font-size:42px;
 
 .right{
 width:100%;
-min-height:auto;
 padding:40px 22px;
 border-left:none;
 }
@@ -618,10 +580,6 @@ flex-direction:column;
 width:100%;
 }
 
-.top-links{
-flex-wrap:wrap;
-}
-
 .logo-text{
 font-size:28px;
 }
@@ -642,7 +600,7 @@ font-size:32px;
 
 <body>
 
-<!-- LEFT SIDE -->
+<!-- LEFT -->
 <div class="left">
 
 <div class="logo-area">
@@ -684,83 +642,28 @@ Wintoliz Farm.
 <div class="features">
 
 <div class="feature">
-
 <div class="feature-icon">✓</div>
-
 <div>
 <h3>Track Farm Performance</h3>
-
-<p>
-Manage your birds, monitor feed usage, and track productivity in one place.
-</p>
+<p>Manage your birds and monitor productivity easily.</p>
 </div>
-
 </div>
 
 <div class="feature">
-
 <div class="feature-icon">💉</div>
-
 <div>
 <h3>Vaccination Reminders</h3>
-
-<p>
-Never miss important health schedules and reduce bird mortality.
-</p>
+<p>Never miss important health schedules again.</p>
 </div>
-
 </div>
 
 <div class="feature">
-
 <div class="feature-icon">📈</div>
-
 <div>
 <h3>Know Your Profits</h3>
-
-<p>
-Understand your exact cost-per-bird and maximize farm profitability.
-</p>
+<p>Understand your exact farm profitability.</p>
 </div>
-
 </div>
-
-</div>
-
-<div class="stats">
-
-<div class="stat-box">
-<h2>200+</h2>
-<p>Active Farmers</p>
-</div>
-
-<div class="stat-box">
-<h2>RC 1628647</h2>
-<p>Registered in Nigeria</p>
-</div>
-
-</div>
-
-<div class="testimonial">
-
-<div class="testimonial-top">
-
-<div class="avatar">
-PF
-</div>
-
-<div>
-<h4>Peteku Farms</h4>
-<small>GK Plaza Street, Lagos</small>
-</div>
-
-</div>
-
-<p class="quote">
-“Wintoliz Farm helped me track my feed costs properly.
-I was losing money without knowing — now I clearly
-understand my profits on every batch.”
-</p>
 
 </div>
 
@@ -768,7 +671,7 @@ understand my profits on every batch.”
 
 </div>
 
-<!-- RIGHT SIDE -->
+<!-- RIGHT -->
 <div class="right">
 
 <div class="form-box">
@@ -780,43 +683,33 @@ Wintoliz Farm
 <h2>Welcome Back</h2>
 
 <p class="subtitle">
-Continue managing your poultry business and marketplace account.
+Sign in with email/password or Google.
 </p>
 
-<form onsubmit="login(event)">
+<form id="loginForm">
 
 <div class="input-group">
-
 <label>Email Address</label>
-
 <div class="input-wrapper">
-
 <input
 type="email"
 id="email"
 placeholder="Enter your email"
 required
 >
-
 </div>
-
 </div>
 
 <div class="input-group">
-
 <label>Password</label>
-
 <div class="input-wrapper">
-
 <input
 type="password"
 id="password"
 placeholder="Enter your password"
 required
 >
-
 </div>
-
 </div>
 
 <div class="row">
@@ -836,7 +729,15 @@ Forgot password?
 Sign In
 </button>
 
+<div class="divider">
+OR
+</div>
 
+<button type="button" class="google-btn" id="googleLogin">
+Continue with Google
+</button>
+
+<div id="message" class="message"></div>
 
 <div class="signup-link">
 
@@ -846,7 +747,7 @@ Don't have an account?
 
 <a href="register.html" class="create-account-btn">
 Create Account
-</a>`
+</a>
 
 </div>
 
@@ -856,29 +757,90 @@ Create Account
 
 </div>
 
-<script>
+<!-- FIREBASE -->
+<script type="module">
 
-function login(event){
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-event.preventDefault();
+import {
+getAuth,
+signInWithEmailAndPassword,
+GoogleAuthProvider,
+signInWithPopup
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-localStorage.setItem("loggedIn","true");
+/* FIREBASE CONFIG */
+const firebaseConfig = {
+apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+authDomain: "wintoliz-2dca5.firebaseapp.com",
+projectId: "wintoliz-2dca5",
+storageBucket: "wintoliz-2dca5.firebasestorage.app",
+messagingSenderId: "469698295508",
+appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
+};
 
-let redirect =
-localStorage.getItem("redirectAfterLogin");
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-if(redirect){
+const message = document.getElementById("message");
 
-window.location.href = redirect;
+/* EMAIL LOGIN */
+document.getElementById("loginForm")
+.addEventListener("submit", async (e) => {
 
-}else{
+e.preventDefault();
 
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+try{
+
+await signInWithEmailAndPassword(auth,email,password);
+
+message.innerHTML = "Login successful!";
+message.className = "message success";
+
+setTimeout(() => {
 window.location.href =
 "https://wintolizfarmcom.vercel.app/product.html";
+},1000);
+
+}catch(error){
+
+message.innerHTML = error.message;
+message.className = "message error";
 
 }
 
+});
+
+/* GOOGLE LOGIN */
+document.getElementById("googleLogin")
+.addEventListener("click", async () => {
+
+const provider = new GoogleAuthProvider();
+
+try{
+
+await signInWithPopup(auth,provider);
+
+message.innerHTML = "Google login successful!";
+message.className = "message success";
+
+setTimeout(() => {
+window.location.href =
+"https://wintolizfarmcom.vercel.app/product.html";
+},1000);
+
+}catch(error){
+
+message.innerHTML = error.message;
+message.className = "message error";
+
 }
+
+});
 
 </script>
 
