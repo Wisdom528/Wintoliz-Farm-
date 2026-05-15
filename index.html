@@ -118,7 +118,6 @@ object-fit:contain;
 display:block;
 }
 
-/* FIXED LOGO TEXT */
 .logo-text{
 font-size:34px;
 font-weight:800;
@@ -463,7 +462,6 @@ border:1px solid #ddd;
 background:#f7f7f7;
 }
 
-/* DIVIDER */
 .divider{
 display:flex;
 align-items:center;
@@ -615,13 +613,14 @@ font-size:32px;
 
 </div>
 
+<!-- UPDATED BUTTONS -->
 <div class="top-links">
 
-<a href="https://wintolizfarmcom.vercel.app/marketplace.html" class="shop-btn">
+<a href="index.html" class="shop-btn">
 Shop Now
 </a>
 
-<a href="#" class="sign-btn">
+<a href="index.html" class="sign-btn">
 Sign In
 </a>
 
@@ -690,6 +689,7 @@ Sign in with email/password or Google.
 
 <div class="input-group">
 <label>Email Address</label>
+
 <div class="input-wrapper">
 <input
 type="email"
@@ -702,6 +702,7 @@ required
 
 <div class="input-group">
 <label>Password</label>
+
 <div class="input-wrapper">
 <input
 type="password"
@@ -760,7 +761,8 @@ Create Account
 <!-- FIREBASE -->
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
 getAuth,
@@ -791,19 +793,28 @@ document.getElementById("loginForm")
 
 e.preventDefault();
 
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
 
 try{
 
-await signInWithEmailAndPassword(auth,email,password);
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
 
 message.innerHTML = "Login successful!";
 message.className = "message success";
 
 setTimeout(() => {
+
 window.location.href =
 "https://wintolizfarmcom.vercel.app/product.html";
+
 },1000);
 
 }catch(error){
@@ -825,12 +836,17 @@ try{
 
 await signInWithPopup(auth,provider);
 
-message.innerHTML = "Google login successful!";
-message.className = "message success";
+message.innerHTML =
+"Google login successful!";
+
+message.className =
+"message success";
 
 setTimeout(() => {
+
 window.location.href =
 "https://wintolizfarmcom.vercel.app/product.html";
+
 },1000);
 
 }catch(error){
