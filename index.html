@@ -1,467 +1,885 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wintoliz Farm Marketplace</title>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
-};
+<title>Wintoliz Farm | Sign In</title>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// 🔒 PROTECT PAGE
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "index.html";
-  }
-});
-
-// 🚪 LOGOUT FUNCTION (REAL FIREBASE)
-window.logout = function () {
-  signOut(auth).then(() => {
-    window.location.href = "index.html";
-  });
-};
-</script>
 <style>
-body{
+
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:'Segoe UI',sans-serif;
-background:#f5f6fa;
 }
 
-/* HEADER */
-header{
-background:#0f3d2e;
+:root{
+--primary:#0f3d2e;
+--primary-light:#145c46;
+--gold:#ffb800;
+--white:#ffffff;
+--text:#101010;
+--muted:#6b7280;
+--border:#e5e7eb;
+--bg:#eef2ef;
+}
+
+html,
+body{
+width:100%;
+min-height:100%;
+background:var(--bg);
+overflow-x:hidden;
+overflow-y:auto;
+scroll-behavior:smooth;
+}
+
+/* MAIN LAYOUT */
+body{
+display:flex;
+align-items:stretch;
+}
+
+/* LEFT SIDE */
+.left{
+flex:1;
+position:relative;
+background:
+linear-gradient(rgba(8,38,28,0.92),rgba(8,38,28,0.95)),
+url('https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1200&auto=format&fit=crop') center/cover;
+padding:45px;
+display:flex;
+flex-direction:column;
+justify-content:center;
 color:#fff;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 25px;
-position:sticky;
-top:0;
-z-index:1000;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
+overflow:hidden;
+min-height:100vh;
 }
 
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-weight:bold;
-}
-
-.logo-circle{
-width:40px;
-height:40px;
+/* GLOW EFFECTS */
+.left::before{
+content:'';
+position:absolute;
+top:-120px;
+right:-120px;
+width:320px;
+height:320px;
+background:rgba(255,184,0,0.08);
 border-radius:50%;
-background:#fff;
-color:#0f3d2e;
+filter:blur(20px);
+}
+
+.left::after{
+content:'';
+position:absolute;
+bottom:-120px;
+left:-120px;
+width:300px;
+height:300px;
+background:rgba(255,255,255,0.05);
+border-radius:50%;
+filter:blur(20px);
+}
+
+/* LOGO AREA */
+.logo-area{
+display:flex;
+align-items:center;
+gap:16px;
+margin-bottom:28px;
+position:relative;
+z-index:2;
+}
+
+.logo-image-wrapper{
+width:72px;
+height:72px;
+border-radius:20px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
 display:flex;
 align-items:center;
 justify-content:center;
+padding:8px;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:
+0 10px 30px rgba(0,0,0,0.15),
+0 0 0 6px rgba(255,255,255,0.03);
+overflow:hidden;
+flex-shrink:0;
 }
 
-/* NAV */
-nav{
+.logo-img{
+width:100%;
+height:100%;
+object-fit:contain;
+display:block;
+}
+
+
+/* CUSTOM BIRD LOGO */
+.logo-icon{
+width:64px;
+height:64px;
+border-radius:18px;
+background:linear-gradient(135deg,#ffb800,#ffcf40);
 display:flex;
 align-items:center;
-gap:20px;
-}
-
-.nav-link{
-padding:6px 10px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.nav-link:hover{
-background:rgba(255,255,255,0.15);
-}
-
-.nav-link.active{
-background:#fff;
-color:#0f3d2e;
-font-weight:bold;
-}
-
-/* ACCOUNT */
-.account{
+justify-content:center;
+box-shadow:
+0 10px 25px rgba(255,184,0,0.35),
+0 0 0 6px rgba(255,255,255,0.05);
 position:relative;
-cursor:pointer;
-padding:8px 12px;
-border-radius:20px;
+overflow:hidden;
+}
+
+.logo-icon::before{
+content:'🐔';
+font-size:32px;
+}
+
+.logo-text{
+font-size:34px;
+font-weight:800;
+letter-spacing:-1px;
+}
+
+.logo-text span{
+color:var(--gold);
+}
+
+/* TOP LINKS */
+.top-links{
+display:flex;
+gap:12px;
+margin-bottom:35px;
+position:relative;
+z-index:2;
+}
+
+.top-links a{
+text-decoration:none;
+padding:12px 20px;
+border-radius:14px;
+font-weight:700;
+font-size:14px;
+transition:0.3s ease;
+}
+
+.shop-btn{
+background:var(--gold);
+color:#000;
+box-shadow:0 8px 20px rgba(255,184,0,0.25);
+}
+
+.shop-btn:hover{
+transform:translateY(-3px);
+background:#ffd24d;
+}
+
+.sign-btn{
+border:1px solid rgba(255,255,255,0.12);
+color:#fff;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(12px);
+}
+
+.sign-btn:hover{
 background:rgba(255,255,255,0.1);
 }
 
-.dropdown{
-position:absolute;
-right:0;
-top:45px;
-background:#fff;
-width:180px;
-border-radius:10px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-display:none;
-}
-
-.dropdown a{
-display:block;
-padding:12px;
-text-decoration:none;
-color:#333;
-}
-
-.dropdown a:hover{
-background:#f3f3f3;
-}
-
 /* HERO */
-.hero{
-background:linear-gradient(120deg,#0f3d2e,#145c46);
-color:#fff;
-padding:40px 20px;
-text-align:center;
+.hero-text{
+max-width:620px;
+position:relative;
+z-index:2;
 }
 
-.hero h1{
+.hero-text h1{
+font-size:60px;
+line-height:1;
+margin-bottom:20px;
+font-weight:900;
+letter-spacing:-2px;
+}
+
+.hero-text p{
+font-size:17px;
+line-height:1.8;
+opacity:0.92;
+margin-bottom:32px;
+max-width:540px;
+}
+
+/* FEATURES */
+.features{
+display:grid;
+gap:16px;
+}
+
+.feature{
+display:flex;
+gap:14px;
+padding:18px;
+border-radius:22px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(16px);
+border:1px solid rgba(255,255,255,0.05);
+transition:0.3s ease;
+}
+
+.feature:hover{
+transform:translateY(-3px);
+background:rgba(255,255,255,0.11);
+}
+
+.feature-icon{
+width:48px;
+height:48px;
+border-radius:14px;
+background:var(--gold);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:800;
+font-size:18px;
+color:#000;
+flex-shrink:0;
+box-shadow:0 6px 16px rgba(255,184,0,0.25);
+}
+
+.feature h3{
+font-size:16px;
+margin-bottom:4px;
+font-weight:700;
+}
+
+.feature p{
+font-size:14px;
+line-height:1.6;
+opacity:0.86;
 margin:0;
+}
+
+/* STATS */
+.stats{
+display:flex;
+gap:16px;
+margin-top:28px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:20px;
+min-width:180px;
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.05);
+}
+
+.stat-box h2{
+font-size:28px;
+margin-bottom:5px;
+}
+
+.stat-box p{
+font-size:13px;
+opacity:0.85;
+}
+
+/* TESTIMONIAL */
+.testimonial{
+margin-top:28px;
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:22px;
+max-width:540px;
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.05);
+}
+
+.testimonial-top{
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:14px;
+}
+
+.avatar{
+width:52px;
+height:52px;
+border-radius:50%;
+background:var(--gold);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:800;
+color:#000;
+font-size:15px;
+}
+
+.testimonial h4{
+font-size:15px;
+}
+
+.testimonial small{
+font-size:12px;
+opacity:0.8;
+}
+
+.quote{
+font-size:14px;
+line-height:1.7;
+opacity:0.92;
+}
+
+/* RIGHT SIDE */
+.right{
+width:470px;
+background:#ffffff;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:50px 40px;
+position:relative;
+min-height:100vh;
+border-left:1px solid #e7ece9;
+}
+
+/* FORM CARD */
+.form-box{
+width:100%;
+max-width:370px;
+background:#fff;
+padding:40px 32px;
+border-radius:28px;
+box-shadow:
+0 20px 50px rgba(15,61,46,0.08),
+0 2px 10px rgba(0,0,0,0.04);
+border:1px solid rgba(15,61,46,0.06);
+position:relative;
+overflow:hidden;
+}
+
+.form-box::before{
+content:'';
+position:absolute;
+top:-60px;
+right:-60px;
+width:160px;
+height:160px;
+background:rgba(255,184,0,0.08);
+border-radius:50%;
+}
+
+/* FORM HEADER */
+.form-logo{
+font-size:16px;
+font-weight:800;
+color:var(--primary);
+margin-bottom:10px;
+letter-spacing:1px;
+text-transform:uppercase;
+position:relative;
+z-index:2;
+}
+
+.form-box h2{
+font-size:48px;
+margin-bottom:10px;
+color:#111;
+font-weight:900;
+letter-spacing:-2px;
+line-height:1;
+position:relative;
+z-index:2;
+}
+
+.subtitle{
+font-size:15px;
+line-height:1.7;
+color:#666;
+margin-bottom:30px;
+position:relative;
+z-index:2;
+}
+
+/* INPUTS */
+.input-group{
+margin-bottom:18px;
+position:relative;
+z-index:2;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+font-weight:700;
+color:#222;
+}
+
+.input-wrapper{
+position:relative;
+}
+
+.input-wrapper input{
+width:100%;
+padding:16px;
+border-radius:16px;
+border:1px solid #d7dce3;
+background:#f8fafb;
+font-size:15px;
+transition:0.3s ease;
+font-weight:500;
+}
+
+.input-wrapper input:focus{
+outline:none;
+border-color:var(--primary);
+background:#fff;
+box-shadow:0 0 0 5px rgba(15,61,46,0.08);
+transform:translateY(-1px);
+}
+
+/* ROW */
+.row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:24px;
+font-size:13px;
+position:relative;
+z-index:2;
+}
+
+.row a{
+text-decoration:none;
+color:var(--primary);
+font-weight:700;
+}
+
+.remember{
+display:flex;
+align-items:center;
+gap:8px;
+color:#555;
+}
+
+/* LOGIN BUTTON */
+.login-btn{
+width:100%;
+padding:17px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+color:#fff;
+font-size:16px;
+font-weight:800;
+cursor:pointer;
+transition:0.3s ease;
+box-shadow:0 12px 24px rgba(15,61,46,0.2);
+position:relative;
+z-index:2;
+}
+
+.login-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 18px 30px rgba(15,61,46,0.25);
+}
+
+/* DIVIDER */
+.divider{
+display:flex;
+align-items:center;
+gap:10px;
+margin:26px 0;
+font-size:13px;
+color:#999;
+position:relative;
+z-index:2;
+}
+
+.divider::before,
+.divider::after{
+content:'';
+flex:1;
+height:1px;
+background:#e6e6e6;
+}
+
+/* GOOGLE BUTTON */
+.google-btn{
+width:100%;
+padding:15px;
+border-radius:16px;
+border:1px solid #ddd;
+background:#fff;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+transition:0.3s ease;
+position:relative;
+z-index:2;
+}
+
+.google-btn:hover{
+background:#f7f7f7;
+transform:translateY(-2px);
+}
+
+/* SIGNUP */
+.signup-link{
+margin-top:24px;
+text-align:center;
+font-size:14px;
+color:#666;
+position:relative;
+z-index:2;
+}
+
+.create-account-btn{
+display:flex;
+align-items:center;
+justify-content:center;
+margin-top:14px;
+width:100%;
+padding:15px;
+border-radius:16px;
+background:#f3f5f4;
+border:1px solid #dfe5e1;
+text-decoration:none;
+color:var(--primary);
+font-weight:800;
+transition:0.3s ease;
+}
+
+.create-account-btn:hover{
+background:var(--primary);
+color:#fff;
+transform:translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media(max-width:950px){
+
+body{
+flex-direction:column;
+}
+
+.left{
+min-height:auto;
+padding:35px 24px;
+}
+
+.hero-text h1{
+font-size:42px;
+}
+
+.right{
+width:100%;
+min-height:auto;
+padding:40px 22px;
+border-left:none;
+}
+
+.form-box{
+max-width:100%;
+}
+
+.form-box h2{
+font-size:38px;
+}
+
+}
+
+@media(max-width:600px){
+
+.left{
+padding:30px 18px;
+}
+
+.hero-text h1{
+font-size:34px;
+}
+
+.hero-text p{
+font-size:15px;
+}
+
+.stats{
+flex-direction:column;
+}
+
+.stat-box{
+width:100%;
+}
+
+.top-links{
+flex-wrap:wrap;
+}
+
+.logo-text{
 font-size:28px;
 }
 
-/* LAYOUT */
-.wrapper{
-display:flex;
-gap:20px;
-padding:20px;
+.form-box{
+padding:32px 22px;
+border-radius:24px;
 }
 
-/* SIDEBAR */
-.sidebar{
-width:250px;
-background:#fff;
-padding:20px;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
+.form-box h2{
+font-size:32px;
 }
 
-.sidebar input{
-width:100%;
-padding:10px;
-border-radius:6px;
-border:1px solid #ccc;
 }
 
-.sidebar label{
-display:block;
-margin-top:6px;
-}
-
-/* MAIN */
-.main{
-flex:1;
-}
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-gap:20px;
-}
-
-.card{
-background:#fff;
-padding:15px;
-border-radius:12px;
-box-shadow:0 4px 15px rgba(0,0,0,0.08);
-transition:0.2s;
-}
-
-.card:hover{
-transform:translateY(-5px);
-}
-
-.price{
-color:#0f3d2e;
-font-weight:bold;
-font-size:18px;
-}
-
-.btn{
-margin-top:10px;
-padding:10px;
-background:#0f3d2e;
-color:#fff;
-border:none;
-border-radius:6px;
-cursor:pointer;
-width:100%;
-}
-
-/* CART */
-#cartDrawer{
-position:fixed;
-top:0;
-right:-400px;
-width:350px;
-height:100%;
-background:#fff;
-box-shadow:-3px 0 10px rgba(0,0,0,0.2);
-transition:0.3s;
-z-index:1001;
-display:flex;
-flex-direction:column;
-}
-
-#cartDrawer.active{
-right:0;
-}
-
-.cart-header{
-padding:15px;
-font-weight:bold;
-border-bottom:1px solid #ddd;
-}
-
-.cart-items{
-flex:1;
-overflow:auto;
-padding:10px;
-}
-
-.cart-footer{
-padding:15px;
-border-top:1px solid #ddd;
-}
-
-.cart-btn{
-width:100%;
-padding:10px;
-margin-top:5px;
-border:none;
-cursor:pointer;
-border-radius:6px;
-}
-
-.checkout{
-background:#0f3d2e;
-color:#fff;
-}
-
-.clear{
-background:#eee;
-}
-
-/* OVERLAY */
-#overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.4);
-display:none;
-z-index:1000;
-}
-
-#overlay.active{
-display:block;
-}
-
-/* MOBILE */
-@media(max-width:768px){
-.wrapper{
-flex-direction:column;
-}
-.sidebar{
-width:100%;
-}
-#cartDrawer{
-width:100%;
-}
-}
 </style>
 </head>
 
 <body>
 
-<header>
-<div class="logo">
-<div class="logo-circle">WF</div>
+<!-- LEFT SIDE -->
+<div class="left">
+
+<div class="logo-area">
+
+<div class="logo-image-wrapper">
+<img src="./asset/image/image.png" alt="Wintoliz Logo" class="logo-img">
+</div>
+
+<div class="logo-text">
+<span>Wintoliz</span> Farms
+</div>
+
+</div>
+
+<div class="top-links">
+
+<a href="https://wintolizfarmcom.vercel.app/marketplace.html" class="shop-btn">
+Shop Now
+</a>
+
+<a href="#" class="sign-btn">
+Sign In
+</a>
+
+</div>
+
+<div class="hero-text">
+
+<h1>
+Transform Your Poultry Business Today
+</h1>
+
+<p>
+Join 200+ Nigerian poultry farmers who manage their birds,
+track feed expenses, monitor profits, and grow faster with
+Wintoliz Farm.
+</p>
+
+<div class="features">
+
+<div class="feature">
+
+<div class="feature-icon">✓</div>
+
+<div>
+<h3>Track Farm Performance</h3>
+
+<p>
+Manage your birds, monitor feed usage, and track productivity in one place.
+</p>
+</div>
+
+</div>
+
+<div class="feature">
+
+<div class="feature-icon">💉</div>
+
+<div>
+<h3>Vaccination Reminders</h3>
+
+<p>
+Never miss important health schedules and reduce bird mortality.
+</p>
+</div>
+
+</div>
+
+<div class="feature">
+
+<div class="feature-icon">📈</div>
+
+<div>
+<h3>Know Your Profits</h3>
+
+<p>
+Understand your exact cost-per-bird and maximize farm profitability.
+</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="stat-box">
+<h2>200+</h2>
+<p>Active Farmers</p>
+</div>
+
+<div class="stat-box">
+<h2>RC 1628647</h2>
+<p>Registered in Nigeria</p>
+</div>
+
+</div>
+
+<div class="testimonial">
+
+<div class="testimonial-top">
+
+<div class="avatar">
+PF
+</div>
+
+<div>
+<h4>Peteku Farms</h4>
+<small>GK Plaza Street, Lagos</small>
+</div>
+
+</div>
+
+<p class="quote">
+“Wintoliz Farm helped me track my feed costs properly.
+I was losing money without knowing — now I clearly
+understand my profits on every batch.”
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="right">
+
+<div class="form-box">
+
+<div class="form-logo">
 Wintoliz Farm
 </div>
 
-<nav>
+<h2>Welcome Back</h2>
 
-<a href="#" class="nav-link active">Marketplace</a>
+<p class="subtitle">
+Continue managing your poultry business and marketplace account.
+</p>
 
-<a onclick="openCart()" class="nav-link">
-Cart (<span id="cartCount">0</span>)
+<form onsubmit="login(event)">
+
+<div class="input-group">
+
+<label>Email Address</label>
+
+<div class="input-wrapper">
+
+<input
+type="email"
+id="email"
+placeholder="Enter your email"
+required
+>
+
+</div>
+
+</div>
+
+<div class="input-group">
+
+<label>Password</label>
+
+<div class="input-wrapper">
+
+<input
+type="password"
+id="password"
+placeholder="Enter your password"
+required
+>
+
+</div>
+
+</div>
+
+<div class="row">
+
+<label class="remember">
+<input type="checkbox">
+Remember me
+</label>
+
+<a href="#">
+Forgot password?
 </a>
 
-<div class="account" onclick="toggleAccount()">
-My Account
-<div class="dropdown" id="accountMenu">
-<a href="#">Dashboard</a>
-<a href="#">My Orders</a>
-<a href="#" onclick="logout()">Sign Out</a>
-</div>
 </div>
 
-</nav>
-</header>
+<button class="login-btn" type="submit">
+Sign In
+</button>
 
-<!-- HERO -->
-<div class="hero">
-<h1>Buy Fresh Poultry Products Directly</h1>
-<p>Trusted farmers. Better prices. Nationwide delivery.</p>
+
+
+<div class="signup-link">
+
+<p>
+Don't have an account?
+</p>
+
+<a href="register.html" class="create-account-btn">
+Create Account
+</a>`
+
 </div>
 
-<div class="wrapper">
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-<h3>Search</h3>
-<input type="text" id="searchInput">
-
-<h3>Categories</h3>
-<label><input type="checkbox" class="filter" value="Flock"> Flock</label>
-<label><input type="checkbox" class="filter" value="Egg"> Egg</label>
-<label><input type="checkbox" class="filter" value="Feed"> Feed</label>
-<label><input type="checkbox" class="filter" value="Drugs"> Drugs</label>
-<label><input type="checkbox" class="filter" value="Drinker"> Drinkers</label>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-<div class="products">
-
-<div class="card" data-category="Flock">
-<h3>Broiler</h3>
-<p class="price">₦15,000</p>
-<button class="btn" onclick="addToCart('Broiler',15000)">Add to Cart</button>
-</div>
-
-<div class="card" data-category="Egg">
-<h3>Fresh Eggs</h3>
-<p class="price">₦5,800</p>
-<button class="btn" onclick="addToCart('Fresh Eggs',5800)">Add to Cart</button>
-</div>
-
-<div class="card" data-category="Drugs">
-<h3>Poultry Vaccine</h3>
-<p class="price">₦3,500</p>
-<button class="btn" onclick="addToCart('Vaccine',3500)">Add to Cart</button>
-</div>
+</form>
 
 </div>
 
 </div>
-</div>
-
-<!-- CART -->
-<div id="cartDrawer">
-<div class="cart-header">Shopping Cart</div>
-<div class="cart-items" id="cartItems"></div>
-<div class="cart-footer">
-<p>Total: ₦<span id="total">0</span></p>
-<button class="cart-btn clear" onclick="clearCart()">Clear Cart</button>
-<button class="cart-btn checkout">Checkout</button>
-</div>
-</div>
-
-<div id="overlay" onclick="closeCart()"></div>
 
 <script>
 
-/* ACCOUNT */
-function toggleAccount(){
-let menu = document.getElementById("accountMenu");
-menu.style.display = menu.style.display === "block" ? "none" : "block";
-}
+function login(event){
 
-/* CART */
-let cart = [];
+event.preventDefault();
 
-function addToCart(name, price){
-cart.push({name, price});
-updateCart();
-}
+localStorage.setItem("loggedIn","true");
 
-function updateCart(){
-let container = document.getElementById("cartItems");
-container.innerHTML = "";
-let total = 0;
+let redirect =
+localStorage.getItem("redirectAfterLogin");
 
-cart.forEach(item=>{
-total += item.price;
-container.innerHTML += `<p>${item.name} - ₦${item.price}</p>`;
-});
+if(redirect){
 
-document.getElementById("total").innerText = total;
-document.getElementById("cartCount").innerText = cart.length;
-}
+window.location.href = redirect;
 
-function openCart(){
-document.getElementById("cartDrawer").classList.add("active");
-document.getElementById("overlay").classList.add("active");
-}
-
-function closeCart(){
-document.getElementById("cartDrawer").classList.remove("active");
-document.getElementById("overlay").classList.remove("active");
-}
-
-function clearCart(){
-cart = [];
-updateCart();
-}
-
-/* SEARCH */
-const searchInput = document.getElementById("searchInput");
-const products = document.querySelectorAll(".card");
-
-searchInput.addEventListener("keyup", function(){
-let value = this.value.toLowerCase();
-
-products.forEach(card => {
-let name = card.querySelector("h3").innerText.toLowerCase();
-card.style.display = name.includes(value) ? "block" : "none";
-});
-});
-
-/* FILTER */
-const filters = document.querySelectorAll(".filter");
-
-filters.forEach(f => {
-f.addEventListener("change", () => {
-let selected = Array.from(filters)
-.filter(i => i.checked)
-.map(i => i.value);
-
-products.forEach(card => {
-let cat = card.getAttribute("data-category");
-
-if(selected.length === 0 || selected.includes(cat)){
-card.style.display = "block";
 }else{
-card.style.display = "none";
+
+window.location.href =
+"https://wintolizfarmcom.vercel.app/product.html";
+
 }
-});
-});
-});
+
+}
+
 </script>
 
 </body>

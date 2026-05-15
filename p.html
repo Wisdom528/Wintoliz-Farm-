@@ -3,83 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Wintoliz Farm</title>
+
+<title>SmartFlok Register</title>
 
 <style>
-body{
+
+*{
 margin:0;
-font-family:Segoe UI;
-background:linear-gradient(120deg,#0f3d2e,#145c46);
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f7fb;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
-color:#fff;
+min-height:100vh;
+padding:20px;
 }
 
-.box{
+.container{
+width:100%;
+max-width:480px;
 background:#fff;
-color:#000;
-padding:30px;
-border-radius:10px;
-width:300px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
+padding:40px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-input{
+.logo{
+font-size:32px;
+font-weight:bold;
+color:#0f3d2e;
+margin-bottom:10px;
+text-align:center;
+}
+
+h1{
+text-align:center;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#666;
+margin-bottom:30px;
+}
+
+.input-group{
+margin-bottom:20px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+}
+
+.input-group input{
 width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:6px;
+padding:14px;
 border:1px solid #ccc;
+border-radius:10px;
+font-size:15px;
 }
 
-button{
+.create-btn{
 width:100%;
-padding:10px;
+padding:15px;
 background:#0f3d2e;
 color:#fff;
 border:none;
-border-radius:6px;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
 cursor:pointer;
+margin-top:10px;
 }
 
-a{
-display:block;
-margin-top:10px;
+.login-link{
+margin-top:25px;
 text-align:center;
-font-size:13px;
 }
+
+.login-link a{
+color:#0f3d2e;
+font-weight:bold;
+text-decoration:none;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="box">
-<h2>Sign In</h2>
+<div class="container">
 
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
+<div class="logo">SmartFlok</div>
 
-<button onclick="login()">Login</button>
+<h1>Create Account</h1>
 
-<a href="register.html">Create Account</a>
+<p class="subtitle">
+Start managing your poultry business smarter today.
+</p>
+
+<form onsubmit="register(event)">
+
+<div class="input-group">
+<label>Full Name</label>
+<input type="text" placeholder="Enter your full name" required>
+</div>
+
+<div class="input-group">
+<label>Email Address</label>
+<input type="email" placeholder="Enter your email" required>
+</div>
+
+<div class="input-group">
+<label>Password</label>
+<input type="password" placeholder="Create password" required>
+</div>
+
+<div class="input-group">
+<label>Confirm Password</label>
+<input type="password" placeholder="Confirm password" required>
+</div>
+
+<button class="create-btn" type="submit">
+Create Account
+</button>
+
+<div class="login-link">
+Already have an account?
+<a href="login.html">Sign In</a>
+</div>
+
+</form>
+
 </div>
 
 <script>
-function login(){
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
 
-let user = JSON.parse(localStorage.getItem("user"));
+function register(event){
 
-if(user && user.email === email && user.password === password){
-localStorage.setItem("loggedIn", true);
-window.location.href = "marketplace.html";
-}else{
-alert("Invalid login");
+event.preventDefault();
+
+window.location.href = "login.html";
+
 }
-}
+
 </script>
 
 </body>
