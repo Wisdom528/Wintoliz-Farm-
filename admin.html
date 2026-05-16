@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wintoliz Admin Panel</title>
+<title>Wintoliz Farms Marketplace</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,407 +23,403 @@ font-family:'Segoe UI',sans-serif;
 --primary-light:#145c46;
 --gold:#ffb800;
 --bg:#f4f7f5;
---white:#ffffff;
+--white:#fff;
 --text:#111827;
 --muted:#6b7280;
---danger:#dc2626;
---border:#e5e7eb;
-}
-
-html{
-scroll-behavior:smooth;
 }
 
 body{
-background:
-linear-gradient(to bottom,#eef5f1,#f7faf8);
+background:var(--bg);
 color:var(--text);
-padding:25px;
-min-height:100vh;
 overflow-x:hidden;
 }
 
-/* CONTAINER */
-.container{
-max-width:1400px;
-margin:auto;
-}
-
-/* TOPBAR */
-.topbar{
-background:
-linear-gradient(135deg,#0f3d2e,#145c46);
-padding:28px;
-border-radius:28px;
-color:#fff;
+/* HEADER */
+header{
+position:sticky;
+top:0;
+z-index:1000;
+background:rgba(15,61,46,0.97);
+padding:16px 30px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:25px;
-box-shadow:
-0 15px 35px rgba(15,61,46,0.15);
-position:relative;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo-image-wrapper{
+width:54px;
+height:54px;
+border-radius:14px;
 overflow:hidden;
+background:rgba(255,255,255,0.1);
+padding:6px;
 }
 
-.topbar::before{
-content:'';
-position:absolute;
-width:260px;
-height:260px;
-border-radius:50%;
-background:rgba(255,255,255,0.05);
-top:-120px;
-right:-100px;
+.logo-img{
+width:100%;
+height:100%;
+object-fit:contain;
 }
 
-.topbar-left{
-position:relative;
-z-index:2;
-}
-
-.topbar h1{
-font-size:36px;
+.logo-text{
+font-size:26px;
 font-weight:900;
-letter-spacing:-1px;
-margin-bottom:6px;
+color:#fff;
 }
 
-.topbar p{
-font-size:15px;
-opacity:0.9;
+.logo-text span{
+color:var(--gold);
 }
 
-/* LOGOUT */
-.logout-btn{
-background:#fff;
-color:#0f3d2e;
-border:none;
-padding:14px 20px;
-border-radius:16px;
-font-weight:800;
+/* NAVBAR */
+.navbar{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* NAV */
+.nav-link{
+color:#fff;
+font-weight:700;
 font-size:14px;
+padding:10px 14px;
+border-radius:12px;
 cursor:pointer;
 transition:0.3s;
+}
+
+.nav-link:hover{
+background:rgba(255,255,255,0.1);
+}
+
+.nav-link.active{
+background:var(--gold);
+color:#000;
+}
+
+/* DROPDOWN */
+.dropdown{
 position:relative;
-z-index:2;
 }
 
-.logout-btn:hover{
-transform:translateY(-3px);
-box-shadow:0 10px 25px rgba(0,0,0,0.12);
+.dropdown-btn{
+background:rgba(255,255,255,0.1);
+color:#fff;
+border:none;
+padding:10px 16px;
+border-radius:12px;
+font-weight:800;
+cursor:pointer;
+transition:0.3s;
+font-size:14px;
 }
 
-/* DASHBOARD */
-.dashboard{
+.dropdown-btn:hover{
+background:rgba(255,255,255,0.18);
+}
+
+/* DROPDOWN MENU */
+.dropdown-content{
+position:absolute;
+top:52px;
+right:0;
+background:#fff;
+min-width:220px;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 20px 40px rgba(0,0,0,0.12);
+opacity:0;
+visibility:hidden;
+transform:translateY(10px);
+transition:0.3s;
+z-index:3000;
+border:1px solid rgba(0,0,0,0.05);
+}
+
+/* SHOW */
+.dropdown:hover .dropdown-content{
+opacity:1;
+visibility:visible;
+transform:translateY(0);
+}
+
+/* LINKS */
+.dropdown-content a{
+display:block;
+padding:15px 18px;
+text-decoration:none;
+color:#111827;
+font-weight:700;
+font-size:14px;
+transition:0.25s;
+border-bottom:1px solid #f3f4f6;
+}
+
+.dropdown-content a:last-child{
+border-bottom:none;
+}
+
+.dropdown-content a:hover{
+background:#f7faf8;
+padding-left:24px;
+color:#0f3d2e;
+}
+
+/* HERO */
+.hero{
+padding:60px 20px;
+text-align:center;
+background:
+linear-gradient(rgba(10,30,20,0.85),rgba(10,30,20,0.9)),
+url('https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1400&auto=format&fit=crop') center/cover;
+color:#fff;
+}
+
+.hero h1{
+font-size:44px;
+font-weight:900;
+margin-bottom:10px;
+}
+
+.hero p{
+max-width:700px;
+margin:auto;
+opacity:0.9;
+line-height:1.7;
+}
+
+/* LAYOUT */
+.wrapper{
 display:grid;
-grid-template-columns:360px 1fr;
-gap:24px;
+grid-template-columns:260px 1fr;
+gap:20px;
+padding:25px;
+}
+
+/* SIDEBAR */
+.sidebar{
+background:#fff;
+padding:20px;
+border-radius:20px;
+height:fit-content;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+.search-box input{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:1px solid #ddd;
+outline:none;
+margin-bottom:18px;
+}
+
+.filter-item{
+display:flex;
+gap:8px;
+margin-bottom:10px;
+font-size:14px;
+}
+
+/* PRODUCTS */
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:20px;
 }
 
 /* CARD */
 .card{
 background:#fff;
-border-radius:26px;
-padding:24px;
-box-shadow:
-0 10px 30px rgba(0,0,0,0.05);
-border:1px solid rgba(0,0,0,0.04);
-}
-
-/* TITLES */
-.section-title{
-font-size:24px;
-font-weight:900;
-color:#0f3d2e;
-margin-bottom:18px;
-letter-spacing:-0.5px;
-}
-
-/* STATUS */
-.status{
-min-height:24px;
-font-weight:700;
-font-size:14px;
-margin-bottom:14px;
-}
-
-.success{
-color:green;
-}
-
-.error{
-color:red;
-}
-
-/* FORM */
-.input-group{
-margin-bottom:18px;
-}
-
-.input-group label{
-display:block;
-margin-bottom:8px;
-font-size:14px;
-font-weight:700;
-color:#222;
-}
-
-input,
-textarea,
-select{
-width:100%;
-padding:15px;
-border-radius:16px;
-border:1px solid #d7dce3;
-background:#fafafa;
-font-size:14px;
-outline:none;
-transition:0.3s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-background:#fff;
-border-color:#0f3d2e;
-box-shadow:0 0 0 5px rgba(15,61,46,0.08);
-}
-
-textarea{
-resize:none;
-min-height:120px;
-}
-
-/* BUTTON */
-.btn{
-width:100%;
-padding:16px;
-border:none;
-border-radius:16px;
-font-size:15px;
-font-weight:800;
-cursor:pointer;
-transition:0.3s ease;
-}
-
-.primary-btn{
-background:
-linear-gradient(135deg,#0f3d2e,#145c46);
-color:#fff;
-box-shadow:
-0 12px 24px rgba(15,61,46,0.15);
-}
-
-.primary-btn:hover{
-transform:translateY(-3px);
-}
-
-/* PRODUCTS */
-.products-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-gap:12px;
-flex-wrap:wrap;
-}
-
-.search-box{
-position:relative;
-width:280px;
-}
-
-.search-box input{
-padding-left:16px;
-}
-
-/* GRID */
-.products-grid{
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(260px,1fr));
-gap:20px;
-}
-
-/* PRODUCT CARD */
-.product-card{
-background:#fff;
-border-radius:24px;
+border-radius:20px;
 overflow:hidden;
-border:1px solid #edf1ef;
-transition:0.3s ease;
-position:relative;
+box-shadow:0 10px 25px rgba(0,0,0,0.06);
+transition:0.3s;
+border:1px solid rgba(0,0,0,0.05);
 }
 
-.product-card:hover{
+.card:hover{
 transform:translateY(-6px);
-box-shadow:
-0 18px 35px rgba(0,0,0,0.08);
 }
 
-.product-image{
-height:220px;
-background:#f5f7f6;
+.card-image{
+height:190px;
 overflow:hidden;
+background:#f3f6f4;
 }
 
-.product-image img{
+.card-image img{
 width:100%;
 height:100%;
 object-fit:cover;
-transition:0.4s;
 }
 
-.product-card:hover img{
-transform:scale(1.05);
+.card-content{
+padding:16px;
+display:flex;
+flex-direction:column;
+gap:10px;
 }
 
-.product-content{
-padding:18px;
-}
-
-.badge{
-display:inline-flex;
-align-items:center;
-padding:7px 12px;
-background:#eef7f2;
-color:#0f3d2e;
+.category{
+display:inline-block;
+padding:6px 10px;
 border-radius:999px;
+background:#eef7f2;
+color:var(--primary);
 font-size:11px;
+font-weight:800;
+width:fit-content;
+}
+
+.card h3{
+font-size:17px;
+font-weight:900;
+}
+
+.description{
+font-size:13px;
+color:var(--muted);
+line-height:1.5;
+min-height:38px;
+}
+
+.price{
+font-size:20px;
+font-weight:900;
+color:var(--primary);
+}
+
+.btn{
+width:100%;
+padding:13px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+color:#fff;
+font-weight:800;
+cursor:pointer;
+}
+
+/* CART */
+#cartDrawer{
+position:fixed;
+top:0;
+right:-420px;
+width:360px;
+height:100%;
+background:#fff;
+transition:0.4s;
+z-index:2000;
+box-shadow:-10px 0 30px rgba(0,0,0,0.2);
+display:flex;
+flex-direction:column;
+}
+
+#cartDrawer.active{
+right:0;
+}
+
+.cart-header{
+padding:20px;
+font-size:20px;
+font-weight:900;
+border-bottom:1px solid #eee;
+}
+
+.cart-items{
+flex:1;
+overflow:auto;
+padding:15px;
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+padding:14px;
+background:#f7faf8;
+border-radius:14px;
+margin-bottom:10px;
+}
+
+.cart-footer{
+padding:18px;
+border-top:1px solid #eee;
+}
+
+.total{
+font-size:18px;
 font-weight:900;
 margin-bottom:12px;
 }
 
-.product-title{
-font-size:20px;
-font-weight:900;
-margin-bottom:8px;
-line-height:1.3;
-}
-
-.product-description{
-font-size:13px;
-line-height:1.6;
-color:#666;
-margin-bottom:14px;
-min-height:48px;
-}
-
-.product-price{
-font-size:24px;
-font-weight:900;
-color:#0f3d2e;
-margin-bottom:16px;
-}
-
-.product-actions{
-display:flex;
-gap:10px;
-}
-
-/* ACTION BUTTONS */
-.action-btn{
-flex:1;
+.cart-btn{
+width:100%;
 padding:12px;
 border:none;
-border-radius:14px;
+border-radius:12px;
 font-weight:800;
 cursor:pointer;
-transition:0.3s;
+margin-bottom:8px;
 }
 
-.edit-btn{
-background:#111827;
+.checkout{
+background:var(--primary);
 color:#fff;
 }
 
-.edit-btn:hover{
-transform:translateY(-2px);
+.clear{
+background:#eee;
 }
 
-.delete-btn{
-background:#dc2626;
-color:#fff;
+#overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.45);
+display:none;
+z-index:1500;
 }
 
-.delete-btn:hover{
-transform:translateY(-2px);
+#overlay.active{
+display:block;
 }
 
-/* EMPTY */
 .empty{
-padding:50px 20px;
 text-align:center;
-font-size:15px;
+padding:30px;
 color:#666;
-background:#fafafa;
-border-radius:18px;
-border:1px dashed #d8e0dc;
 }
 
-/* STATS */
-.stats{
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(180px,1fr));
-gap:18px;
-margin-bottom:24px;
-}
+/* MOBILE */
+@media(max-width:900px){
 
-.stat-card{
-background:#fff;
-padding:20px;
-border-radius:22px;
-box-shadow:
-0 10px 30px rgba(0,0,0,0.04);
-}
-
-.stat-title{
-font-size:13px;
-font-weight:700;
-color:#666;
-margin-bottom:10px;
-}
-
-.stat-number{
-font-size:34px;
-font-weight:900;
-color:#0f3d2e;
-}
-
-/* RESPONSIVE */
-@media(max-width:1000px){
-
-.dashboard{
+.wrapper{
 grid-template-columns:1fr;
 }
 
+.hero h1{
+font-size:32px;
 }
 
-@media(max-width:700px){
-
-body{
-padding:16px;
-}
-
-.topbar{
+header{
 flex-direction:column;
-align-items:flex-start;
 gap:16px;
+align-items:flex-start;
 }
 
-.topbar h1{
-font-size:30px;
-}
-
-.products-header{
-flex-direction:column;
-align-items:stretch;
-}
-
-.search-box{
-width:100%;
+.navbar{
+flex-wrap:wrap;
 }
 
 }
@@ -433,111 +429,108 @@ width:100%;
 
 <body>
 
-<div class="container">
+<header>
 
-<!-- TOPBAR -->
-<div class="topbar">
+<div class="logo-area">
 
-<div class="topbar-left">
-<h1>🧑‍💼 Wintoliz Admin</h1>
-<p>
-Manage marketplace products, inventory and orders easily
-</p>
+<div class="logo-image-wrapper">
+<img src="./asset/image/image.png" class="logo-img">
 </div>
 
-<button class="logout-btn" onclick="logoutAdmin()">
+<div class="logo-text">
+<span>Wintoliz</span> Farms
+</div>
+
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+
+<div class="nav-link active">
+Marketplace
+</div>
+
+<div class="nav-link" onclick="openCart()">
+Cart (<span id="cartCount">0</span>)
+</div>
+
+<!-- DROPDOWN -->
+<div class="dropdown">
+
+<button class="dropdown-btn">
+Account ▾
+</button>
+
+<div class="dropdown-content">
+
+<a href="profile.html">
+My Profile
+</a>
+
+<a href="orders.html">
+My Orders
+</a>
+
+<a href="admin.html"
+id="adminBtn"
+style="display:none;">
+Admin Panel
+</a>
+
+<a href="#"
+onclick="logoutUser()">
 Logout
-</button>
+</a>
 
-</div>
-
-<!-- STATS -->
-<div class="stats">
-
-<div class="stat-card">
-<div class="stat-title">Total Products</div>
-<div class="stat-number" id="totalProducts">0</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-title">Categories</div>
-<div class="stat-number" id="totalCategories">0</div>
 </div>
 
 </div>
 
-<!-- DASHBOARD -->
-<div class="dashboard">
+</nav>
 
-<!-- LEFT -->
-<div class="card">
+</header>
 
-<h2 class="section-title">
-Add Product
-</h2>
+<section class="hero">
 
-<div id="status" class="status"></div>
+<h1>
+Fresh Poultry Products Across Nigeria
+</h1>
 
-<div class="input-group">
-<label>Product Name</label>
-<input type="text" id="name" placeholder="Enter product name">
-</div>
+<p>
+Buy healthy birds, eggs, vaccines, feeds and equipment directly from trusted farms.
+</p>
 
-<div class="input-group">
-<label>Price</label>
-<input type="number" id="price" placeholder="Enter product price">
-</div>
+</section>
 
-<div class="input-group">
-<label>Category</label>
+<div class="wrapper">
 
-<select id="category">
-<option value="">Select category</option>
-<option value="Eggs">Eggs</option>
-<option value="Flock">Flock</option>
-<option value="Drugs">Drugs</option>
-<option value="Feeds">Feeds</option>
-<option value="Equipment">Equipment</option>
-</select>
+<!-- SIDEBAR -->
+<div class="sidebar">
 
-</div>
-
-<div class="input-group">
-<label>Image URL</label>
-<input type="text" id="image" placeholder="Paste image URL">
-</div>
-
-<div class="input-group">
-<label>Description</label>
-<textarea id="description" placeholder="Enter description"></textarea>
-</div>
-
-<button class="btn primary-btn" onclick="addProduct()">
-Add Product
-</button>
-
-</div>
-
-<!-- RIGHT -->
-<div class="card">
-
-<div class="products-header">
-
-<h2 class="section-title">
-Marketplace Products
-</h2>
+<h3>Search</h3>
 
 <div class="search-box">
-<input
-type="text"
-id="searchInput"
-placeholder="Search products..."
->
+<input type="text" id="searchInput" placeholder="Search products...">
 </div>
+
+<h3>Categories</h3>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Eggs"> Eggs
+</label>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Flock"> Flock
+</label>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Drugs"> Drugs
+</label>
 
 </div>
 
-<div id="productsList" class="products-grid">
+<!-- PRODUCTS -->
+<div class="products" id="products">
 
 <div class="empty">
 Loading products...
@@ -547,9 +540,34 @@ Loading products...
 
 </div>
 
+<!-- CART -->
+<div id="cartDrawer">
+
+<div class="cart-header">
+Shopping Cart
+</div>
+
+<div class="cart-items" id="cartItems"></div>
+
+<div class="cart-footer">
+
+<div class="total">
+Total: ₦<span id="total">0</span>
+</div>
+
+<button class="cart-btn checkout" onclick="placeOrder()">
+Checkout
+</button>
+
+<button class="cart-btn clear" onclick="clearCart()">
+Clear Cart
+</button>
+
 </div>
 
 </div>
+
+<div id="overlay" onclick="closeCart()"></div>
 
 <script type="module">
 
@@ -566,18 +584,17 @@ from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 import {
 getFirestore,
 collection,
+getDocs,
 addDoc,
-deleteDoc,
-doc,
-updateDoc,
-onSnapshot,
-serverTimestamp
+serverTimestamp,
+query,
+orderBy
 }
 from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 /* FIREBASE CONFIG */
 const firebaseConfig = {
-apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+apiKey: "YOUR_API_KEY",
 authDomain: "wintoliz-2dca5.firebaseapp.com",
 projectId: "wintoliz-2dca5",
 storageBucket: "wintoliz-2dca5.firebasestorage.app",
@@ -585,383 +602,257 @@ messagingSenderId: "469698295508",
 appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
 };
 
-/* INIT */
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 /* ADMIN EMAIL */
-const ADMIN_EMAIL = "youradmin@gmail.com";
+const ADMIN_EMAIL = "YOUR_ADMIN_EMAIL@gmail.com";
 
-/* AUTH */
+/* AUTH CHECK */
 onAuthStateChanged(auth, (user) => {
 
-if(!user){
+if(user){
+
+/* SHOW ADMIN BUTTON */
+if(user.email === ADMIN_EMAIL){
+
+document
+.getElementById("adminBtn")
+.style.display = "block";
+
+}
+
+}
+else{
+
 window.location.href = "index.html";
-return;
-}
-
-if(user.email !== ADMIN_EMAIL){
-
-alert("Access denied");
-
-window.location.href = "product.html";
 
 }
 
 });
-
-/* STATUS */
-const statusBox =
-document.getElementById("status");
-
-function showStatus(message, type){
-
-statusBox.innerHTML = message;
-statusBox.className =
-"status " + type;
-
-setTimeout(() => {
-
-statusBox.innerHTML = "";
-
-},3000);
-
-}
-
-/* VALIDATE */
-function validate(){
-
-if(
-!name.value ||
-!price.value ||
-!category.value
-){
-
-showStatus(
-"Fill all required fields",
-"error"
-);
-
-return false;
-
-}
-
-return true;
-
-}
-
-/* ADD PRODUCT */
-window.addProduct = async function(){
-
-if(!validate()) return;
-
-try{
-
-await addDoc(
-collection(db, "products"),
-{
-name: name.value,
-price: Number(price.value),
-category: category.value,
-image:
-image.value ||
-"https://via.placeholder.com/500x400",
-description:
-description.value || "",
-createdAt: serverTimestamp()
-}
-);
-
-showStatus(
-"Product added successfully ✔",
-"success"
-);
-
-/* CLEAR */
-name.value = "";
-price.value = "";
-category.value = "";
-image.value = "";
-description.value = "";
-
-}
-catch(error){
-
-console.log(error);
-
-showStatus(
-"Failed to add product",
-"error"
-);
-
-}
-
-};
-
-/* PRODUCTS */
-const productsList =
-document.getElementById("productsList");
-
-const totalProducts =
-document.getElementById("totalProducts");
-
-const totalCategories =
-document.getElementById("totalCategories");
-
-const searchInput =
-document.getElementById("searchInput");
-
-let allProducts = [];
-
-/* REALTIME */
-onSnapshot(
-collection(db, "products"),
-(snapshot) => {
-
-allProducts = [];
-
-snapshot.forEach((docSnap) => {
-
-allProducts.push({
-id: docSnap.id,
-...docSnap.data()
-});
-
-});
-
-renderProducts(allProducts);
-
-}
-);
-
-/* RENDER */
-function renderProducts(products){
-
-productsList.innerHTML = "";
-
-if(products.length === 0){
-
-productsList.innerHTML = `
-<div class="empty">
-No products found
-</div>
-`;
-
-totalProducts.innerHTML = 0;
-totalCategories.innerHTML = 0;
-
-return;
-
-}
-
-/* STATS */
-totalProducts.innerHTML =
-products.length;
-
-const categories =
-[
-...new Set(
-products.map(p => p.category)
-)
-];
-
-totalCategories.innerHTML =
-categories.length;
-
-/* CARDS */
-products.forEach((p) => {
-
-productsList.innerHTML += `
-
-<div class="product-card">
-
-<div class="product-image">
-
-<img
-src="${p.image || 'https://via.placeholder.com/400'}"
-alt="${p.name}"
->
-
-</div>
-
-<div class="product-content">
-
-<div class="badge">
-${p.category || 'Product'}
-</div>
-
-<div class="product-title">
-${p.name || 'Unnamed Product'}
-</div>
-
-<div class="product-description">
-${p.description || 'No description'}
-</div>
-
-<div class="product-price">
-₦${Number(p.price || 0).toLocaleString()}
-</div>
-
-<div class="product-actions">
-
-<button
-class="action-btn edit-btn"
-onclick="editProduct(
-'${p.id}',
-'${p.name}',
-'${p.price}',
-'${p.category}',
-'${p.image}',
-`${p.description}`
-)"
->
-Edit
-</button>
-
-<button
-class="action-btn delete-btn"
-onclick="deleteProduct('${p.id}')"
->
-Delete
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-/* SEARCH */
-searchInput.addEventListener(
-"input",
-() => {
-
-const keyword =
-searchInput.value.toLowerCase();
-
-const filtered =
-allProducts.filter((p) =>
-p.name.toLowerCase().includes(keyword)
-);
-
-renderProducts(filtered);
-
-}
-);
-
-/* EDIT */
-window.editProduct = async function(
-id,
-oldName,
-oldPrice,
-oldCategory,
-oldImage,
-oldDescription
-){
-
-const newName =
-prompt("Edit product name", oldName);
-
-if(newName === null) return;
-
-const newPrice =
-prompt("Edit price", oldPrice);
-
-const newCategory =
-prompt("Edit category", oldCategory);
-
-const newImage =
-prompt("Edit image URL", oldImage);
-
-const newDescription =
-prompt("Edit description", oldDescription);
-
-try{
-
-await updateDoc(
-doc(db,"products",id),
-{
-name:newName,
-price:Number(newPrice),
-category:newCategory,
-image:newImage,
-description:newDescription
-}
-);
-
-showStatus(
-"Product updated ✔",
-"success"
-);
-
-}
-catch(error){
-
-console.log(error);
-
-showStatus(
-"Update failed",
-"error"
-);
-
-}
-
-};
-
-/* DELETE */
-window.deleteProduct = async function(id){
-
-const confirmDelete =
-confirm("Delete this product?");
-
-if(!confirmDelete) return;
-
-try{
-
-await deleteDoc(
-doc(db,"products",id)
-);
-
-showStatus(
-"Product deleted ✔",
-"success"
-);
-
-}
-catch(error){
-
-console.log(error);
-
-showStatus(
-"Delete failed",
-"error"
-);
-
-}
-
-};
 
 /* LOGOUT */
-window.logoutAdmin = async function(){
+window.logoutUser = async function(){
 
 try{
 
 await signOut(auth);
 
-window.location.href =
-"index.html";
+window.location.href = "index.html";
 
-}
-catch(error){
+}catch(error){
 
 console.log(error);
+
+}
+
+};
+
+/* CART */
+let cart = [];
+
+window.addToCart = function(name, price){
+
+cart.push({name, price});
+
+updateCart();
+
+openCart();
+
+};
+
+function updateCart(){
+
+let box =
+document.getElementById("cartItems");
+
+box.innerHTML = "";
+
+let total = 0;
+
+cart.forEach(i=>{
+
+total += i.price;
+
+box.innerHTML += `
+<div class="cart-item">
+<strong>${i.name}</strong>
+<span>₦${i.price.toLocaleString()}</span>
+</div>
+`;
+
+});
+
+document.getElementById("total").innerText =
+total.toLocaleString();
+
+document.getElementById("cartCount").innerText =
+cart.length;
+
+}
+
+window.openCart = () => {
+
+document.getElementById("cartDrawer")
+.classList.add("active");
+
+document.getElementById("overlay")
+.classList.add("active");
+
+};
+
+window.closeCart = () => {
+
+document.getElementById("cartDrawer")
+.classList.remove("active");
+
+document.getElementById("overlay")
+.classList.remove("active");
+
+};
+
+window.clearCart = () => {
+
+cart = [];
+
+updateCart();
+
+};
+
+/* LOAD PRODUCTS */
+async function loadProducts(){
+
+const container =
+document.getElementById("products");
+
+container.innerHTML =
+"<div class='empty'>Loading products...</div>";
+
+try{
+
+const q = query(
+collection(db, "products"),
+orderBy("createdAt", "desc")
+);
+
+const snap = await getDocs(q);
+
+container.innerHTML = "";
+
+if(snap.empty){
+
+container.innerHTML =
+"<div class='empty'>No products found</div>";
+
+return;
+
+}
+
+snap.forEach(doc=>{
+
+const p = doc.data();
+
+container.innerHTML += `
+
+<div class="card">
+
+<div class="card-image">
+
+<img
+src="${p.image || 'https://via.placeholder.com/400'}"
+onerror="this.src='https://via.placeholder.com/400'"
+alt="${p.name}"
+>
+
+</div>
+
+<div class="card-content">
+
+<div class="category">
+${p.category || 'Uncategorized'}
+</div>
+
+<h3>
+${p.name || 'Unnamed Product'}
+</h3>
+
+<p class="description">
+${p.description || ''}
+</p>
+
+<div class="price">
+₦${Number(p.price || 0).toLocaleString()}
+</div>
+
+<button
+class="btn"
+onclick='addToCart(
+${JSON.stringify(p.name)},
+${Number(p.price || 0)}
+)'
+>
+Add to Cart
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}catch(error){
+
+console.log(error);
+
+container.innerHTML =
+"<div class='empty'>Failed to load products</div>";
+
+}
+
+}
+
+loadProducts();
+
+/* CHECKOUT */
+window.placeOrder = async function(){
+
+if(cart.length === 0){
+
+alert("Cart is empty");
+
+return;
+
+}
+
+try{
+
+await addDoc(collection(db,"orders"),{
+
+items: cart,
+
+total:
+cart.reduce((s,i)=>s+i.price,0),
+
+createdAt: serverTimestamp()
+
+});
+
+alert("Order placed successfully!");
+
+cart = [];
+
+updateCart();
+
+closeCart();
+
+}catch(error){
+
+console.log(error);
+
+alert("Failed to place order");
 
 }
 
