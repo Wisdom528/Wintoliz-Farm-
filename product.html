@@ -144,6 +144,10 @@ height:fit-content;
 box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
+.sidebar h3{
+margin-bottom:12px;
+}
+
 .search-box input{
 width:100%;
 padding:14px;
@@ -167,7 +171,6 @@ grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 gap:20px;
 }
 
-/* CARD */
 .card{
 background:#fff;
 border-radius:20px;
@@ -191,6 +194,11 @@ background:#f3f6f4;
 width:100%;
 height:100%;
 object-fit:cover;
+transition:0.3s;
+}
+
+.card:hover img{
+transform:scale(1.05);
 }
 
 .card-content{
@@ -238,6 +246,11 @@ background:linear-gradient(135deg,#0f3d2e,#145c46);
 color:#fff;
 font-weight:800;
 cursor:pointer;
+transition:0.3s;
+}
+
+.btn:hover{
+transform:translateY(-3px);
 }
 
 /* CART */
@@ -300,9 +313,16 @@ cursor:pointer;
 margin-bottom:8px;
 }
 
-.checkout{background:var(--primary);color:#fff;}
-.clear{background:#eee;}
+.checkout{
+background:var(--primary);
+color:#fff;
+}
 
+.clear{
+background:#eee;
+}
+
+/* OVERLAY */
 #overlay{
 position:fixed;
 top:0;
@@ -316,9 +336,15 @@ z-index:1500;
 
 #overlay.active{display:block;}
 
+/* RESPONSIVE */
 @media(max-width:900px){
 .wrapper{grid-template-columns:1fr;}
 .hero h1{font-size:32px;}
+}
+
+@media(max-width:600px){
+header{flex-direction:column;gap:10px;}
+.hero{padding:50px 15px;}
 }
 
 </style>
@@ -327,6 +353,7 @@ z-index:1500;
 <body>
 
 <header>
+
 <div class="logo-area">
 <div class="logo-image-wrapper">
 <img src="./asset/image/image.png" class="logo-img">
@@ -338,6 +365,7 @@ z-index:1500;
 <div class="nav-link active">Marketplace</div>
 <div class="nav-link">Cart (<span id="cartCount">0</span>)</div>
 </nav>
+
 </header>
 
 <section class="hero">
@@ -347,6 +375,7 @@ z-index:1500;
 
 <div class="wrapper">
 
+<!-- SIDEBAR -->
 <div class="sidebar">
 <h3>Search</h3>
 <div class="search-box">
@@ -355,14 +384,63 @@ z-index:1500;
 
 <h3>Categories</h3>
 
-<label class="filter-item"><input type="checkbox" class="filter" value="Eggs"> Eggs</label>
-<label class="filter-item"><input type="checkbox" class="filter" value="Flock"> Flock</label>
-<label class="filter-item"><input type="checkbox" class="filter" value="Drugs"> Drugs</label>
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Eggs"> Eggs
+</label>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Flock"> Flock
+</label>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Drugs"> Drugs
+</label>
 
 </div>
 
-<div class="products" id="products"></div>
+<!-- PRODUCTS -->
+<div class="products">
 
+<div class="card" data-category="Eggs">
+<div class="card-image">
+<img src="./asset/image/Wintoliz large egg.png">
+</div>
+<div class="card-content">
+<div class="category">Eggs</div>
+<h3>Fresh Eggs</h3>
+<p class="description">Farm fresh eggs from trusted poultry farms.</p>
+<div class="price">₦5,800</div>
+<button class="btn" onclick="addToCart('Fresh Eggs',5800)">Add to Cart</button>
+</div>
+</div>
+
+<div class="card" data-category="Flock">
+<div class="card-image">
+<img src="./asset/image/wintoliz mature brioler.png">
+</div>
+<div class="card-content">
+<div class="category">Flock</div>
+<h3>Broiler Chicken</h3>
+<p class="description">Healthy broilers ready for farming.</p>
+<div class="price">₦15,000</div>
+<button class="btn" onclick="addToCart('Broiler Chicken',15000)">Add to Cart</button>
+</div>
+</div>
+
+<div class="card" data-category="Drugs">
+<div class="card-image">
+<img src="./asset/image/Wintoliz zerocox.png">
+</div>
+<div class="card-content">
+<div class="category">Drugs</div>
+<h3>Zerocox</h3>
+<p class="description">Poultry medication for disease control.</p>
+<div class="price">₦3,000</div>
+<button class="btn" onclick="addToCart('Zerocox',3000)">Add to Cart</button>
+</div>
+</div>
+
+</div>
 </div>
 
 <!-- CART -->
@@ -372,78 +450,35 @@ z-index:1500;
 
 <div class="cart-footer">
 <div class="total">Total: ₦<span id="total">0</span></div>
-<button class="cart-btn checkout" onclick="placeOrder()">Checkout</button>
+
+<button class="cart-btn checkout">Checkout</button>
 <button class="cart-btn clear" onclick="clearCart()">Clear Cart</button>
 </div>
 </div>
 
 <div id="overlay" onclick="closeCart()"></div>
 
-<script type="module">
+<script>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import {
-getAuth,
-onAuthStateChanged,
-setPersistence,
-browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-
-import {
-getFirestore,
-collection,
-getDocs,
-addDoc,
-serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-
-const firebaseConfig = {
-apiKey: "AIzaSyDVFSZlzB8F9xzt8BBgJ5FCu8",
-authDomain: "wintoliz-2dca5.firebaseapp.com",
-projectId: "wintoliz-2dca5",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-/* FIXED AUTH (NO MORE RANDOM LOGOUT) */
-await setPersistence(auth, browserLocalPersistence);
-
-onAuthStateChanged(auth, (user) => {
-if (user) {
-console.log("Logged in:", user.email);
-return;
-}
-
-setTimeout(() => {
-if (!auth.currentUser) {
-window.location.href = "index.html";
-}
-}, 800);
-});
-
-/* CART */
 let cart = [];
 
-window.addToCart = function(name, price){
+function addToCart(name, price){
 cart.push({name, price});
 updateCart();
 openCart();
 }
 
 function updateCart(){
-let box = document.getElementById("cartItems");
-box.innerHTML = "";
-
+let container = document.getElementById("cartItems");
+container.innerHTML = "";
 let total = 0;
 
-cart.forEach(i=>{
-total += i.price;
-box.innerHTML += `
+cart.forEach(item=>{
+total += item.price;
+container.innerHTML += `
 <div class="cart-item">
-<strong>${i.name}</strong>
-<span>₦${i.price.toLocaleString()}</span>
+<strong>${item.name}</strong>
+<span>₦${item.price.toLocaleString()}</span>
 </div>`;
 });
 
@@ -451,75 +486,43 @@ document.getElementById("total").innerText = total.toLocaleString();
 document.getElementById("cartCount").innerText = cart.length;
 }
 
-window.openCart = () =>
+function openCart(){
 document.getElementById("cartDrawer").classList.add("active");
+document.getElementById("overlay").classList.add("active");
+}
 
-window.closeCart = () =>
+function closeCart(){
 document.getElementById("cartDrawer").classList.remove("active");
-
-window.clearCart = () => {
-cart = [];
-updateCart();
-};
-
-/* PRODUCTS */
-async function loadProducts(){
-
-const container = document.getElementById("products");
-container.innerHTML = "<div class='empty'>Loading products...</div>";
-
-const snap = await getDocs(collection(db, "products"));
-
-container.innerHTML = "";
-
-if (snap.empty) {
-container.innerHTML = "<div class='empty'>No products yet</div>";
-return;
+document.getElementById("overlay").classList.remove("active");
 }
 
-snap.forEach(doc=>{
-const p = doc.data();
-
-container.innerHTML += `
-<div class="card">
-<div class="card-image">
-<img src="${p.image}">
-</div>
-
-<div class="card-content">
-<div class="category">${p.category}</div>
-<h3>${p.name}</h3>
-<p class="description">${p.description}</p>
-<div class="price">₦${Number(p.price).toLocaleString()}</div>
-
-<button class="btn" onclick="addToCart('${p.name}', ${p.price})">
-Add to Cart
-</button>
-
-</div>
-</div>
-`;
-});
-}
-
-loadProducts();
-
-/* CHECKOUT */
-window.placeOrder = async function(){
-
-if(cart.length === 0) return alert("Cart is empty");
-
-await addDoc(collection(db,"orders"),{
-items: cart,
-total: cart.reduce((s,i)=>s+i.price,0),
-createdAt: serverTimestamp()
-});
-
-alert("Order placed!");
+function clearCart(){
 cart = [];
 updateCart();
-closeCart();
-};
+}
+
+/* SEARCH */
+document.getElementById("searchInput").addEventListener("input", function(){
+let value = this.value.toLowerCase();
+document.querySelectorAll(".card").forEach(card=>{
+let name = card.querySelector("h3").innerText.toLowerCase();
+card.style.display = name.includes(value) ? "block" : "none";
+});
+});
+
+/* FILTER */
+document.querySelectorAll(".filter").forEach(f=>{
+f.addEventListener("change", ()=>{
+let selected = Array.from(document.querySelectorAll(".filter:checked")).map(i=>i.value);
+
+document.querySelectorAll(".card").forEach(card=>{
+let cat = card.dataset.category;
+card.style.display =
+selected.length === 0 || selected.includes(cat)
+? "block" : "none";
+});
+});
+});
 
 </script>
 
