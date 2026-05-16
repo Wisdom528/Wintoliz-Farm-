@@ -692,13 +692,15 @@ browserLocalPersistence,
 signInWithEmailAndPassword,
 GoogleAuthProvider,
 signInWithPopup,
-sendPasswordResetEmail
+sendPasswordResetEmail,
+onAuthStateChanged,
+signOut
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* FIREBASE CONFIG */
 const firebaseConfig = {
-apiKey: "AIzaSyDVFSZlzB8F9xzt2B8F9xzt2eWQAVKtS8BBgJ5FCu8",
+apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
 authDomain: "wintoliz-2dca5.firebaseapp.com",
 projectId: "wintoliz-2dca5",
 storageBucket: "wintoliz-2dca5.firebasestorage.app",
@@ -706,12 +708,37 @@ messagingSenderId: "469698295508",
 appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
 };
 
+/* INITIALIZE */
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-await setPersistence(auth, browserLocalPersistence);
-
 const message = document.getElementById("message");
+
+/* KEEP USER LOGGED IN */
+setPersistence(auth, browserLocalPersistence)
+.then(() => {
+console.log("User session will stay logged in");
+})
+.catch((error) => {
+console.log(error);
+});
+
+/* CHECK IF USER IS ALREADY LOGGED IN */
+onAuthStateChanged(auth, (user) => {
+
+if(user){
+
+console.log("User still logged in");
+
+}
+
+else{
+
+console.log("No active user");
+
+}
+
+});
 
 /* EMAIL LOGIN */
 document.getElementById("loginForm")
@@ -720,10 +747,22 @@ document.getElementById("loginForm")
 e.preventDefault();
 
 const email =
-document.getElementById("email").value;
+document.getElementById("email").value.trim();
 
 const password =
-document.getElementById("password").value;
+document.getElementById("password").value.trim();
+
+if(!email || !password){
+
+message.innerHTML =
+"Please fill all fields";
+
+message.className =
+"message error";
+
+return;
+
+}
 
 try{
 
@@ -733,9 +772,13 @@ email,
 password
 );
 
-message.innerHTML = "Login successful!";
-message.className = "message success";
+message.innerHTML =
+"Login successful!";
 
+message.className =
+"message success";
+
+/* REDIRECT */
 setTimeout(() => {
 
 window.location.href =
@@ -745,8 +788,11 @@ window.location.href =
 
 }catch(error){
 
-message.innerHTML = error.message;
-message.className = "message error";
+message.innerHTML =
+error.message;
+
+message.className =
+"message error";
 
 }
 
@@ -756,11 +802,15 @@ message.className = "message error";
 document.getElementById("googleLogin")
 .addEventListener("click", async () => {
 
-const provider = new GoogleAuthProvider();
+const provider =
+new GoogleAuthProvider();
 
 try{
 
-await signInWithPopup(auth,provider);
+await signInWithPopup(
+auth,
+provider
+);
 
 message.innerHTML =
 "Google login successful!";
@@ -777,8 +827,11 @@ window.location.href =
 
 }catch(error){
 
-message.innerHTML = error.message;
-message.className = "message error";
+message.innerHTML =
+error.message;
+
+message.className =
+"message error";
 
 }
 
@@ -791,14 +844,15 @@ document.getElementById("forgotPassword")
 e.preventDefault();
 
 const email =
-document.getElementById("email").value;
+document.getElementById("email").value.trim();
 
 if(!email){
 
 message.innerHTML =
-"Please enter your email address first.";
+"Please enter your email first";
 
-message.className = "message error";
+message.className =
+"message error";
 
 return;
 
@@ -806,10 +860,13 @@ return;
 
 try{
 
-await sendPasswordResetEmail(auth, email);
+await sendPasswordResetEmail(
+auth,
+email
+);
 
 message.innerHTML =
-"Password reset link sent to your email.";
+"Password reset link sent";
 
 message.className =
 "message success";
@@ -825,6 +882,24 @@ message.className =
 }
 
 });
+
+/* LOGOUT FUNCTION */
+window.logoutUser = async function(){
+
+try{
+
+await signOut(auth);
+
+window.location.href =
+"https://wintolizfarmcom.vercel.app/index.html";
+
+}catch(error){
+
+console.log(error);
+
+}
+
+};
 
 </script>
 
