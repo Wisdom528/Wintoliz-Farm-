@@ -687,6 +687,8 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
 getAuth,
+setPersistence,
+browserLocalPersistence,
 signInWithEmailAndPassword,
 GoogleAuthProvider,
 signInWithPopup,
@@ -696,7 +698,7 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* FIREBASE CONFIG */
 const firebaseConfig = {
-apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+apiKey: "AIzaSyDVFSZlzB8F9xzt2B8F9xzt2eWQAVKtS8BBgJ5FCu8",
 authDomain: "wintoliz-2dca5.firebaseapp.com",
 projectId: "wintoliz-2dca5",
 storageBucket: "wintoliz-2dca5.firebasestorage.app",
@@ -706,6 +708,8 @@ appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+await setPersistence(auth, browserLocalPersistence);
 
 const message = document.getElementById("message");
 
