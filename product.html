@@ -144,10 +144,6 @@ height:fit-content;
 box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
-.sidebar h3{
-margin-bottom:12px;
-}
-
 .search-box input{
 width:100%;
 padding:14px;
@@ -171,6 +167,7 @@ grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 gap:20px;
 }
 
+/* PRODUCT CARD */
 .card{
 background:#fff;
 border-radius:20px;
@@ -353,7 +350,6 @@ header{flex-direction:column;gap:10px;}
 <body>
 
 <header>
-
 <div class="logo-area">
 <div class="logo-image-wrapper">
 <img src="./asset/image/image.png" class="logo-img">
@@ -365,7 +361,6 @@ header{flex-direction:column;gap:10px;}
 <div class="nav-link active">Marketplace</div>
 <div class="nav-link">Cart (<span id="cartCount">0</span>)</div>
 </nav>
-
 </header>
 
 <section class="hero">
@@ -398,49 +393,9 @@ header{flex-direction:column;gap:10px;}
 
 </div>
 
-<!-- PRODUCTS -->
-<div class="products">
+<!-- PRODUCTS (DYNAMIC) -->
+<div class="products" id="products"></div>
 
-<div class="card" data-category="Eggs">
-<div class="card-image">
-<img src="./asset/image/Wintoliz large egg.png">
-</div>
-<div class="card-content">
-<div class="category">Eggs</div>
-<h3>Fresh Eggs</h3>
-<p class="description">Farm fresh eggs from trusted poultry farms.</p>
-<div class="price">₦5,800</div>
-<button class="btn" onclick="addToCart('Fresh Eggs',5800)">Add to Cart</button>
-</div>
-</div>
-
-<div class="card" data-category="Flock">
-<div class="card-image">
-<img src="./asset/image/wintoliz mature brioler.png">
-</div>
-<div class="card-content">
-<div class="category">Flock</div>
-<h3>Broiler Chicken</h3>
-<p class="description">Healthy broilers ready for farming.</p>
-<div class="price">₦15,000</div>
-<button class="btn" onclick="addToCart('Broiler Chicken',15000)">Add to Cart</button>
-</div>
-</div>
-
-<div class="card" data-category="Drugs">
-<div class="card-image">
-<img src="./asset/image/Wintoliz zerocox.png">
-</div>
-<div class="card-content">
-<div class="category">Drugs</div>
-<h3>Zerocox</h3>
-<p class="description">Poultry medication for disease control.</p>
-<div class="price">₦3,000</div>
-<button class="btn" onclick="addToCart('Zerocox',3000)">Add to Cart</button>
-</div>
-</div>
-
-</div>
 </div>
 
 <!-- CART -->
@@ -451,78 +406,148 @@ header{flex-direction:column;gap:10px;}
 <div class="cart-footer">
 <div class="total">Total: ₦<span id="total">0</span></div>
 
-<button class="cart-btn checkout">Checkout</button>
+<button class="cart-btn checkout" onclick="placeOrder()">Checkout</button>
 <button class="cart-btn clear" onclick="clearCart()">Clear Cart</button>
 </div>
 </div>
 
 <div id="overlay" onclick="closeCart()"></div>
 
-<script>
+<script type="module">
 
+/* FIREBASE */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+getDocs,
+addDoc,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+authDomain: "wintoliz-2dca5.firebaseapp.com",
+projectId: "wintoliz-2dca5",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* AUTH CHECK */
+onAuthStateChanged(auth,(user)=>{
+if(!user){
+window.location.href="index.html";
+}
+});
+
+/* CART */
 let cart = [];
 
-function addToCart(name, price){
-cart.push({name, price});
+window.addToCart = function(name,price){
+cart.push({name,price});
 updateCart();
 openCart();
 }
 
 function updateCart(){
 let container = document.getElementById("cartItems");
-container.innerHTML = "";
-let total = 0;
+container.innerHTML="";
+let total=0;
 
 cart.forEach(item=>{
-total += item.price;
-container.innerHTML += `
+total+=item.price;
+container.innerHTML+=`
 <div class="cart-item">
 <strong>${item.name}</strong>
 <span>₦${item.price.toLocaleString()}</span>
 </div>`;
 });
 
-document.getElementById("total").innerText = total.toLocaleString();
-document.getElementById("cartCount").innerText = cart.length;
+document.getElementById("total").innerText=total.toLocaleString();
+document.getElementById("cartCount").innerText=cart.length;
 }
 
-function openCart(){
+window.openCart=function(){
 document.getElementById("cartDrawer").classList.add("active");
 document.getElementById("overlay").classList.add("active");
 }
 
-function closeCart(){
+window.closeCart=function(){
 document.getElementById("cartDrawer").classList.remove("active");
 document.getElementById("overlay").classList.remove("active");
 }
 
-function clearCart(){
-cart = [];
+window.clearCart=function(){
+cart=[];
 updateCart();
 }
 
-/* SEARCH */
-document.getElementById("searchInput").addEventListener("input", function(){
-let value = this.value.toLowerCase();
-document.querySelectorAll(".card").forEach(card=>{
-let name = card.querySelector("h3").innerText.toLowerCase();
-card.style.display = name.includes(value) ? "block" : "none";
+/* FIREBASE PRODUCTS */
+async function loadProducts(){
+
+const container=document.getElementById("products");
+container.innerHTML="";
+
+const snap=await getDocs(collection(db,"products"));
+
+snap.forEach(doc=>{
+
+const p=doc.data();
+
+container.innerHTML+=`
+<div class="card" data-category="${p.category}">
+<div class="card-image">
+<img src="${p.image}">
+</div>
+
+<div class="card-content">
+<div class="category">${p.category}</div>
+<h3>${p.name}</h3>
+<p class="description">${p.description}</p>
+<div class="price">₦${p.price}</div>
+
+<button class="btn" onclick="addToCart('${p.name}',${p.price})">
+Add to Cart
+</button>
+
+</div>
+</div>
+`;
 });
+}
+
+loadProducts();
+
+/* CHECKOUT */
+window.placeOrder = async function(){
+
+if(cart.length===0){
+alert("Cart is empty");
+return;
+}
+
+let total=cart.reduce((s,i)=>s+i.price,0);
+
+await addDoc(collection(db,"orders"),{
+items:cart,
+total:total,
+status:"pending",
+createdAt:serverTimestamp()
 });
 
-/* FILTER */
-document.querySelectorAll(".filter").forEach(f=>{
-f.addEventListener("change", ()=>{
-let selected = Array.from(document.querySelectorAll(".filter:checked")).map(i=>i.value);
+alert("Order placed!");
 
-document.querySelectorAll(".card").forEach(card=>{
-let cat = card.dataset.category;
-card.style.display =
-selected.length === 0 || selected.includes(cat)
-? "block" : "none";
-});
-});
-});
+cart=[];
+updateCart();
+closeCart();
+};
 
 </script>
 

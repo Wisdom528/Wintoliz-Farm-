@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+</head>
+
+<body>
+
+<h2>Add Product</h2>
+
+<input id="name" placeholder="Name">
+<input id="price" placeholder="Price">
+<input id="category" placeholder="Category">
+<input id="image" placeholder="Image URL">
+<textarea id="desc" placeholder="Description"></textarea>
+
+<button onclick="addProduct()">Add Product</button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getFirestore, collection, addDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+authDomain: "wintoliz-2dca5.firebaseapp.com",
+projectId: "wintoliz-2dca5",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.addProduct = async function(){
+
+await addDoc(collection(db,"products"),{
+name: document.getElementById("name").value,
+price: Number(document.getElementById("price").value),
+category: document.getElementById("category").value,
+image: document.getElementById("image").value,
+description: document.getElementById("desc").value,
+createdAt: new Date()
+});
+
+alert("Product Added!");
+};
+
+</script>
+
+</body>
+</html>
