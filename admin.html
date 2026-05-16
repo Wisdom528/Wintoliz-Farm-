@@ -1,29 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Admin Panel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wintoliz Admin Panel</title>
+
+<style>
+
+body{
+font-family:Segoe UI;
+background:#f4f7f5;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:#fff;
+padding:25px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+h1{
+color:#0f3d2e;
+margin-bottom:10px;
+}
+
+h3{
+margin-top:25px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:1px solid #ddd;
+border-radius:10px;
+outline:none;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#0f3d2e;
+color:#fff;
+border:none;
+border-radius:10px;
+font-weight:700;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:translateY(-2px);
+background:#145c46;
+}
+
+.product{
+padding:12px;
+border:1px solid #eee;
+margin-top:10px;
+border-radius:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#fafafa;
+}
+
+.delete-btn{
+background:red;
+padding:8px 12px;
+border:none;
+color:#fff;
+border-radius:8px;
+cursor:pointer;
+width:auto;
+}
+
+.status{
+margin-top:10px;
+font-weight:700;
+}
+
+.success{color:green;}
+.error{color:red;}
+
+.loading{
+color:#666;
+font-style:italic;
+}
+
+</style>
 </head>
 
 <body>
 
-<h2>Add Product</h2>
+<div class="container">
 
-<input id="name" placeholder="Name">
+<h1>🧑‍💼 Wintoliz Admin Panel</h1>
+
+<div id="status" class="status"></div>
+
+<h3>Add Product</h3>
+
+<input id="name" placeholder="Product Name">
 <input id="price" placeholder="Price">
-<input id="category" placeholder="Category">
+<input id="category" placeholder="Category (Eggs / Flock / Drugs)">
 <input id="image" placeholder="Image URL">
-<textarea id="desc" placeholder="Description"></textarea>
+<textarea id="description" placeholder="Description"></textarea>
 
 <button onclick="addProduct()">Add Product</button>
+
+<h3>Products List</h3>
+<div id="list" class="loading">Loading products...</div>
+
+</div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { getFirestore, collection, addDoc } 
-from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+deleteDoc,
+doc
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
+/* FIREBASE */
 const firebaseConfig = {
-apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+apiKey: "AIzaSyDVFSZlzB8F9xzt2B8F9xzt2eWQAVKtS8BBgJ5FCu8",
 authDomain: "wintoliz-2dca5.firebaseapp.com",
 projectId: "wintoliz-2dca5",
 };
@@ -31,19 +140,117 @@ projectId: "wintoliz-2dca5",
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const statusBox = document.getElementById("status");
+
+/* STATUS UI */
+function showStatus(msg, type){
+statusBox.innerText = msg;
+statusBox.className = "status " + type;
+setTimeout(()=>statusBox.innerText="",3000);
+}
+
+/* VALIDATION */
+function validateForm(){
+const name = document.getElementById("name").value;
+const price = document.getElementById("price").value;
+const category = document.getElementById("category").value;
+
+if(!name || !price || !category){
+showStatus("Fill all required fields!", "error");
+return false;
+}
+return true;
+}
+
+/* ADD PRODUCT */
 window.addProduct = async function(){
+
+if(!validateForm()) return;
+
+try{
 
 await addDoc(collection(db,"products"),{
 name: document.getElementById("name").value,
 price: Number(document.getElementById("price").value),
 category: document.getElementById("category").value,
 image: document.getElementById("image").value,
-description: document.getElementById("desc").value,
-createdAt: new Date()
+description: document.getElementById("description").value,
+createdAt: Date.now()
 });
 
-alert("Product Added!");
-};
+showStatus("Product added successfully!", "success");
+
+/* clear form */
+document.getElementById("name").value="";
+document.getElementById("price").value="";
+document.getElementById("category").value="";
+document.getElementById("image").value="";
+document.getElementById("description").value="";
+
+loadProducts();
+
+}catch(err){
+showStatus("Error adding product", "error");
+console.error(err);
+}
+
+}
+
+/* LOAD PRODUCTS */
+async function loadProducts(){
+
+const list=document.getElementById("list");
+list.innerHTML="<div class='loading'>Loading products...</div>";
+
+try{
+
+const snap=await getDocs(collection(db,"products"));
+
+list.innerHTML="";
+
+if(snap.empty){
+list.innerHTML="<p>No products found.</p>";
+return;
+}
+
+snap.forEach(d=>{
+const p=d.data();
+
+list.innerHTML+=`
+<div class="product">
+<div>
+<strong>${p.name}</strong><br>
+₦${Number(p.price).toLocaleString()}
+</div>
+
+<button class="delete-btn" onclick="deleteProduct('${d.id}')">
+Delete
+</button>
+</div>
+`;
+});
+
+}catch(err){
+list.innerHTML="<p class='error'>Failed to load products</p>";
+console.error(err);
+}
+
+}
+
+/* DELETE PRODUCT */
+window.deleteProduct = async function(id){
+
+try{
+await deleteDoc(doc(db,"products",id));
+showStatus("Product deleted", "success");
+loadProducts();
+}catch(err){
+showStatus("Delete failed", "error");
+}
+
+}
+
+loadProducts();
 
 </script>
 
