@@ -6,9 +6,6 @@
 
 <title>Wintoliz Admin Panel</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <style>
 
 *{
@@ -20,132 +17,154 @@ font-family:'Segoe UI',sans-serif;
 
 :root{
 --primary:#0f3d2e;
---primary-light:#145c46;
---gold:#ffb800;
 --bg:#f4f7f5;
---white:#ffffff;
+--white:#fff;
 --text:#111827;
---muted:#6b7280;
 --danger:#dc2626;
---border:#e5e7eb;
-}
-
-html{
-scroll-behavior:smooth;
 }
 
 body{
-background:
-linear-gradient(to bottom,#eef5f1,#f7faf8);
-color:var(--text);
+background:linear-gradient(to bottom,#eef5f1,#f7faf8);
 padding:25px;
-min-height:100vh;
-overflow-x:hidden;
+color:var(--text);
 }
 
-/* CONTAINER */
 .container{
 max-width:1400px;
 margin:auto;
 }
 
 /* TOPBAR */
+
 .topbar{
-background:
-linear-gradient(135deg,#0f3d2e,#145c46);
-padding:28px;
-border-radius:28px;
-color:#fff;
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+padding:25px;
+border-radius:24px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:25px;
-box-shadow:
-0 15px 35px rgba(15,61,46,0.15);
-position:relative;
-overflow:hidden;
-}
-
-.topbar::before{
-content:'';
-position:absolute;
-width:260px;
-height:260px;
-border-radius:50%;
-background:rgba(255,255,255,0.05);
-top:-120px;
-right:-100px;
-}
-
-.topbar-left{
-position:relative;
-z-index:2;
+color:#fff;
 }
 
 .topbar h1{
-font-size:36px;
+font-size:34px;
 font-weight:900;
-letter-spacing:-1px;
-margin-bottom:6px;
 }
 
 .topbar p{
-font-size:15px;
 opacity:0.9;
+margin-top:5px;
 }
 
-/* LOGOUT */
 .logout-btn{
 background:#fff;
 color:#0f3d2e;
 border:none;
-padding:14px 20px;
-border-radius:16px;
+padding:14px 18px;
+border-radius:14px;
 font-weight:800;
-font-size:14px;
 cursor:pointer;
-transition:0.3s;
-position:relative;
-z-index:2;
 }
 
-.logout-btn:hover{
-transform:translateY(-3px);
-box-shadow:0 10px 25px rgba(0,0,0,0.12);
+/* STATS */
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:18px;
+margin-bottom:25px;
+}
+
+.stat-card{
+background:#fff;
+padding:22px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.stat-title{
+font-size:14px;
+color:#666;
+margin-bottom:8px;
+}
+
+.stat-number{
+font-size:34px;
+font-weight:900;
+color:#0f3d2e;
 }
 
 /* DASHBOARD */
+
 .dashboard{
 display:grid;
 grid-template-columns:360px 1fr;
 gap:24px;
 }
 
-/* CARD */
 .card{
 background:#fff;
-border-radius:26px;
 padding:24px;
-box-shadow:
-0 10px 30px rgba(0,0,0,0.05);
-border:1px solid rgba(0,0,0,0.04);
+border-radius:24px;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
 }
 
-/* TITLES */
 .section-title{
 font-size:24px;
 font-weight:900;
+margin-bottom:20px;
 color:#0f3d2e;
+}
+
+/* FORM */
+
+.input-group{
 margin-bottom:18px;
-letter-spacing:-0.5px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-weight:700;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:15px;
+border-radius:14px;
+border:1px solid #ddd;
+outline:none;
+font-size:14px;
+}
+
+textarea{
+resize:none;
+min-height:120px;
+}
+
+.btn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+font-weight:800;
+cursor:pointer;
+}
+
+.primary-btn{
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+color:#fff;
 }
 
 /* STATUS */
+
 .status{
 min-height:24px;
-font-weight:700;
-font-size:14px;
 margin-bottom:14px;
+font-weight:700;
 }
 
 .success{
@@ -156,70 +175,8 @@ color:green;
 color:red;
 }
 
-/* FORM */
-.input-group{
-margin-bottom:18px;
-}
-
-.input-group label{
-display:block;
-margin-bottom:8px;
-font-size:14px;
-font-weight:700;
-color:#222;
-}
-
-input,
-textarea,
-select{
-width:100%;
-padding:15px;
-border-radius:16px;
-border:1px solid #d7dce3;
-background:#fafafa;
-font-size:14px;
-outline:none;
-transition:0.3s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
-background:#fff;
-border-color:#0f3d2e;
-box-shadow:0 0 0 5px rgba(15,61,46,0.08);
-}
-
-textarea{
-resize:none;
-min-height:120px;
-}
-
-/* BUTTON */
-.btn{
-width:100%;
-padding:16px;
-border:none;
-border-radius:16px;
-font-size:15px;
-font-weight:800;
-cursor:pointer;
-transition:0.3s ease;
-}
-
-.primary-btn{
-background:
-linear-gradient(135deg,#0f3d2e,#145c46);
-color:#fff;
-box-shadow:
-0 12px 24px rgba(15,61,46,0.15);
-}
-
-.primary-btn:hover{
-transform:translateY(-3px);
-}
-
 /* PRODUCTS */
+
 .products-header{
 display:flex;
 justify-content:space-between;
@@ -230,53 +187,40 @@ flex-wrap:wrap;
 }
 
 .search-box{
-position:relative;
 width:280px;
 }
 
-.search-box input{
-padding-left:16px;
-}
-
-/* GRID */
 .products-grid{
 display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(260px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:20px;
 }
 
 /* PRODUCT CARD */
+
 .product-card{
 background:#fff;
-border-radius:24px;
+border-radius:22px;
 overflow:hidden;
-border:1px solid #edf1ef;
-transition:0.3s ease;
-position:relative;
+border:1px solid #eee;
+transition:0.3s;
 }
 
 .product-card:hover{
-transform:translateY(-6px);
-box-shadow:
-0 18px 35px rgba(0,0,0,0.08);
+transform:translateY(-5px);
+box-shadow:0 18px 35px rgba(0,0,0,0.08);
 }
 
 .product-image{
 height:220px;
-background:#f5f7f6;
 overflow:hidden;
+background:#f5f7f6;
 }
 
 .product-image img{
 width:100%;
 height:100%;
 object-fit:cover;
-transition:0.4s;
-}
-
-.product-card:hover img{
-transform:scale(1.05);
 }
 
 .product-content{
@@ -284,8 +228,7 @@ padding:18px;
 }
 
 .badge{
-display:inline-flex;
-align-items:center;
+display:inline-block;
 padding:7px 12px;
 background:#eef7f2;
 color:#0f3d2e;
@@ -299,7 +242,6 @@ margin-bottom:12px;
 font-size:20px;
 font-weight:900;
 margin-bottom:8px;
-line-height:1.3;
 }
 
 .product-description{
@@ -307,7 +249,6 @@ font-size:13px;
 line-height:1.6;
 color:#666;
 margin-bottom:14px;
-min-height:48px;
 }
 
 .product-price{
@@ -322,15 +263,13 @@ display:flex;
 gap:10px;
 }
 
-/* ACTION BUTTONS */
 .action-btn{
 flex:1;
 padding:12px;
 border:none;
-border-radius:14px;
+border-radius:12px;
 font-weight:800;
 cursor:pointer;
-transition:0.3s;
 }
 
 .edit-btn{
@@ -338,61 +277,19 @@ background:#111827;
 color:#fff;
 }
 
-.edit-btn:hover{
-transform:translateY(-2px);
-}
-
 .delete-btn{
 background:#dc2626;
 color:#fff;
 }
 
-.delete-btn:hover{
-transform:translateY(-2px);
-}
-
-/* EMPTY */
 .empty{
 padding:50px 20px;
 text-align:center;
-font-size:15px;
 color:#666;
-background:#fafafa;
-border-radius:18px;
-border:1px dashed #d8e0dc;
-}
-
-/* STATS */
-.stats{
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(180px,1fr));
-gap:18px;
-margin-bottom:24px;
-}
-
-.stat-card{
-background:#fff;
-padding:20px;
-border-radius:22px;
-box-shadow:
-0 10px 30px rgba(0,0,0,0.04);
-}
-
-.stat-title{
-font-size:13px;
-font-weight:700;
-color:#666;
-margin-bottom:10px;
-}
-
-.stat-number{
-font-size:34px;
-font-weight:900;
-color:#0f3d2e;
 }
 
 /* RESPONSIVE */
+
 @media(max-width:1000px){
 
 .dashboard{
@@ -404,17 +301,13 @@ grid-template-columns:1fr;
 @media(max-width:700px){
 
 body{
-padding:16px;
+padding:15px;
 }
 
 .topbar{
 flex-direction:column;
 align-items:flex-start;
-gap:16px;
-}
-
-.topbar h1{
-font-size:30px;
+gap:15px;
 }
 
 .products-header{
@@ -436,13 +329,12 @@ width:100%;
 <div class="container">
 
 <!-- TOPBAR -->
+
 <div class="topbar">
 
-<div class="topbar-left">
+<div>
 <h1>🧑‍💼 Wintoliz Admin</h1>
-<p>
-Manage marketplace products, inventory and orders easily
-</p>
+<p>Manage marketplace products easily</p>
 </div>
 
 <button class="logout-btn" onclick="logoutAdmin()">
@@ -452,6 +344,7 @@ Logout
 </div>
 
 <!-- STATS -->
+
 <div class="stats">
 
 <div class="stat-card">
@@ -467,9 +360,11 @@ Logout
 </div>
 
 <!-- DASHBOARD -->
+
 <div class="dashboard">
 
 <!-- LEFT -->
+
 <div class="card">
 
 <h2 class="section-title">
@@ -480,12 +375,12 @@ Add Product
 
 <div class="input-group">
 <label>Product Name</label>
-<input type="text" id="name" placeholder="Enter product name">
+<input type="text" id="name">
 </div>
 
 <div class="input-group">
 <label>Price</label>
-<input type="number" id="price" placeholder="Enter product price">
+<input type="number" id="price">
 </div>
 
 <div class="input-group">
@@ -504,12 +399,12 @@ Add Product
 
 <div class="input-group">
 <label>Image URL</label>
-<input type="text" id="image" placeholder="Paste image URL">
+<input type="text" id="image">
 </div>
 
 <div class="input-group">
 <label>Description</label>
-<textarea id="description" placeholder="Enter description"></textarea>
+<textarea id="description"></textarea>
 </div>
 
 <button class="btn primary-btn" onclick="addProduct()">
@@ -519,6 +414,7 @@ Add Product
 </div>
 
 <!-- RIGHT -->
+
 <div class="card">
 
 <div class="products-header">
@@ -575,30 +471,43 @@ serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-/* FIREBASE CONFIG */
+/* FIREBASE */
+
 const firebaseConfig = {
+
 apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+
 authDomain: "wintoliz-2dca5.firebaseapp.com",
+
 projectId: "wintoliz-2dca5",
+
 storageBucket: "wintoliz-2dca5.firebasestorage.app",
+
 messagingSenderId: "469698295508",
+
 appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
+
 };
 
-/* INIT */
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
 
 /* ADMIN EMAIL */
+
 const ADMIN_EMAIL = "oluwabobo47@gmail.com";
 
 /* AUTH */
-onAuthStateChanged(auth, (user) => {
+
+onAuthStateChanged(auth,(user)=>{
 
 if(!user){
+
 window.location.href = "index.html";
 return;
+
 }
 
 if(user.email !== ADMIN_EMAIL){
@@ -612,16 +521,18 @@ window.location.href = "product.html";
 });
 
 /* STATUS */
+
 const statusBox =
 document.getElementById("status");
 
-function showStatus(message, type){
+function showStatus(message,type){
 
 statusBox.innerHTML = message;
+
 statusBox.className =
 "status " + type;
 
-setTimeout(() => {
+setTimeout(()=>{
 
 statusBox.innerHTML = "";
 
@@ -630,6 +541,7 @@ statusBox.innerHTML = "";
 }
 
 /* VALIDATE */
+
 function validate(){
 
 if(
@@ -652,6 +564,7 @@ return true;
 }
 
 /* ADD PRODUCT */
+
 window.addProduct = async function(){
 
 if(!validate()) return;
@@ -659,17 +572,14 @@ if(!validate()) return;
 try{
 
 await addDoc(
-collection(db, "products"),
+collection(db,"products"),
 {
-name: name.value,
-price: Number(price.value),
-category: category.value,
-image:
-image.value ||
-"https://via.placeholder.com/500x400",
-description:
-description.value || "",
-createdAt: serverTimestamp()
+name:name.value,
+price:Number(price.value),
+category:category.value,
+image:image.value || "https://via.placeholder.com/500x400",
+description:description.value || "",
+createdAt:serverTimestamp()
 }
 );
 
@@ -678,7 +588,6 @@ showStatus(
 "success"
 );
 
-/* CLEAR */
 name.value = "";
 price.value = "";
 category.value = "";
@@ -700,6 +609,7 @@ showStatus(
 };
 
 /* PRODUCTS */
+
 const productsList =
 document.getElementById("productsList");
 
@@ -715,27 +625,46 @@ document.getElementById("searchInput");
 let allProducts = [];
 
 /* REALTIME */
+
 onSnapshot(
-collection(db, "products"),
-(snapshot) => {
+
+collection(db,"products"),
+
+(snapshot)=>{
 
 allProducts = [];
 
-snapshot.forEach((docSnap) => {
+snapshot.forEach((docSnap)=>{
 
 allProducts.push({
-id: docSnap.id,
+
+id:docSnap.id,
 ...docSnap.data()
+
 });
 
 });
 
 renderProducts(allProducts);
 
+},
+
+(error)=>{
+
+console.log("Firestore Error:", error);
+
+productsList.innerHTML = `
+<div class="empty">
+Failed to load products
+</div>
+`;
+
 }
+
 );
 
 /* RENDER */
+
 function renderProducts(products){
 
 productsList.innerHTML = "";
@@ -755,22 +684,31 @@ return;
 
 }
 
-/* STATS */
 totalProducts.innerHTML =
 products.length;
 
-const categories =
-[
-...new Set(
-products.map(p => p.category)
-)
+const categories = [
+...new Set(products.map(p => p.category))
 ];
 
 totalCategories.innerHTML =
 categories.length;
 
-/* CARDS */
-products.forEach((p) => {
+products.forEach((p)=>{
+
+const safeName =
+(p.name || "").replace(/'/g,"\\'");
+
+const safeCategory =
+(p.category || "").replace(/'/g,"\\'");
+
+const safeImage =
+(p.image || "").replace(/'/g,"\\'");
+
+const safeDescription =
+(p.description || "")
+.replace(/'/g,"\\'")
+.replace(/"/g,'&quot;');
 
 productsList.innerHTML += `
 
@@ -809,11 +747,11 @@ ${p.description || 'No description'}
 class="action-btn edit-btn"
 onclick="editProduct(
 '${p.id}',
-'${p.name}',
+'${safeName}',
 '${p.price}',
-'${p.category}',
-'${p.image}',
-`${p.description}`
+'${safeCategory}',
+'${safeImage}',
+'${safeDescription}'
 )"
 >
 Edit
@@ -839,15 +777,16 @@ Delete
 }
 
 /* SEARCH */
+
 searchInput.addEventListener(
 "input",
-() => {
+()=>{
 
 const keyword =
 searchInput.value.toLowerCase();
 
 const filtered =
-allProducts.filter((p) =>
+allProducts.filter((p)=>
 p.name.toLowerCase().includes(keyword)
 );
 
@@ -857,6 +796,7 @@ renderProducts(filtered);
 );
 
 /* EDIT */
+
 window.editProduct = async function(
 id,
 oldName,
@@ -916,6 +856,7 @@ showStatus(
 };
 
 /* DELETE */
+
 window.deleteProduct = async function(id){
 
 const confirmDelete =
@@ -949,6 +890,7 @@ showStatus(
 };
 
 /* LOGOUT */
+
 window.logoutAdmin = async function(){
 
 try{
