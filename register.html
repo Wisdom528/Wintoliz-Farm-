@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wintoliz Farms Register</title>
+<title>Wintoliz Farms | Create Account</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <style>
 
@@ -12,127 +15,336 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
+font-family:'Segoe UI',sans-serif;
+}
+
+:root{
+--primary:#0f3d2e;
+--primary-light:#145c46;
+--gold:#ffb800;
+--white:#ffffff;
+--text:#101010;
+--muted:#6b7280;
+--border:#e5e7eb;
+--bg:#eef2ef;
 }
 
 body{
-background:#f5f7fb;
+min-height:100vh;
+background:
+linear-gradient(rgba(10,30,20,0.82),rgba(10,30,20,0.88)),
+url('https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1200&auto=format&fit=crop') center/cover;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:100vh;
-padding:20px;
+padding:30px 20px;
+overflow-x:hidden;
 }
 
-.container{
+/* MAIN CONTAINER */
+.main-container{
 width:100%;
-max-width:480px;
+max-width:1200px;
+display:grid;
+grid-template-columns:1fr 480px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(14px);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:32px;
+overflow:hidden;
+box-shadow:
+0 20px 60px rgba(0,0,0,0.25);
+}
+
+/* LEFT SIDE */
+.left-side{
+padding:60px;
+color:#fff;
+position:relative;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.left-side::before{
+content:'';
+position:absolute;
+top:-120px;
+right:-120px;
+width:280px;
+height:280px;
+background:rgba(255,184,0,0.08);
+border-radius:50%;
+filter:blur(10px);
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:16px;
+margin-bottom:40px;
+position:relative;
+z-index:2;
+}
+
+.logo-image-wrapper{
+width:80px;
+height:80px;
+border-radius:22px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+display:flex;
+align-items:center;
+justify-content:center;
+padding:10px;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:
+0 10px 30px rgba(0,0,0,0.2),
+0 0 0 6px rgba(255,255,255,0.03);
+overflow:hidden;
+flex-shrink:0;
+}
+
+.logo-img{
+width:100%;
+height:100%;
+object-fit:contain;
+display:block;
+}
+
+.logo-text{
+font-size:36px;
+font-weight:900;
+letter-spacing:-1px;
+line-height:1.1;
+}
+
+.logo-text span{
+color:var(--gold);
+}
+
+/* HERO */
+.hero{
+position:relative;
+z-index:2;
+}
+
+.hero h1{
+font-size:58px;
+line-height:1;
+font-weight:900;
+margin-bottom:24px;
+letter-spacing:-2px;
+max-width:600px;
+}
+
+.hero p{
+font-size:17px;
+line-height:1.8;
+opacity:0.9;
+max-width:520px;
+margin-bottom:40px;
+}
+
+/* FEATURES */
+.features{
+display:grid;
+gap:18px;
+max-width:540px;
+}
+
+.feature{
+display:flex;
+gap:16px;
+padding:18px;
+border-radius:22px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.05);
+transition:0.3s ease;
+}
+
+.feature:hover{
+transform:translateY(-3px);
+background:rgba(255,255,255,0.12);
+}
+
+.feature-icon{
+width:52px;
+height:52px;
+border-radius:16px;
+background:var(--gold);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:800;
+color:#000;
+flex-shrink:0;
+box-shadow:0 8px 18px rgba(255,184,0,0.3);
+}
+
+.feature h3{
+font-size:17px;
+margin-bottom:6px;
+}
+
+.feature p{
+font-size:14px;
+line-height:1.6;
+margin:0;
+opacity:0.85;
+}
+
+/* RIGHT SIDE */
+.right-side{
 background:#fff;
-padding:40px;
-border-radius:20px;
-box-shadow:0 10px 30px rgba(0,0,0,0.08);
+padding:50px 40px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
-.logo{
-font-size:32px;
-font-weight:bold;
-color:#0f3d2e;
-margin-bottom:10px;
-text-align:center;
+.form-box{
+width:100%;
+max-width:380px;
+position:relative;
 }
 
-.logo span{
-color:#ffb800;
+.form-badge{
+display:inline-block;
+padding:10px 16px;
+border-radius:30px;
+background:#eef7f2;
+color:var(--primary);
+font-size:13px;
+font-weight:700;
+margin-bottom:18px;
 }
 
-h1{
-text-align:center;
-margin-bottom:10px;
+.form-box h2{
+font-size:48px;
+font-weight:900;
+line-height:1;
+margin-bottom:12px;
+color:#111;
+letter-spacing:-2px;
 }
 
 .subtitle{
-text-align:center;
+font-size:15px;
+line-height:1.7;
 color:#666;
 margin-bottom:30px;
-line-height:1.5;
 }
 
+/* INPUTS */
 .input-group{
-margin-bottom:20px;
+margin-bottom:18px;
 }
 
 .input-group label{
 display:block;
 margin-bottom:8px;
-font-weight:600;
+font-size:14px;
+font-weight:700;
+color:#222;
 }
 
 .input-group input{
 width:100%;
-padding:14px;
-border:1px solid #ccc;
-border-radius:10px;
+padding:16px;
+border-radius:16px;
+border:1px solid #d8dee5;
+background:#f8fafb;
 font-size:15px;
-outline:none;
-transition:0.3s;
+transition:0.3s ease;
+font-weight:500;
 }
 
 .input-group input:focus{
-border-color:#0f3d2e;
-box-shadow:0 0 0 4px rgba(15,61,46,0.08);
+outline:none;
+border-color:var(--primary);
+background:#fff;
+box-shadow:0 0 0 5px rgba(15,61,46,0.08);
+transform:translateY(-1px);
 }
 
+/* BUTTONS */
 .create-btn{
 width:100%;
-padding:15px;
-background:#0f3d2e;
-color:#fff;
+padding:17px;
 border:none;
-border-radius:10px;
+border-radius:16px;
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+color:#fff;
 font-size:16px;
-font-weight:bold;
+font-weight:800;
 cursor:pointer;
-margin-top:10px;
-transition:0.3s;
+transition:0.3s ease;
+box-shadow:0 14px 24px rgba(15,61,46,0.18);
+margin-top:8px;
 }
 
 .create-btn:hover{
-background:#145c46;
+transform:translateY(-3px);
+box-shadow:0 20px 30px rgba(15,61,46,0.22);
+}
+
+.divider{
+display:flex;
+align-items:center;
+gap:10px;
+margin:24px 0;
+font-size:13px;
+color:#999;
+}
+
+.divider::before,
+.divider::after{
+content:'';
+flex:1;
+height:1px;
+background:#e5e7eb;
 }
 
 .google-btn{
 width:100%;
-padding:15px;
+padding:16px;
 background:#fff;
-border:1px solid #ccc;
-border-radius:10px;
+border:1px solid #d8dee5;
+border-radius:16px;
 font-size:15px;
-font-weight:bold;
+font-weight:700;
 cursor:pointer;
-margin-top:15px;
-transition:0.3s;
+transition:0.3s ease;
 }
 
 .google-btn:hover{
 background:#f7f7f7;
+transform:translateY(-2px);
 }
 
+/* LOGIN LINK */
 .login-link{
-margin-top:25px;
+margin-top:24px;
 text-align:center;
+font-size:14px;
+color:#666;
 }
 
 .login-link a{
-color:#0f3d2e;
-font-weight:bold;
+color:var(--primary);
+font-weight:800;
 text-decoration:none;
 }
 
+/* MESSAGE */
 .message{
-margin-top:20px;
+margin-top:18px;
 text-align:center;
-font-weight:bold;
 font-size:14px;
+font-weight:700;
 }
 
 .success{
@@ -143,27 +355,149 @@ color:green;
 color:red;
 }
 
+/* RESPONSIVE */
+@media(max-width:1000px){
+
+.main-container{
+grid-template-columns:1fr;
+}
+
+.left-side{
+padding:40px 28px;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.right-side{
+padding:40px 24px;
+}
+
+}
+
+@media(max-width:600px){
+
+.hero h1{
+font-size:34px;
+}
+
+.hero p{
+font-size:15px;
+}
+
+.logo-text{
+font-size:28px;
+}
+
+.form-box h2{
+font-size:36px;
+}
+
+.left-side{
+padding:35px 20px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="main-container">
 
-<div class="logo">
+<!-- LEFT SIDE -->
+<div class="left-side">
+
+<div class="logo-area">
+
+<div class="logo-image-wrapper">
+<img src="./asset/image/image.png" alt="Wintoliz Logo" class="logo-img">
+</div>
+
+<div class="logo-text">
 <span>Wintoliz</span> Farms
 </div>
 
-<h1>Create Account</h1>
+</div>
+
+<div class="hero">
+
+<h1>
+Start Growing Your Poultry Business Smarter
+</h1>
+
+<p>
+Create your Wintoliz Farms account today and manage your poultry business with modern tools designed for Nigerian farmers.
+</p>
+
+<div class="features">
+
+<div class="feature">
+
+<div class="feature-icon">📈</div>
+
+<div>
+<h3>Farm Analytics</h3>
+<p>
+Track your bird growth, profits, expenses, and productivity in real time.
+</p>
+</div>
+
+</div>
+
+<div class="feature">
+
+<div class="feature-icon">💉</div>
+
+<div>
+<h3>Vaccination Tracking</h3>
+<p>
+Never miss important medication and vaccination schedules again.
+</p>
+</div>
+
+</div>
+
+<div class="feature">
+
+<div class="feature-icon">🛒</div>
+
+<div>
+<h3>Marketplace Access</h3>
+<p>
+Buy and sell poultry products directly from your dashboard easily.
+</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="right-side">
+
+<div class="form-box">
+
+<div class="form-badge">
+</div>
+
+<h2>Create Account</h2>
 
 <p class="subtitle">
-Start managing your poultry business smarter today.
+Join hundreds of poultry farmers already growing with Wintoliz Farms.
 </p>
 
 <form id="registerForm">
 
 <div class="input-group">
 <label>Full Name</label>
+
 <input
 type="text"
 id="fullname"
@@ -173,6 +507,7 @@ required>
 
 <div class="input-group">
 <label>Email Address</label>
+
 <input
 type="email"
 id="email"
@@ -182,6 +517,7 @@ required>
 
 <div class="input-group">
 <label>Password</label>
+
 <input
 type="password"
 id="password"
@@ -191,6 +527,7 @@ required>
 
 <div class="input-group">
 <label>Confirm Password</label>
+
 <input
 type="password"
 id="confirmPassword"
@@ -201,6 +538,10 @@ required>
 <button class="create-btn" type="submit">
 Create Account
 </button>
+
+<div class="divider">
+OR
+</div>
 
 <button type="button" class="google-btn" id="googleSignup">
 Continue with Google
@@ -214,6 +555,10 @@ Already have an account?
 </div>
 
 </form>
+
+</div>
+
+</div>
 
 </div>
 
