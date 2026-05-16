@@ -255,7 +255,9 @@ display:flex;
 flex-direction:column;
 }
 
-#cartDrawer.active{right:0;}
+#cartDrawer.active{
+right:0;
+}
 
 .cart-header{
 padding:20px;
@@ -300,8 +302,14 @@ cursor:pointer;
 margin-bottom:8px;
 }
 
-.checkout{background:var(--primary);color:#fff;}
-.clear{background:#eee;}
+.checkout{
+background:var(--primary);
+color:#fff;
+}
+
+.clear{
+background:#eee;
+}
 
 #overlay{
 position:fixed;
@@ -314,7 +322,9 @@ display:none;
 z-index:1500;
 }
 
-#overlay.active{display:block;}
+#overlay.active{
+display:block;
+}
 
 .empty{
 text-align:center;
@@ -322,9 +332,26 @@ padding:30px;
 color:#666;
 }
 
+.logout-btn{
+background:#ff4d4d;
+color:#fff;
+border:none;
+padding:10px 14px;
+border-radius:12px;
+font-weight:800;
+cursor:pointer;
+}
+
 @media(max-width:900px){
-.wrapper{grid-template-columns:1fr;}
-.hero h1{font-size:32px;}
+
+.wrapper{
+grid-template-columns:1fr;
+}
+
+.hero h1{
+font-size:32px;
+}
+
 }
 
 </style>
@@ -333,67 +360,126 @@ color:#666;
 <body>
 
 <header>
+
 <div class="logo-area">
+
 <div class="logo-image-wrapper">
 <img src="./asset/image/image.png" class="logo-img">
 </div>
-<div class="logo-text"><span>Wintoliz</span> Farms</div>
+
+<div class="logo-text">
+<span>Wintoliz</span> Farms
+</div>
+
 </div>
 
 <nav>
-<div class="nav-link active">Marketplace</div>
-<div class="nav-link">Cart (<span id="cartCount">0</span>)</div>
+
+<div class="nav-link active">
+Marketplace
+</div>
+
+<div class="nav-link" onclick="openCart()">
+Cart (<span id="cartCount">0</span>)
+</div>
+
+<button class="logout-btn" onclick="logoutUser()">
+Logout
+</button>
+
 </nav>
+
 </header>
 
 <section class="hero">
-<h1>Fresh Poultry Products Across Nigeria</h1>
-<p>Buy healthy birds, eggs, vaccines, feeds and equipment directly from trusted farms.</p>
+
+<h1>
+Fresh Poultry Products Across Nigeria
+</h1>
+
+<p>
+Buy healthy birds, eggs, vaccines, feeds and equipment directly from trusted farms.
+</p>
+
 </section>
 
 <div class="wrapper">
 
 <div class="sidebar">
+
 <h3>Search</h3>
+
 <div class="search-box">
 <input type="text" id="searchInput" placeholder="Search products...">
 </div>
 
 <h3>Categories</h3>
 
-<label class="filter-item"><input type="checkbox" class="filter" value="Eggs"> Eggs</label>
-<label class="filter-item"><input type="checkbox" class="filter" value="Flock"> Flock</label>
-<label class="filter-item"><input type="checkbox" class="filter" value="Drugs"> Drugs</label>
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Eggs"> Eggs
+</label>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Flock"> Flock
+</label>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Drugs"> Drugs
+</label>
 
 </div>
 
 <div class="products" id="products">
-<div class="empty">Loading products...</div>
+
+<div class="empty">
+Loading products...
+</div>
+
 </div>
 
 </div>
 
 <!-- CART -->
+
 <div id="cartDrawer">
-<div class="cart-header">Shopping Cart</div>
+
+<div class="cart-header">
+Shopping Cart
+</div>
+
 <div class="cart-items" id="cartItems"></div>
 
 <div class="cart-footer">
-<div class="total">Total: ₦<span id="total">0</span></div>
-<button class="cart-btn checkout" onclick="placeOrder()">Checkout</button>
-<button class="cart-btn clear" onclick="clearCart()">Clear Cart</button>
+
+<div class="total">
+Total: ₦<span id="total">0</span>
 </div>
+
+<button class="cart-btn checkout" onclick="placeOrder()">
+Checkout
+</button>
+
+<button class="cart-btn clear" onclick="clearCart()">
+Clear Cart
+</button>
+
+</div>
+
 </div>
 
 <div id="overlay" onclick="closeCart()"></div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+
 import {
 getAuth,
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 import {
 getFirestore,
@@ -401,116 +487,198 @@ collection,
 getDocs,
 addDoc,
 serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
+/* FIREBASE CONFIG */
 const firebaseConfig = {
-apiKey: "YOUR_API_KEY",
+apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
 authDomain: "wintoliz-2dca5.firebaseapp.com",
 projectId: "wintoliz-2dca5",
+storageBucket: "wintoliz-2dca5.firebasestorage.app",
+messagingSenderId: "469698295508",
+appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* SAFE AUTH (NO FORCE KICK BUG) */
+/* AUTH CHECK */
 onAuthStateChanged(auth, (user) => {
-if (!user) {
-console.log("No user logged in, redirecting...");
-setTimeout(() => {
-if (!auth.currentUser) {
+
+if(user){
+
+console.log("User logged in");
+
+}
+else{
+
 window.location.href = "index.html";
+
 }
-}, 1200);
-}
+
 });
+
+/* LOGOUT */
+window.logoutUser = async function(){
+
+try{
+
+await signOut(auth);
+
+window.location.href = "index.html";
+
+}catch(error){
+
+console.log(error);
+
+}
+
+};
 
 /* CART */
 let cart = [];
 
 window.addToCart = function(name, price){
+
 cart.push({name, price});
+
 updateCart();
+
 openCart();
-}
+
+};
 
 function updateCart(){
+
 let box = document.getElementById("cartItems");
+
 box.innerHTML = "";
+
 let total = 0;
 
 cart.forEach(i=>{
+
 total += i.price;
+
 box.innerHTML += `
 <div class="cart-item">
 <strong>${i.name}</strong>
 <span>₦${i.price.toLocaleString()}</span>
-</div>`;
+</div>
+`;
+
 });
 
-document.getElementById("total").innerText = total.toLocaleString();
-document.getElementById("cartCount").innerText = cart.length;
+document.getElementById("total").innerText =
+total.toLocaleString();
+
+document.getElementById("cartCount").innerText =
+cart.length;
+
 }
 
 window.openCart = () => {
-document.getElementById("cartDrawer").classList.add("active");
-document.getElementById("overlay").classList.add("active");
+
+document.getElementById("cartDrawer")
+.classList.add("active");
+
+document.getElementById("overlay")
+.classList.add("active");
+
 };
 
 window.closeCart = () => {
-document.getElementById("cartDrawer").classList.remove("active");
-document.getElementById("overlay").classList.remove("active");
+
+document.getElementById("cartDrawer")
+.classList.remove("active");
+
+document.getElementById("overlay")
+.classList.remove("active");
+
 };
 
 window.clearCart = () => {
+
 cart = [];
+
 updateCart();
+
 };
 
-/* PRODUCTS FROM FIREBASE (WITH FULL SAFETY) */
+/* LOAD PRODUCTS */
 async function loadProducts(){
 
-const container = document.getElementById("products");
-container.innerHTML = "<div class='empty'>Loading products...</div>";
+const container =
+document.getElementById("products");
+
+container.innerHTML =
+"<div class='empty'>Loading products...</div>";
 
 try{
 
-const snap = await getDocs(collection(db, "products"));
+const snap =
+await getDocs(collection(db, "products"));
 
 container.innerHTML = "";
 
-if (snap.empty) {
-container.innerHTML = "<div class='empty'>No products in database yet</div>";
+if(snap.empty){
+
+container.innerHTML =
+"<div class='empty'>No products found</div>";
+
 return;
+
 }
 
 snap.forEach(doc=>{
+
 const p = doc.data();
 
 container.innerHTML += `
 <div class="card">
+
 <div class="card-image">
 <img src="${p.image || ''}">
 </div>
 
 <div class="card-content">
-<div class="category">${p.category || 'Uncategorized'}</div>
-<h3>${p.name || 'Unnamed Product'}</h3>
-<p class="description">${p.description || ''}</p>
-<div class="price">₦${Number(p.price || 0).toLocaleString()}</div>
 
-<button class="btn" onclick="addToCart('${p.name || ''}', ${p.price || 0})">
+<div class="category">
+${p.category || 'Uncategorized'}
+</div>
+
+<h3>
+${p.name || 'Unnamed Product'}
+</h3>
+
+<p class="description">
+${p.description || ''}
+</p>
+
+<div class="price">
+₦${Number(p.price || 0).toLocaleString()}
+</div>
+
+<button class="btn"
+onclick="addToCart('${p.name || ''}', ${p.price || 0})">
 Add to Cart
 </button>
 
 </div>
 </div>
 `;
+
 });
 
-}catch(err){
-console.error(err);
-container.innerHTML = "<div class='empty'>Failed to load products (check Firebase)</div>";
+}catch(error){
+
+console.log(error);
+
+container.innerHTML =
+"<div class='empty'>Failed to load products</div>";
+
 }
 
 }
@@ -520,18 +688,42 @@ loadProducts();
 /* CHECKOUT */
 window.placeOrder = async function(){
 
-if(cart.length === 0) return alert("Cart is empty");
+if(cart.length === 0){
+
+alert("Cart is empty");
+
+return;
+
+}
+
+try{
 
 await addDoc(collection(db,"orders"),{
+
 items: cart,
+
 total: cart.reduce((s,i)=>s+i.price,0),
+
 createdAt: serverTimestamp()
+
 });
 
-alert("Order placed!");
+alert("Order placed successfully!");
+
 cart = [];
+
 updateCart();
+
 closeCart();
+
+}catch(error){
+
+console.log(error);
+
+alert("Failed to place order");
+
+}
+
 };
 
 </script>
