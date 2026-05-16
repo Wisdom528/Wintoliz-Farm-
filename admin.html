@@ -190,6 +190,10 @@ flex-wrap:wrap;
 width:280px;
 }
 
+.search-box input{
+width:100%;
+}
+
 .products-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -407,7 +411,11 @@ Add Product
 <textarea id="description"></textarea>
 </div>
 
-<button class="btn primary-btn" onclick="addProduct()">
+<button
+class="btn primary-btn"
+id="submitBtn"
+onclick="saveProduct()"
+>
 Add Product
 </button>
 
@@ -475,17 +483,17 @@ from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 const firebaseConfig = {
 
-apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+apiKey: "YOUR_API_KEY",
 
-authDomain: "wintoliz-2dca5.firebaseapp.com",
+authDomain: "YOUR_AUTH_DOMAIN",
 
-projectId: "wintoliz-2dca5",
+projectId: "YOUR_PROJECT_ID",
 
-storageBucket: "wintoliz-2dca5.firebasestorage.app",
+storageBucket: "YOUR_STORAGE_BUCKET",
 
-messagingSenderId: "469698295508",
+messagingSenderId: "YOUR_MESSAGING_ID",
 
-appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
+appId: "YOUR_APP_ID"
 
 };
 
@@ -563,51 +571,6 @@ return true;
 
 }
 
-/* ADD PRODUCT */
-
-window.addProduct = async function(){
-
-if(!validate()) return;
-
-try{
-
-await addDoc(
-collection(db,"products"),
-{
-name:name.value,
-price:Number(price.value),
-category:category.value,
-image:image.value || "https://via.placeholder.com/500x400",
-description:description.value || "",
-createdAt:serverTimestamp()
-}
-);
-
-showStatus(
-"Product added successfully ✔",
-"success"
-);
-
-name.value = "";
-price.value = "";
-category.value = "";
-image.value = "";
-description.value = "";
-
-}
-catch(error){
-
-console.log(error);
-
-showStatus(
-"Failed to add product",
-"error"
-);
-
-}
-
-};
-
 /* PRODUCTS */
 
 const productsList =
@@ -623,6 +586,88 @@ const searchInput =
 document.getElementById("searchInput");
 
 let allProducts = [];
+
+let editingProductId = null;
+
+/* SAVE PRODUCT */
+
+window.saveProduct = async function(){
+
+if(!validate()) return;
+
+const productData = {
+
+name:name.value,
+price:Number(price.value),
+category:category.value,
+image:image.value || "https://via.placeholder.com/500x400",
+description:description.value || ""
+
+};
+
+try{
+
+/* UPDATE */
+
+if(editingProductId){
+
+await updateDoc(
+doc(db,"products",editingProductId),
+productData
+);
+
+showStatus(
+"Product updated successfully ✔",
+"success"
+);
+
+document.getElementById("submitBtn").innerHTML =
+"Add Product";
+
+editingProductId = null;
+
+}
+
+/* ADD */
+
+else{
+
+await addDoc(
+collection(db,"products"),
+{
+...productData,
+createdAt:serverTimestamp()
+}
+);
+
+showStatus(
+"Product added successfully ✔",
+"success"
+);
+
+}
+
+/* CLEAR */
+
+name.value = "";
+price.value = "";
+category.value = "";
+image.value = "";
+description.value = "";
+
+}
+catch(error){
+
+console.log(error);
+
+showStatus(
+"Operation failed",
+"error"
+);
+
+}
+
+};
 
 /* REALTIME */
 
@@ -795,9 +840,9 @@ renderProducts(filtered);
 }
 );
 
-/* EDIT */
+/* EDIT PRODUCT */
 
-window.editProduct = async function(
+window.editProduct = function(
 id,
 oldName,
 oldPrice,
@@ -806,52 +851,27 @@ oldImage,
 oldDescription
 ){
 
-const newName =
-prompt("Edit product name", oldName);
+editingProductId = id;
 
-if(newName === null) return;
+/* FILL FORM */
 
-const newPrice =
-prompt("Edit price", oldPrice);
+name.value = oldName;
+price.value = oldPrice;
+category.value = oldCategory;
+image.value = oldImage;
+description.value = oldDescription;
 
-const newCategory =
-prompt("Edit category", oldCategory);
+/* CHANGE BUTTON */
 
-const newImage =
-prompt("Edit image URL", oldImage);
+document.getElementById("submitBtn").innerHTML =
+"Update Product";
 
-const newDescription =
-prompt("Edit description", oldDescription);
+/* SCROLL */
 
-try{
-
-await updateDoc(
-doc(db,"products",id),
-{
-name:newName,
-price:Number(newPrice),
-category:newCategory,
-image:newImage,
-description:newDescription
-}
-);
-
-showStatus(
-"Product updated ✔",
-"success"
-);
-
-}
-catch(error){
-
-console.log(error);
-
-showStatus(
-"Update failed",
-"error"
-);
-
-}
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 
 };
 
