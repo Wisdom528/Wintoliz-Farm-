@@ -316,13 +316,6 @@ z-index:1500;
 
 #overlay.active{display:block;}
 
-/* EMPTY STATE */
-.empty{
-text-align:center;
-padding:30px;
-color:#666;
-}
-
 @media(max-width:900px){
 .wrapper{grid-template-columns:1fr;}
 .hero h1{font-size:32px;}
@@ -368,9 +361,7 @@ color:#666;
 
 </div>
 
-<div class="products" id="products">
-<div class="empty">Loading products...</div>
-</div>
+<div class="products" id="products"></div>
 
 </div>
 
@@ -393,7 +384,9 @@ color:#666;
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import {
 getAuth,
-onAuthStateChanged
+onAuthStateChanged,
+setPersistence,
+browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
 import {
@@ -405,7 +398,7 @@ serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyDVFSZlzB8F9xztB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+apiKey: "AIzaSyDVFSZlzB8F9xzt8BBgJ5FCu8",
 authDomain: "wintoliz-2dca5.firebaseapp.com",
 projectId: "wintoliz-2dca5",
 };
@@ -414,80 +407,92 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* AUTH */
-onAuthStateChanged(auth,(user)=>{
-if(!user) window.location.href="index.html";
+/* FIXED AUTH (NO MORE RANDOM LOGOUT) */
+await setPersistence(auth, browserLocalPersistence);
+
+onAuthStateChanged(auth, (user) => {
+if (user) {
+console.log("Logged in:", user.email);
+return;
+}
+
+setTimeout(() => {
+if (!auth.currentUser) {
+window.location.href = "index.html";
+}
+}, 800);
 });
 
 /* CART */
-let cart=[];
+let cart = [];
 
-window.addToCart=function(name,price){
-cart.push({name,price});
+window.addToCart = function(name, price){
+cart.push({name, price});
 updateCart();
 openCart();
 }
 
 function updateCart(){
-let box=document.getElementById("cartItems");
-box.innerHTML="";
-let total=0;
+let box = document.getElementById("cartItems");
+box.innerHTML = "";
+
+let total = 0;
 
 cart.forEach(i=>{
-total+=i.price;
-box.innerHTML+=`
+total += i.price;
+box.innerHTML += `
 <div class="cart-item">
 <strong>${i.name}</strong>
 <span>₦${i.price.toLocaleString()}</span>
 </div>`;
 });
 
-document.getElementById("total").innerText=total.toLocaleString();
-document.getElementById("cartCount").innerText=cart.length;
+document.getElementById("total").innerText = total.toLocaleString();
+document.getElementById("cartCount").innerText = cart.length;
 }
 
-window.openCart=()=>document.getElementById("cartDrawer").classList.add("active");
-window.closeCart=()=>document.getElementById("cartDrawer").classList.remove("active");
+window.openCart = () =>
+document.getElementById("cartDrawer").classList.add("active");
 
-window.clearCart=()=>{
-cart=[];
+window.closeCart = () =>
+document.getElementById("cartDrawer").classList.remove("active");
+
+window.clearCart = () => {
+cart = [];
 updateCart();
-}
+};
 
-/* PRODUCTS FIXED */
+/* PRODUCTS */
 async function loadProducts(){
 
-const container=document.getElementById("products");
+const container = document.getElementById("products");
+container.innerHTML = "<div class='empty'>Loading products...</div>";
 
-try{
+const snap = await getDocs(collection(db, "products"));
 
-container.innerHTML="<div class='empty'>Loading products...</div>";
+container.innerHTML = "";
 
-const snap=await getDocs(collection(db,"products"));
-
-container.innerHTML="";
-
-if(snap.empty){
-container.innerHTML="<div class='empty'>No products found in database</div>";
+if (snap.empty) {
+container.innerHTML = "<div class='empty'>No products yet</div>";
 return;
 }
 
 snap.forEach(doc=>{
-const p=doc.data();
+const p = doc.data();
 
-container.innerHTML+=`
+container.innerHTML += `
 <div class="card">
 <div class="card-image">
-<img src="${p.image || ''}">
+<img src="${p.image}">
 </div>
 
 <div class="card-content">
-<div class="category">${p.category || 'Uncategorized'}</div>
-<h3>${p.name || 'No Name'}</h3>
-<p class="description">${p.description || ''}</p>
-<div class="price">₦${Number(p.price || 0).toLocaleString()}</div>
+<div class="category">${p.category}</div>
+<h3>${p.name}</h3>
+<p class="description">${p.description}</p>
+<div class="price">₦${Number(p.price).toLocaleString()}</div>
 
-<button class="btn" onclick="addToCart('${p.name}',${p.price})">
+<button class="btn" onclick="addToCart('${p.name}', ${p.price})">
 Add to Cart
 </button>
 
@@ -495,29 +500,23 @@ Add to Cart
 </div>
 `;
 });
-
-}catch(err){
-console.error(err);
-container.innerHTML="<div class='empty'>Error loading products</div>";
-}
-
 }
 
 loadProducts();
 
 /* CHECKOUT */
-window.placeOrder=async function(){
+window.placeOrder = async function(){
 
-if(cart.length===0) return alert("Cart is empty");
+if(cart.length === 0) return alert("Cart is empty");
 
 await addDoc(collection(db,"orders"),{
-items:cart,
-total:cart.reduce((s,i)=>s+i.price,0),
-createdAt:serverTimestamp()
+items: cart,
+total: cart.reduce((s,i)=>s+i.price,0),
+createdAt: serverTimestamp()
 });
 
 alert("Order placed!");
-cart=[];
+cart = [];
 updateCart();
 closeCart();
 };
