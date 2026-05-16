@@ -479,21 +479,21 @@ serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-/* FIREBASE */
+/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
-apiKey: "YOUR_API_KEY",
+apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
 
-authDomain: "YOUR_AUTH_DOMAIN",
+authDomain: "wintoliz-2dca5.firebaseapp.com",
 
-projectId: "YOUR_PROJECT_ID",
+projectId: "wintoliz-2dca5",
 
-storageBucket: "YOUR_STORAGE_BUCKET",
+storageBucket: "wintoliz-2dca5.firebasestorage.app",
 
-messagingSenderId: "YOUR_MESSAGING_ID",
+messagingSenderId: "469698295508",
 
-appId: "YOUR_APP_ID"
+appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
 
 };
 
@@ -507,22 +507,29 @@ const db = getFirestore(app);
 
 const ADMIN_EMAIL = "wisdomotoide41@gmail.com";
 
-/* AUTH */
+/* AUTH CHECK */
 
 onAuthStateChanged(auth,(user)=>{
 
+console.log(user);
+
 if(!user){
+
+alert("Please sign in first");
 
 window.location.href = "index.html";
 return;
 
 }
 
+console.log("Logged in email:", user.email);
+
 if(user.email !== ADMIN_EMAIL){
 
 alert("Access denied");
 
 window.location.href = "product.html";
+return;
 
 }
 
@@ -669,7 +676,7 @@ showStatus(
 
 };
 
-/* REALTIME */
+/* REALTIME PRODUCTS */
 
 onSnapshot(
 
@@ -708,7 +715,7 @@ Failed to load products
 
 );
 
-/* RENDER */
+/* RENDER PRODUCTS */
 
 function renderProducts(products){
 
@@ -853,20 +860,14 @@ oldDescription
 
 editingProductId = id;
 
-/* FILL FORM */
-
 name.value = oldName;
 price.value = oldPrice;
 category.value = oldCategory;
 image.value = oldImage;
 description.value = oldDescription;
 
-/* CHANGE BUTTON */
-
 document.getElementById("submitBtn").innerHTML =
 "Update Product";
-
-/* SCROLL */
 
 window.scrollTo({
 top:0,
@@ -875,7 +876,7 @@ behavior:"smooth"
 
 };
 
-/* DELETE */
+/* DELETE PRODUCT */
 
 window.deleteProduct = async function(id){
 
