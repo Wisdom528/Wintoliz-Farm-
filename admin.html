@@ -479,7 +479,7 @@ serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-/* FIREBASE CONFIG */
+/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -503,32 +503,54 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
+/* INPUTS */
+
+const nameInput =
+document.getElementById("name");
+
+const priceInput =
+document.getElementById("price");
+
+const categoryInput =
+document.getElementById("category");
+
+const imageInput =
+document.getElementById("image");
+
+const descriptionInput =
+document.getElementById("description");
+
+const submitBtn =
+document.getElementById("submitBtn");
+
 /* ADMIN EMAIL */
 
-const ADMIN_EMAIL = "wisdomotoide41@gmail.com";
+const ADMIN_EMAIL =
+"wisdomotoide41@gmail.com";
 
-/* AUTH CHECK */
+/* AUTH */
 
 onAuthStateChanged(auth,(user)=>{
 
-console.log(user);
-
 if(!user){
 
-alert("Please sign in first");
+window.location.href =
+"index.html";
 
-window.location.href = "index.html";
 return;
 
 }
 
-console.log("Logged in email:", user.email);
-
-if(user.email !== ADMIN_EMAIL){
+if(
+user.email.toLowerCase()
+!== ADMIN_EMAIL.toLowerCase()
+){
 
 alert("Access denied");
 
-window.location.href = "product.html";
+window.location.href =
+"product.html";
+
 return;
 
 }
@@ -560,9 +582,9 @@ statusBox.innerHTML = "";
 function validate(){
 
 if(
-!name.value ||
-!price.value ||
-!category.value
+!nameInput.value ||
+!priceInput.value ||
+!categoryInput.value
 ){
 
 showStatus(
@@ -604,11 +626,18 @@ if(!validate()) return;
 
 const productData = {
 
-name:name.value,
-price:Number(price.value),
-category:category.value,
-image:image.value || "https://via.placeholder.com/500x400",
-description:description.value || ""
+name:nameInput.value,
+
+price:Number(priceInput.value),
+
+category:categoryInput.value,
+
+image:
+imageInput.value ||
+"https://via.placeholder.com/500x400",
+
+description:
+descriptionInput.value || ""
 
 };
 
@@ -624,11 +653,11 @@ productData
 );
 
 showStatus(
-"Product updated successfully ✔",
+"Product updated ✔",
 "success"
 );
 
-document.getElementById("submitBtn").innerHTML =
+submitBtn.innerHTML =
 "Add Product";
 
 editingProductId = null;
@@ -648,19 +677,19 @@ createdAt:serverTimestamp()
 );
 
 showStatus(
-"Product added successfully ✔",
+"Product added ✔",
 "success"
 );
 
 }
 
-/* CLEAR */
+/* CLEAR FORM */
 
-name.value = "";
-price.value = "";
-category.value = "";
-image.value = "";
-description.value = "";
+nameInput.value = "";
+priceInput.value = "";
+categoryInput.value = "";
+imageInput.value = "";
+descriptionInput.value = "";
 
 }
 catch(error){
@@ -699,23 +728,11 @@ id:docSnap.id,
 
 renderProducts(allProducts);
 
-},
-
-(error)=>{
-
-console.log("Firestore Error:", error);
-
-productsList.innerHTML = `
-<div class="empty">
-Failed to load products
-</div>
-`;
-
 }
 
 );
 
-/* RENDER PRODUCTS */
+/* RENDER */
 
 function renderProducts(products){
 
@@ -740,27 +757,15 @@ totalProducts.innerHTML =
 products.length;
 
 const categories = [
-...new Set(products.map(p => p.category))
+...new Set(products.map(
+p => p.category
+))
 ];
 
 totalCategories.innerHTML =
 categories.length;
 
 products.forEach((p)=>{
-
-const safeName =
-(p.name || "").replace(/'/g,"\\'");
-
-const safeCategory =
-(p.category || "").replace(/'/g,"\\'");
-
-const safeImage =
-(p.image || "").replace(/'/g,"\\'");
-
-const safeDescription =
-(p.description || "")
-.replace(/'/g,"\\'")
-.replace(/"/g,'&quot;');
 
 productsList.innerHTML += `
 
@@ -769,7 +774,7 @@ productsList.innerHTML += `
 <div class="product-image">
 
 <img
-src="${p.image || 'https://via.placeholder.com/400'}"
+src="${p.image}"
 alt="${p.name}"
 >
 
@@ -778,33 +783,26 @@ alt="${p.name}"
 <div class="product-content">
 
 <div class="badge">
-${p.category || 'Product'}
+${p.category}
 </div>
 
 <div class="product-title">
-${p.name || 'Unnamed Product'}
+${p.name}
 </div>
 
 <div class="product-description">
-${p.description || 'No description'}
+${p.description}
 </div>
 
 <div class="product-price">
-₦${Number(p.price || 0).toLocaleString()}
+₦${Number(p.price).toLocaleString()}
 </div>
 
 <div class="product-actions">
 
 <button
 class="action-btn edit-btn"
-onclick="editProduct(
-'${p.id}',
-'${safeName}',
-'${p.price}',
-'${safeCategory}',
-'${safeImage}',
-'${safeDescription}'
-)"
+onclick="editProduct('${p.id}')"
 >
 Edit
 </button>
@@ -839,7 +837,8 @@ searchInput.value.toLowerCase();
 
 const filtered =
 allProducts.filter((p)=>
-p.name.toLowerCase().includes(keyword)
+p.name.toLowerCase()
+.includes(keyword)
 );
 
 renderProducts(filtered);
@@ -847,26 +846,35 @@ renderProducts(filtered);
 }
 );
 
-/* EDIT PRODUCT */
+/* EDIT */
 
-window.editProduct = function(
-id,
-oldName,
-oldPrice,
-oldCategory,
-oldImage,
-oldDescription
-){
+window.editProduct = function(id){
+
+const product =
+allProducts.find(
+p => p.id === id
+);
+
+if(!product) return;
 
 editingProductId = id;
 
-name.value = oldName;
-price.value = oldPrice;
-category.value = oldCategory;
-image.value = oldImage;
-description.value = oldDescription;
+nameInput.value =
+product.name;
 
-document.getElementById("submitBtn").innerHTML =
+priceInput.value =
+product.price;
+
+categoryInput.value =
+product.category;
+
+imageInput.value =
+product.image;
+
+descriptionInput.value =
+product.description;
+
+submitBtn.innerHTML =
 "Update Product";
 
 window.scrollTo({
@@ -876,12 +884,15 @@ behavior:"smooth"
 
 };
 
-/* DELETE PRODUCT */
+/* DELETE */
 
-window.deleteProduct = async function(id){
+window.deleteProduct =
+async function(id){
 
 const confirmDelete =
-confirm("Delete this product?");
+confirm(
+"Delete this product?"
+);
 
 if(!confirmDelete) return;
 
@@ -912,7 +923,8 @@ showStatus(
 
 /* LOGOUT */
 
-window.logoutAdmin = async function(){
+window.logoutAdmin =
+async function(){
 
 try{
 
