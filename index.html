@@ -243,65 +243,6 @@ opacity:0.86;
 margin:0;
 }
 
-/* STATS */
-.stats{
-display:flex;
-gap:16px;
-margin-top:28px;
-flex-wrap:wrap;
-}
-
-.stat-box{
-background:rgba(255,255,255,0.08);
-padding:20px;
-border-radius:20px;
-min-width:180px;
-backdrop-filter:blur(12px);
-border:1px solid rgba(255,255,255,0.05);
-}
-
-.stat-box h2{
-font-size:28px;
-margin-bottom:5px;
-}
-
-/* TESTIMONIAL */
-.testimonial{
-margin-top:28px;
-background:rgba(255,255,255,0.08);
-padding:20px;
-border-radius:22px;
-max-width:540px;
-backdrop-filter:blur(12px);
-border:1px solid rgba(255,255,255,0.05);
-}
-
-.testimonial-top{
-display:flex;
-align-items:center;
-gap:14px;
-margin-bottom:14px;
-}
-
-.avatar{
-width:52px;
-height:52px;
-border-radius:50%;
-background:var(--gold);
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:800;
-color:#000;
-font-size:15px;
-}
-
-.quote{
-font-size:14px;
-line-height:1.7;
-opacity:0.92;
-}
-
 /* RIGHT SIDE */
 .right{
 width:470px;
@@ -420,13 +361,6 @@ z-index:2;
 text-decoration:none;
 color:var(--primary);
 font-weight:700;
-}
-
-.remember{
-display:flex;
-align-items:center;
-gap:8px;
-color:#555;
 }
 
 /* BUTTONS */
@@ -570,14 +504,6 @@ font-size:34px;
 font-size:15px;
 }
 
-.stats{
-flex-direction:column;
-}
-
-.stat-box{
-width:100%;
-}
-
 .logo-text{
 font-size:28px;
 }
@@ -671,13 +597,12 @@ Wintoliz Farm.
 </div>
 
 <!-- RIGHT -->
-<!-- RIGHT -->
 <div class="right" id="signin-section">
 
 <div class="form-box">
 
 <div class="form-logo">
-Wintoliz Farm
+Wintoliz Farms
 </div>
 
 <h2>Welcome Back</h2>
@@ -716,12 +641,7 @@ required
 
 <div class="row">
 
-<label class="remember">
-<input type="checkbox">
-Remember me
-</label>
-
-<a href="#">
+<a href="#" id="forgotPassword">
 Forgot password?
 </a>
 
@@ -769,7 +689,8 @@ import {
 getAuth,
 signInWithEmailAndPassword,
 GoogleAuthProvider,
-signInWithPopup
+signInWithPopup,
+sendPasswordResetEmail
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -854,6 +775,48 @@ window.location.href =
 
 message.innerHTML = error.message;
 message.className = "message error";
+
+}
+
+});
+
+/* FORGOT PASSWORD */
+document.getElementById("forgotPassword")
+.addEventListener("click", async (e) => {
+
+e.preventDefault();
+
+const email =
+document.getElementById("email").value;
+
+if(!email){
+
+message.innerHTML =
+"Please enter your email address first.";
+
+message.className = "message error";
+
+return;
+
+}
+
+try{
+
+await sendPasswordResetEmail(auth, email);
+
+message.innerHTML =
+"Password reset link sent to your email.";
+
+message.className =
+"message success";
+
+}catch(error){
+
+message.innerHTML =
+error.message;
+
+message.className =
+"message error";
 
 }
 
