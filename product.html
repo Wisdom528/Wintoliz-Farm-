@@ -310,16 +310,9 @@ cursor:pointer;
 margin-bottom:8px;
 }
 
-.checkout{
-background:var(--primary);
-color:#fff;
-}
+.checkout{background:var(--primary);color:#fff;}
+.clear{background:#eee;}
 
-.clear{
-background:#eee;
-}
-
-/* OVERLAY */
 #overlay{
 position:fixed;
 top:0;
@@ -333,7 +326,6 @@ z-index:1500;
 
 #overlay.active{display:block;}
 
-/* RESPONSIVE */
 @media(max-width:900px){
 .wrapper{grid-template-columns:1fr;}
 .hero h1{font-size:32px;}
@@ -379,21 +371,13 @@ header{flex-direction:column;gap:10px;}
 
 <h3>Categories</h3>
 
-<label class="filter-item">
-<input type="checkbox" class="filter" value="Eggs"> Eggs
-</label>
-
-<label class="filter-item">
-<input type="checkbox" class="filter" value="Flock"> Flock
-</label>
-
-<label class="filter-item">
-<input type="checkbox" class="filter" value="Drugs"> Drugs
-</label>
+<label class="filter-item"><input type="checkbox" class="filter" value="Eggs"> Eggs</label>
+<label class="filter-item"><input type="checkbox" class="filter" value="Flock"> Flock</label>
+<label class="filter-item"><input type="checkbox" class="filter" value="Drugs"> Drugs</label>
 
 </div>
 
-<!-- PRODUCTS (DYNAMIC) -->
+<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
 </div>
@@ -405,7 +389,6 @@ header{flex-direction:column;gap:10px;}
 
 <div class="cart-footer">
 <div class="total">Total: ₦<span id="total">0</span></div>
-
 <button class="cart-btn checkout" onclick="placeOrder()">Checkout</button>
 <button class="cart-btn clear" onclick="clearCart()">Clear Cart</button>
 </div>
@@ -415,7 +398,6 @@ header{flex-direction:column;gap:10px;}
 
 <script type="module">
 
-/* FIREBASE */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import {
 getAuth,
@@ -440,65 +422,59 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* AUTH CHECK */
+/* AUTH */
 onAuthStateChanged(auth,(user)=>{
-if(!user){
-window.location.href="index.html";
-}
+if(!user) window.location.href="index.html";
 });
 
 /* CART */
-let cart = [];
+let cart=[];
 
-window.addToCart = function(name,price){
+window.addToCart=function(name,price){
 cart.push({name,price});
 updateCart();
 openCart();
 }
 
 function updateCart(){
-let container = document.getElementById("cartItems");
-container.innerHTML="";
+let box=document.getElementById("cartItems");
+box.innerHTML="";
 let total=0;
 
-cart.forEach(item=>{
-total+=item.price;
-container.innerHTML+=`
+cart.forEach(i=>{
+total+=i.price;
+box.innerHTML+=`
 <div class="cart-item">
-<strong>${item.name}</strong>
-<span>₦${item.price.toLocaleString()}</span>
+<strong>${i.name}</strong>
+<span>₦${i.price}</span>
 </div>`;
 });
 
-document.getElementById("total").innerText=total.toLocaleString();
+document.getElementById("total").innerText=total;
 document.getElementById("cartCount").innerText=cart.length;
 }
 
-window.openCart=function(){
-document.getElementById("cartDrawer").classList.add("active");
-document.getElementById("overlay").classList.add("active");
-}
+window.openCart=()=>document.getElementById("cartDrawer").classList.add("active");
+window.closeCart=()=>document.getElementById("cartDrawer").classList.remove("active");
 
-window.closeCart=function(){
-document.getElementById("cartDrawer").classList.remove("active");
-document.getElementById("overlay").classList.remove("active");
-}
-
-window.clearCart=function(){
+window.clearCart=()=>{
 cart=[];
 updateCart();
 }
 
-/* FIREBASE PRODUCTS */
+/* PRODUCTS (FIXED + FALLBACK) */
 async function loadProducts(){
 
 const container=document.getElementById("products");
-container.innerHTML="";
+container.innerHTML="Loading...";
 
 const snap=await getDocs(collection(db,"products"));
 
-snap.forEach(doc=>{
+let hasData=false;
+container.innerHTML="";
 
+snap.forEach(doc=>{
+hasData=true;
 const p=doc.data();
 
 container.innerHTML+=`
@@ -521,29 +497,35 @@ Add to Cart
 </div>
 `;
 });
+
+/* FALLBACK PRODUCTS */
+if(!hasData){
+container.innerHTML+=`
+<div class="card">
+<div class="card-content">
+<h3>No Firebase Products Yet</h3>
+<p class="description">Add products in Firestore → products collection</p>
+</div>
+</div>
+`;
+}
+
 }
 
 loadProducts();
 
 /* CHECKOUT */
-window.placeOrder = async function(){
+window.placeOrder=async function(){
 
-if(cart.length===0){
-alert("Cart is empty");
-return;
-}
-
-let total=cart.reduce((s,i)=>s+i.price,0);
+if(cart.length===0) return alert("Cart is empty");
 
 await addDoc(collection(db,"orders"),{
 items:cart,
-total:total,
-status:"pending",
+total:cart.reduce((s,i)=>s+i.price,0),
 createdAt:serverTimestamp()
 });
 
 alert("Order placed!");
-
 cart=[];
 updateCart();
 closeCart();
