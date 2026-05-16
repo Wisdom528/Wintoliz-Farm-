@@ -26,6 +26,7 @@ font-family:'Segoe UI',sans-serif;
 --white:#fff;
 --text:#111827;
 --muted:#6b7280;
+--danger:#ff4d4d;
 }
 
 body{
@@ -45,6 +46,8 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 box-shadow:0 5px 20px rgba(0,0,0,0.1);
+flex-wrap:wrap;
+gap:15px;
 }
 
 .logo-area{
@@ -83,6 +86,7 @@ nav{
 display:flex;
 gap:12px;
 align-items:center;
+flex-wrap:wrap;
 }
 
 .nav-link{
@@ -102,6 +106,27 @@ background:rgba(255,255,255,0.1);
 .nav-link.active{
 background:var(--gold);
 color:#000;
+}
+
+.admin-btn{
+background:var(--gold);
+color:#000;
+border:none;
+padding:10px 14px;
+border-radius:12px;
+font-weight:800;
+cursor:pointer;
+display:none;
+}
+
+.logout-btn{
+background:var(--danger);
+color:#fff;
+border:none;
+padding:10px 14px;
+border-radius:12px;
+font-weight:800;
+cursor:pointer;
 }
 
 /* HERO */
@@ -332,16 +357,6 @@ padding:30px;
 color:#666;
 }
 
-.logout-btn{
-background:#ff4d4d;
-color:#fff;
-border:none;
-padding:10px 14px;
-border-radius:12px;
-font-weight:800;
-cursor:pointer;
-}
-
 @media(max-width:900px){
 
 .wrapper{
@@ -350,6 +365,10 @@ grid-template-columns:1fr;
 
 .hero h1{
 font-size:32px;
+}
+
+header{
+padding:16px;
 }
 
 }
@@ -382,6 +401,14 @@ Marketplace
 <div class="nav-link" onclick="openCart()">
 Cart (<span id="cartCount">0</span>)
 </div>
+
+<!-- ADMIN BUTTON -->
+<button
+id="adminBtn"
+class="admin-btn"
+onclick="window.location.href='admin.html'">
+Admin Panel
+</button>
 
 <button class="logout-btn" onclick="logoutUser()">
 Logout
@@ -425,6 +452,14 @@ Buy healthy birds, eggs, vaccines, feeds and equipment directly from trusted far
 
 <label class="filter-item">
 <input type="checkbox" class="filter" value="Drugs"> Drugs
+</label>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Feeds"> Feeds
+</label>
+
+<label class="filter-item">
+<input type="checkbox" class="filter" value="Equipment"> Equipment
 </label>
 
 </div>
@@ -484,7 +519,7 @@ from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 import {
 getFirestore,
 collection,
-getDocs,
+onSnapshot,
 addDoc,
 serverTimestamp
 }
@@ -504,12 +539,22 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+/* YOUR ADMIN EMAIL */
+const ADMIN_EMAIL = "wisdomotoide41@gmail.com";
+
 /* AUTH CHECK */
 onAuthStateChanged(auth, (user) => {
 
 if(user){
 
 console.log("User logged in");
+
+/* SHOW ADMIN BUTTON */
+if(user.email === ADMIN_EMAIL){
+
+document.getElementById("adminBtn").style.display = "block";
+
+}
 
 }
 else{
@@ -607,23 +652,17 @@ updateCart();
 
 };
 
-/* LOAD PRODUCTS */
-async function loadProducts(){
+/* LOAD PRODUCTS REALTIME */
+function loadProducts(){
 
 const container =
 document.getElementById("products");
 
-container.innerHTML =
-"<div class='empty'>Loading products...</div>";
-
-try{
-
-const snap =
-await getDocs(collection(db, "products"));
+onSnapshot(collection(db, "products"), (snapshot)=>{
 
 container.innerHTML = "";
 
-if(snap.empty){
+if(snapshot.empty){
 
 container.innerHTML =
 "<div class='empty'>No products found</div>";
@@ -632,7 +671,7 @@ return;
 
 }
 
-snap.forEach(doc=>{
+snapshot.forEach((doc)=>{
 
 const p = doc.data();
 
@@ -640,7 +679,7 @@ container.innerHTML += `
 <div class="card">
 
 <div class="card-image">
-<img src="${p.image || ''}">
+<img src="${p.image || 'https://via.placeholder.com/400'}">
 </div>
 
 <div class="card-content">
@@ -672,14 +711,14 @@ Add to Cart
 
 });
 
-}catch(error){
+}, (error)=>{
 
 console.log(error);
 
 container.innerHTML =
 "<div class='empty'>Failed to load products</div>";
 
-}
+});
 
 }
 
