@@ -42,8 +42,6 @@ justify-content:center;
 align-items:center;
 }
 
-/* CHAT CONTAINER */
-
 .chat-container{
 width:100%;
 max-width:950px;
@@ -57,8 +55,6 @@ flex-direction:column;
 backdrop-filter:blur(10px);
 box-shadow:0 25px 60px rgba(0,0,0,0.45);
 }
-
-/* HEADER */
 
 .chat-header{
 padding:20px 24px;
@@ -108,8 +104,6 @@ font-weight:800;
 cursor:pointer;
 }
 
-/* CHAT BODY */
-
 .chat-body{
 flex:1;
 padding:24px;
@@ -118,8 +112,6 @@ display:flex;
 flex-direction:column;
 gap:18px;
 }
-
-/* MESSAGE */
 
 .message{
 max-width:75%;
@@ -149,8 +141,6 @@ opacity:0.7;
 margin-top:10px;
 }
 
-/* IMAGE */
-
 .chat-image{
 width:100%;
 max-width:260px;
@@ -159,15 +149,11 @@ margin-top:12px;
 border:2px solid rgba(255,255,255,0.08);
 }
 
-/* INPUT AREA */
-
 .chat-input-area{
 padding:20px;
 border-top:1px solid rgba(255,255,255,0.06);
 background:rgba(255,255,255,0.02);
 }
-
-/* PREVIEW */
 
 .preview-box{
 display:none;
@@ -184,8 +170,6 @@ max-width:180px;
 border-radius:14px;
 margin-top:10px;
 }
-
-/* CHAT INPUT */
 
 .chat-form{
 display:flex;
@@ -243,8 +227,6 @@ transform:scale(1.05);
 display:none;
 }
 
-/* MOBILE */
-
 @media(max-width:700px){
 
 body{
@@ -280,8 +262,6 @@ padding:18px;
 
 <div class="chat-container">
 
-<!-- HEADER -->
-
 <div class="chat-header">
 
 <div class="support-info">
@@ -312,8 +292,6 @@ Dashboard
 
 </div>
 
-<!-- CHAT BODY -->
-
 <div class="chat-body" id="chatBody">
 
 <div class="message admin-message">
@@ -340,11 +318,7 @@ Support Team
 
 </div>
 
-<!-- INPUT AREA -->
-
 <div class="chat-input-area">
-
-<!-- PREVIEW -->
 
 <div class="preview-box" id="previewBox">
 
@@ -355,8 +329,6 @@ Payment Screenshot Preview
 <img id="previewImage">
 
 </div>
-
-<!-- CHAT FORM -->
 
 <div class="chat-form">
 
@@ -547,6 +519,8 @@ catch(error){
 
 console.log(error);
 
+alert(error.message);
+
 }
 
 };
@@ -554,11 +528,8 @@ console.log(error);
 /* LOAD CHAT */
 
 const supportQuery = query(
-
 collection(db,"supportMessages"),
-
 where("chatId","==",supportChatId)
-
 );
 
 onSnapshot(supportQuery,(snapshot)=>{
@@ -642,7 +613,7 @@ chatBody.scrollHeight;
 /* ENTER KEY SEND */
 
 messageInput.addEventListener(
-"keypress",
+"keydown",
 (e)=>{
 
 if(
