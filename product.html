@@ -525,17 +525,30 @@ const ADMIN_EMAIL = "wisdomotoide41@gmail.com";
 
 /* AUTH CHECK */
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, (firebaseUser) => {
 
-if(user){
+if(firebaseUser){
 
-console.log("User logged in");
-
-if(user.email === ADMIN_EMAIL){
+if(firebaseUser.email === ADMIN_EMAIL){
 
 document.getElementById("adminBtn").style.display = "block";
 
 }
+
+/* SAVE USER FOR CART SYSTEM */
+
+const savedUser = {
+
+uid: firebaseUser.uid,
+email: firebaseUser.email,
+username: firebaseUser.displayName || firebaseUser.email
+
+};
+
+localStorage.setItem(
+"wintolizUser",
+JSON.stringify(savedUser)
+);
 
 }else{
 
@@ -563,6 +576,8 @@ try{
 
 await signOut(auth);
 
+localStorage.removeItem("wintolizUser");
+
 window.location.href = "index.html";
 
 }catch(error){
@@ -573,16 +588,31 @@ console.log(error);
 
 };
 
-/* CART */
+/* GET CURRENT USER */
+
+const currentUser = JSON.parse(
+localStorage.getItem("wintolizUser")
+) || {
+username:"guest"
+};
+
+/* UNIQUE USER CART KEY */
+
+const CART_KEY =
+`wintolizCart_${currentUser.username}`;
+
+/* LOAD CART */
 
 let cart = JSON.parse(
-localStorage.getItem("wintolizCart")
+localStorage.getItem(CART_KEY)
 ) || [];
+
+/* SAVE CART */
 
 function saveCart(){
 
 localStorage.setItem(
-"wintolizCart",
+CART_KEY,
 JSON.stringify(cart)
 );
 
@@ -592,27 +622,32 @@ JSON.stringify(cart)
 
 window.addToCart = function(product){
 
-let existingItem = cart.find(
+const existingItem = cart.find(
 item => item.name === product.name
 );
 
 if(existingItem){
 
-existingItem.qty = (existingItem.qty || 1) + 1;
+existingItem.qty =
+(existingItem.qty || 1) + 1;
 
 }else{
 
 cart.push({
+
 name: product.name,
 price: Number(product.price),
 image: product.image || '',
 description: product.description || '',
 qty: 1
+
 });
 
 }
 
 saveCart();
+
+alert(product.name + " added to cart");
 
 window.location.href = "cart.html";
 
@@ -703,13 +738,6 @@ return;
 
 products.forEach((p)=>{
 
-const productData = encodeURIComponent(JSON.stringify({
-name: p.name || "Unnamed Product",
-price: Number(p.price || 0),
-image: p.image || "",
-description: p.description || ""
-}));
-
 container.innerHTML += `
 
 <div class="card">
@@ -743,7 +771,12 @@ ${p.description || ''}
 
 <button
 class="btn"
-onclick='addToCart(JSON.parse(decodeURIComponent("${productData}")))'
+onclick='addToCart(${JSON.stringify({
+name: p.name || "Unnamed Product",
+price: Number(p.price || 0),
+image: p.image || "",
+description: p.description || ""
+})})'
 >
 Add To Cart
 </button>
