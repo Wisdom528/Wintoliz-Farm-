@@ -213,12 +213,22 @@ font-size:18px;
 .summary-item{
 display:flex;
 justify-content:space-between;
-margin-bottom:12px;
+align-items:center;
+margin-bottom:14px;
 font-size:15px;
+gap:10px;
 }
 
-.summary-item strong{
-font-size:22px;
+.amount-box{
+display:flex;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.amount{
+font-size:26px;
+font-weight:900;
 color:var(--gold);
 }
 
@@ -275,6 +285,11 @@ align-items:flex-start;
 
 .copy-btn{
 width:100%;
+}
+
+.summary-item{
+flex-direction:column;
+align-items:flex-start;
 }
 
 }
@@ -348,10 +363,23 @@ Order Summary
 </div>
 
 <div class="summary-item">
+
 <span>Total Amount</span>
-<strong id="orderAmount">
+
+<div class="amount-box">
+
+<div class="amount" id="orderAmount">
 ₦0
-</strong>
+</div>
+
+<button
+class="copy-btn"
+id="copyAmountBtn">
+Copy Amount
+</button>
+
+</div>
+
 </div>
 
 </div>
@@ -375,66 +403,27 @@ Copy
 </div>
 
 <div class="row">
-<span>8108736957</span>
+<span>6391432803</span>
 
 <button
 class="copy-btn"
-onclick="copyText('8108736957')">
+onclick="copyText('6391432803')">
 Copy
 </button>
 </div>
 
 <div class="row">
-<span>WISDOM OTOIDE</span>
+<span>Wintoliz Farms Limited</span>
 
 <button
 class="copy-btn"
-onclick="copyText('WISDOM OTOIDE')">
+onclick="copyText('Wintoliz Farms Limited')">
 Copy
 </button>
 </div>
 
 </div>
 
-<!-- ACCOUNT 2 -->
-
-<div class="payment-card">
-
-<h2>
-BANK ACCOUNT 2
-</h2>
-
-<div class="row">
-<span>MONIEPOINT</span>
-
-<button
-class="copy-btn"
-onclick="copyText('MONIEPOINT')">
-Copy
-</button>
-</div>
-
-<div class="row">
-<span>8108736957</span>
-
-<button
-class="copy-btn"
-onclick="copyText('8108736957')">
-Copy
-</button>
-</div>
-
-<div class="row">
-<span>Wintoliz farms limited</span>
-
-<button
-class="copy-btn"
-onclick="copyText('Wintoliz farms limited')">
-Copy
-</button>
-</div>
-
-</div>
 
 <!-- BUTTON -->
 
@@ -456,24 +445,44 @@ alert("Copied: " + text);
 
 }
 
-/* GET ORDER DETAILS */
+/* GET CART */
 
-const params =
-new URLSearchParams(window.location.search);
+const cart = JSON.parse(
+localStorage.getItem("wintolizCart")
+) || [];
 
-const amount =
-params.get("amount") || "0";
+/* CALCULATE TOTAL */
 
-const order =
-params.get("order") || "Farm Products";
+const subtotal = cart.reduce((sum,item)=>{
+
+return sum + (
+Number(item.price) * (item.qty || 1)
+);
+
+},0);
+
+const delivery = cart.length > 0 ? 500 : 0;
+
+const totalAmount = subtotal + delivery;
 
 /* DISPLAY */
 
 document.getElementById("orderAmount").innerText =
-"₦" + Number(amount).toLocaleString();
+"₦" + totalAmount.toLocaleString();
 
-document.getElementById("orderName").innerText =
-order;
+/* COPY AMOUNT */
+
+document.getElementById("copyAmountBtn")
+.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(totalAmount);
+
+alert(
+"Amount copied: ₦" +
+totalAmount.toLocaleString()
+);
+
+});
 
 /* TIMER */
 
@@ -517,14 +526,17 @@ time--;
 document.getElementById("paidBtn")
 .addEventListener("click",()=>{
 
-alert(
-"Payment submitted successfully. Your order will be verified shortly."
+/* SAVE PAYMENT STATUS */
+
+localStorage.setItem(
+"wintolizPaymentStatus",
+"Pending Verification"
 );
 
-/* REDIRECT */
+/* REDIRECT TO SUPPORT PAGE */
 
 window.location.href =
-"dashboard.html";
+"support.html";
 
 });
 
