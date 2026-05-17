@@ -439,6 +439,53 @@ cursor:pointer;
 width:100%;
 }
 
+/* VERIFICATION */
+
+.verification-box{
+margin-top:20px;
+padding:18px;
+background:#f8fafc;
+border-radius:18px;
+border:1px solid #e5e7eb;
+}
+
+.verification-title{
+font-size:14px;
+font-weight:900;
+margin-bottom:14px;
+color:#0f3d2e;
+}
+
+.verification-actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.accept-btn{
+flex:1;
+padding:14px;
+border:none;
+border-radius:14px;
+background:#16a34a;
+color:#fff;
+font-weight:800;
+cursor:pointer;
+min-width:160px;
+}
+
+.reject-btn{
+flex:1;
+padding:14px;
+border:none;
+border-radius:14px;
+background:#dc2626;
+color:#fff;
+font-weight:800;
+cursor:pointer;
+min-width:160px;
+}
+
 /* ACTIONS */
 
 .support-actions{
@@ -505,7 +552,8 @@ width:100%;
 }
 
 .product-actions,
-.support-actions{
+.support-actions,
+.verification-actions{
 flex-direction:column;
 }
 
@@ -517,8 +565,6 @@ flex-direction:column;
 <body>
 
 <div class="container">
-
-<!-- TOPBAR -->
 
 <div class="topbar">
 
@@ -533,8 +579,6 @@ Logout
 
 </div>
 
-<!-- STATS -->
-
 <div class="stats">
 
 <div class="stat-card">
@@ -548,17 +592,13 @@ Logout
 </div>
 
 <div class="stat-card">
-<div class="stat-title">Pending Support</div>
+<div class="stat-title">Pending Verification</div>
 <div class="stat-number" id="pendingMessages">0</div>
 </div>
 
 </div>
 
-<!-- DASHBOARD -->
-
 <div class="dashboard">
-
-<!-- LEFT -->
 
 <div class="card">
 
@@ -612,8 +652,6 @@ Add Product
 
 </div>
 
-<!-- RIGHT -->
-
 <div class="card">
 
 <div class="products-header">
@@ -643,8 +681,6 @@ Loading products...
 </div>
 
 </div>
-
-<!-- SUPPORT SECTION -->
 
 <div class="card">
 
@@ -690,8 +726,6 @@ orderBy
 }
 from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-/* FIREBASE */
-
 const firebaseConfig = {
 
 apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
@@ -714,12 +748,8 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
-/* ADMIN EMAIL */
-
 const ADMIN_EMAIL =
 "wisdomotoide41@gmail.com";
-
-/* AUTH */
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -748,8 +778,6 @@ return;
 
 });
 
-/* INPUTS */
-
 const nameInput =
 document.getElementById("name");
 
@@ -768,8 +796,6 @@ document.getElementById("description");
 const submitBtn =
 document.getElementById("submitBtn");
 
-/* STATUS */
-
 const statusBox =
 document.getElementById("status");
 
@@ -787,8 +813,6 @@ statusBox.innerHTML = "";
 },3000);
 
 }
-
-/* VALIDATE */
 
 function validate(){
 
@@ -811,8 +835,6 @@ return true;
 
 }
 
-/* PRODUCTS */
-
 const productsList =
 document.getElementById("productsList");
 
@@ -828,8 +850,6 @@ document.getElementById("searchInput");
 let allProducts = [];
 
 let editingProductId = null;
-
-/* SAVE PRODUCT */
 
 window.saveProduct = async function(){
 
@@ -908,8 +928,6 @@ showStatus(
 
 };
 
-/* LOAD PRODUCTS */
-
 onSnapshot(
 
 collection(db,"products"),
@@ -934,8 +952,6 @@ renderProducts(allProducts);
 }
 
 );
-
-/* RENDER PRODUCTS */
 
 function renderProducts(products){
 
@@ -1029,8 +1045,6 @@ Delete
 
 }
 
-/* SEARCH */
-
 searchInput.addEventListener(
 "input",
 ()=>{
@@ -1048,8 +1062,6 @@ renderProducts(filtered);
 
 }
 );
-
-/* EDIT */
 
 window.editProduct = function(id){
 
@@ -1087,8 +1099,6 @@ behavior:"smooth"
 
 };
 
-/* DELETE */
-
 window.deleteProduct =
 async function(id){
 
@@ -1123,8 +1133,6 @@ showStatus(
 }
 
 };
-
-/* SUPPORT */
 
 const supportMessages =
 document.getElementById("supportMessages");
@@ -1166,7 +1174,10 @@ snapshot.forEach((docSnap)=>{
 
 const data = docSnap.data();
 
-if(data.status !== "Reviewed"){
+if(
+data.status !== "Approved" &&
+data.status !== "Rejected"
+){
 pendingCount++;
 }
 
@@ -1182,11 +1193,11 @@ ${data.username || 'Customer'}
 
 <div class="
 support-status
-${data.status === 'Reviewed'
+${data.status === 'Approved'
 ? 'reviewed-status'
 : 'pending-status'}
 ">
-${data.status || 'Pending'}
+${data.status || 'Pending Verification'}
 </div>
 
 </div>
@@ -1266,6 +1277,32 @@ Send Reply
 
 </div>
 
+<div class="verification-box">
+
+<div class="verification-title">
+🧾 Order Verification
+</div>
+
+<div class="verification-actions">
+
+<button
+class="accept-btn"
+onclick="approveOrder('${docSnap.id}')"
+>
+✅ Accept Payment
+</button>
+
+<button
+class="reject-btn"
+onclick="rejectOrder('${docSnap.id}')"
+>
+❌ Reject Payment
+</button>
+
+</div>
+
+</div>
+
 <div class="support-actions">
 
 <button
@@ -1294,8 +1331,6 @@ pendingMessages.innerHTML =
 pendingCount;
 
 });
-
-/* MARK REVIEWED */
 
 window.markReviewed =
 async function(id){
@@ -1327,8 +1362,6 @@ showStatus(
 }
 
 };
-
-/* SEND REPLY */
 
 window.sendReply = async function(id){
 
@@ -1379,7 +1412,76 @@ showStatus(
 
 };
 
-/* DELETE SUPPORT */
+window.approveOrder = async function(id){
+
+try{
+
+await updateDoc(
+doc(db,"supportMessages",id),
+{
+status:"Approved",
+verified:true,
+verifiedAt:new Date().toLocaleString()
+}
+);
+
+showStatus(
+"Order approved successfully ✔",
+"success"
+);
+
+}
+catch(error){
+
+console.log(error);
+
+showStatus(
+"Failed to approve order",
+"error"
+);
+
+}
+
+};
+
+window.rejectOrder = async function(id){
+
+const reason = prompt(
+"Why are you rejecting this payment?"
+);
+
+if(reason === null) return;
+
+try{
+
+await updateDoc(
+doc(db,"supportMessages",id),
+{
+status:"Rejected",
+rejectionReason:reason,
+verified:false,
+rejectedAt:new Date().toLocaleString()
+}
+);
+
+showStatus(
+"Order rejected",
+"success"
+);
+
+}
+catch(error){
+
+console.log(error);
+
+showStatus(
+"Failed to reject order",
+"error"
+);
+
+}
+
+};
 
 window.deleteSupport =
 async function(id){
@@ -1415,8 +1517,6 @@ showStatus(
 }
 
 };
-
-/* LOGOUT */
 
 window.logoutAdmin =
 async function(){
