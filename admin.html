@@ -6,21 +6,26 @@
 
 <title>Wintoliz Admin Panel</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:'Inter',sans-serif;
 }
 
 :root{
 --primary:#0f3d2e;
+--primary-light:#145c46;
 --bg:#f4f7f5;
 --white:#fff;
 --text:#111827;
 --danger:#dc2626;
+--success:#16a34a;
+--warning:#ea580c;
 }
 
 body{
@@ -30,7 +35,7 @@ color:var(--text);
 }
 
 .container{
-max-width:1400px;
+max-width:1500px;
 margin:auto;
 }
 
@@ -39,58 +44,63 @@ margin:auto;
 .topbar{
 background:linear-gradient(135deg,#0f3d2e,#145c46);
 padding:25px;
-border-radius:24px;
+border-radius:28px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:25px;
 color:#fff;
+box-shadow:0 15px 35px rgba(0,0,0,0.08);
+flex-wrap:wrap;
+gap:20px;
 }
 
 .topbar h1{
-font-size:34px;
+font-size:36px;
 font-weight:900;
 }
 
 .topbar p{
 opacity:0.9;
-margin-top:5px;
+margin-top:6px;
 }
 
 .logout-btn{
 background:#fff;
 color:#0f3d2e;
 border:none;
-padding:14px 18px;
-border-radius:14px;
+padding:14px 20px;
+border-radius:16px;
 font-weight:800;
 cursor:pointer;
+font-size:14px;
 }
 
 /* STATS */
 
 .stats{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:18px;
 margin-bottom:25px;
 }
 
 .stat-card{
 background:#fff;
-padding:22px;
-border-radius:20px;
+padding:24px;
+border-radius:24px;
 box-shadow:0 10px 30px rgba(0,0,0,0.05);
 }
 
 .stat-title{
 font-size:14px;
 color:#666;
-margin-bottom:8px;
+margin-bottom:10px;
+font-weight:600;
 }
 
 .stat-number{
-font-size:34px;
+font-size:36px;
 font-weight:900;
 color:#0f3d2e;
 }
@@ -99,21 +109,22 @@ color:#0f3d2e;
 
 .dashboard{
 display:grid;
-grid-template-columns:360px 1fr;
+grid-template-columns:380px 1fr;
 gap:24px;
+margin-bottom:24px;
 }
 
 .card{
 background:#fff;
 padding:24px;
-border-radius:24px;
+border-radius:28px;
 box-shadow:0 10px 30px rgba(0,0,0,0.05);
 }
 
 .section-title{
-font-size:24px;
+font-size:28px;
 font-weight:900;
-margin-bottom:20px;
+margin-bottom:22px;
 color:#0f3d2e;
 }
 
@@ -126,7 +137,8 @@ margin-bottom:18px;
 .input-group label{
 display:block;
 margin-bottom:8px;
-font-weight:700;
+font-weight:800;
+font-size:14px;
 }
 
 input,
@@ -134,10 +146,11 @@ textarea,
 select{
 width:100%;
 padding:15px;
-border-radius:14px;
+border-radius:16px;
 border:1px solid #ddd;
 outline:none;
 font-size:14px;
+background:#fff;
 }
 
 textarea{
@@ -145,13 +158,20 @@ resize:none;
 min-height:120px;
 }
 
+input:focus,
+textarea:focus,
+select:focus{
+border-color:#0f3d2e;
+}
+
 .btn{
 width:100%;
-padding:15px;
+padding:16px;
 border:none;
-border-radius:14px;
+border-radius:16px;
 font-weight:800;
 cursor:pointer;
+font-size:15px;
 }
 
 .primary-btn{
@@ -187,7 +207,7 @@ flex-wrap:wrap;
 }
 
 .search-box{
-width:280px;
+width:300px;
 }
 
 .search-box input{
@@ -196,7 +216,7 @@ width:100%;
 
 .products-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 }
 
@@ -204,19 +224,19 @@ gap:20px;
 
 .product-card{
 background:#fff;
-border-radius:22px;
+border-radius:24px;
 overflow:hidden;
 border:1px solid #eee;
 transition:0.3s;
 }
 
 .product-card:hover{
-transform:translateY(-5px);
-box-shadow:0 18px 35px rgba(0,0,0,0.08);
+transform:translateY(-6px);
+box-shadow:0 20px 40px rgba(0,0,0,0.08);
 }
 
 .product-image{
-height:220px;
+height:230px;
 overflow:hidden;
 background:#f5f7f6;
 }
@@ -228,35 +248,35 @@ object-fit:cover;
 }
 
 .product-content{
-padding:18px;
+padding:20px;
 }
 
 .badge{
 display:inline-block;
-padding:7px 12px;
+padding:8px 14px;
 background:#eef7f2;
 color:#0f3d2e;
 border-radius:999px;
 font-size:11px;
 font-weight:900;
-margin-bottom:12px;
+margin-bottom:14px;
 }
 
 .product-title{
-font-size:20px;
+font-size:22px;
 font-weight:900;
-margin-bottom:8px;
+margin-bottom:10px;
 }
 
 .product-description{
-font-size:13px;
-line-height:1.6;
+font-size:14px;
+line-height:1.7;
 color:#666;
 margin-bottom:14px;
 }
 
 .product-price{
-font-size:24px;
+font-size:28px;
 font-weight:900;
 color:#0f3d2e;
 margin-bottom:16px;
@@ -269,9 +289,9 @@ gap:10px;
 
 .action-btn{
 flex:1;
-padding:12px;
+padding:13px;
 border:none;
-border-radius:12px;
+border-radius:14px;
 font-weight:800;
 cursor:pointer;
 }
@@ -286,6 +306,105 @@ background:#dc2626;
 color:#fff;
 }
 
+/* SUPPORT */
+
+.support-grid{
+display:grid;
+gap:20px;
+}
+
+.support-card{
+background:#fff;
+border:1px solid #eee;
+border-radius:24px;
+padding:24px;
+box-shadow:0 10px 25px rgba(0,0,0,0.04);
+}
+
+.support-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+margin-bottom:16px;
+flex-wrap:wrap;
+}
+
+.support-name{
+font-size:24px;
+font-weight:900;
+color:#0f3d2e;
+}
+
+.support-status{
+padding:8px 16px;
+border-radius:999px;
+font-size:12px;
+font-weight:900;
+}
+
+.pending-status{
+background:#fff7ed;
+color:#ea580c;
+}
+
+.reviewed-status{
+background:#ecfdf5;
+color:#16a34a;
+}
+
+.support-meta{
+display:grid;
+gap:10px;
+margin-bottom:18px;
+font-size:14px;
+color:#555;
+}
+
+.support-message{
+background:#f7faf8;
+padding:18px;
+border-radius:18px;
+line-height:1.8;
+margin-bottom:18px;
+font-size:14px;
+}
+
+.support-image{
+width:100%;
+max-height:350px;
+object-fit:cover;
+border-radius:20px;
+margin-bottom:18px;
+border:1px solid #eee;
+}
+
+.support-actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.review-btn{
+padding:14px 18px;
+border:none;
+border-radius:14px;
+background:#0f3d2e;
+color:#fff;
+font-weight:800;
+cursor:pointer;
+}
+
+.delete-support-btn{
+padding:14px 18px;
+border:none;
+border-radius:14px;
+background:#dc2626;
+color:#fff;
+font-weight:800;
+cursor:pointer;
+}
+
 .empty{
 padding:50px 20px;
 text-align:center;
@@ -294,7 +413,7 @@ color:#666;
 
 /* RESPONSIVE */
 
-@media(max-width:1000px){
+@media(max-width:1100px){
 
 .dashboard{
 grid-template-columns:1fr;
@@ -311,7 +430,6 @@ padding:15px;
 .topbar{
 flex-direction:column;
 align-items:flex-start;
-gap:15px;
 }
 
 .products-header{
@@ -321,6 +439,11 @@ align-items:stretch;
 
 .search-box{
 width:100%;
+}
+
+.product-actions,
+.support-actions{
+flex-direction:column;
 }
 
 }
@@ -338,7 +461,7 @@ width:100%;
 
 <div>
 <h1>🧑‍💼 Wintoliz Admin</h1>
-<p>Manage marketplace products easily</p>
+<p>Manage products, orders and customer payment reviews</p>
 </div>
 
 <button class="logout-btn" onclick="logoutAdmin()">
@@ -359,6 +482,11 @@ Logout
 <div class="stat-card">
 <div class="stat-title">Categories</div>
 <div class="stat-number" id="totalCategories">0</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-title">Pending Support</div>
+<div class="stat-number" id="pendingMessages">0</div>
 </div>
 
 </div>
@@ -453,6 +581,24 @@ Loading products...
 
 </div>
 
+<!-- SUPPORT SECTION -->
+
+<div class="card">
+
+<h2 class="section-title">
+💬 Customer Payment Support
+</h2>
+
+<div id="supportMessages">
+
+<div class="empty">
+Loading support messages...
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 <script type="module">
@@ -475,7 +621,9 @@ deleteDoc,
 doc,
 updateDoc,
 onSnapshot,
-serverTimestamp
+serverTimestamp,
+query,
+orderBy
 }
 from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
@@ -502,26 +650,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = getFirestore(app);
-
-/* INPUTS */
-
-const nameInput =
-document.getElementById("name");
-
-const priceInput =
-document.getElementById("price");
-
-const categoryInput =
-document.getElementById("category");
-
-const imageInput =
-document.getElementById("image");
-
-const descriptionInput =
-document.getElementById("description");
-
-const submitBtn =
-document.getElementById("submitBtn");
 
 /* ADMIN EMAIL */
 
@@ -556,6 +684,26 @@ return;
 }
 
 });
+
+/* INPUTS */
+
+const nameInput =
+document.getElementById("name");
+
+const priceInput =
+document.getElementById("price");
+
+const categoryInput =
+document.getElementById("category");
+
+const imageInput =
+document.getElementById("image");
+
+const descriptionInput =
+document.getElementById("description");
+
+const submitBtn =
+document.getElementById("submitBtn");
 
 /* STATUS */
 
@@ -643,8 +791,6 @@ descriptionInput.value || ""
 
 try{
 
-/* UPDATE */
-
 if(editingProductId){
 
 await updateDoc(
@@ -662,11 +808,7 @@ submitBtn.innerHTML =
 
 editingProductId = null;
 
-}
-
-/* ADD */
-
-else{
+}else{
 
 await addDoc(
 collection(db,"products"),
@@ -682,8 +824,6 @@ showStatus(
 );
 
 }
-
-/* CLEAR FORM */
 
 nameInput.value = "";
 priceInput.value = "";
@@ -705,7 +845,7 @@ showStatus(
 
 };
 
-/* REALTIME PRODUCTS */
+/* LOAD PRODUCTS */
 
 onSnapshot(
 
@@ -732,7 +872,7 @@ renderProducts(allProducts);
 
 );
 
-/* RENDER */
+/* RENDER PRODUCTS */
 
 function renderProducts(products){
 
@@ -904,6 +1044,210 @@ doc(db,"products",id)
 
 showStatus(
 "Product deleted ✔",
+"success"
+);
+
+}
+catch(error){
+
+console.log(error);
+
+showStatus(
+"Delete failed",
+"error"
+);
+
+}
+
+};
+
+/* SUPPORT MESSAGES */
+
+const supportMessages =
+document.getElementById("supportMessages");
+
+const pendingMessages =
+document.getElementById("pendingMessages");
+
+const supportQuery = query(
+collection(db,"supportMessages"),
+orderBy("createdAt","desc")
+);
+
+onSnapshot(supportQuery,(snapshot)=>{
+
+if(snapshot.empty){
+
+supportMessages.innerHTML = `
+<div class="empty">
+No customer messages yet
+</div>
+`;
+
+pendingMessages.innerHTML = 0;
+
+return;
+
+}
+
+supportMessages.innerHTML = `
+<div class="support-grid"></div>
+`;
+
+const grid =
+supportMessages.querySelector(".support-grid");
+
+let pendingCount = 0;
+
+snapshot.forEach((docSnap)=>{
+
+const data = docSnap.data();
+
+if(data.status !== "Reviewed"){
+pendingCount++;
+}
+
+grid.innerHTML += `
+
+<div class="support-card">
+
+<div class="support-top">
+
+<div class="support-name">
+${data.username || 'Customer'}
+</div>
+
+<div class="
+support-status
+${data.status === 'Reviewed'
+? 'reviewed-status'
+: 'pending-status'}
+">
+${data.status || 'Pending'}
+</div>
+
+</div>
+
+<div class="support-meta">
+
+<div>
+📦 Order:
+<strong>${data.order || 'Farm Products'}</strong>
+</div>
+
+<div>
+💰 Amount:
+<strong>
+₦${Number(data.amount || 0).toLocaleString()}
+</strong>
+</div>
+
+<div>
+📅 Date:
+<strong>
+${data.date || ''}
+</strong>
+</div>
+
+</div>
+
+<div class="support-message">
+${data.message || ''}
+</div>
+
+${
+data.image
+? `
+<img
+src="${data.image}"
+class="support-image"
+>
+`
+: ''
+}
+
+<div class="support-actions">
+
+<button
+class="review-btn"
+onclick="markReviewed('${docSnap.id}')"
+>
+✔ Mark Reviewed
+</button>
+
+<button
+class="delete-support-btn"
+onclick="deleteSupport('${docSnap.id}')"
+>
+🗑 Delete
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+pendingMessages.innerHTML =
+pendingCount;
+
+});
+
+/* REVIEW */
+
+window.markReviewed =
+async function(id){
+
+try{
+
+await updateDoc(
+doc(db,"supportMessages",id),
+{
+status:"Reviewed"
+}
+);
+
+showStatus(
+"Message reviewed ✔",
+"success"
+);
+
+}
+catch(error){
+
+console.log(error);
+
+showStatus(
+"Failed to update",
+"error"
+);
+
+}
+
+};
+
+/* DELETE SUPPORT */
+
+window.deleteSupport =
+async function(id){
+
+const confirmDelete =
+confirm(
+"Delete this support message?"
+);
+
+if(!confirmDelete) return;
+
+try{
+
+await deleteDoc(
+doc(db,"supportMessages",id)
+);
+
+showStatus(
+"Message deleted ✔",
 "success"
 );
 
