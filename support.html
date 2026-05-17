@@ -185,7 +185,7 @@ border-radius:14px;
 margin-top:10px;
 }
 
-/* CHAT INPUT LIKE CHATGPT */
+/* CHAT INPUT */
 
 .chat-form{
 display:flex;
@@ -344,7 +344,7 @@ Support Team
 
 <div class="chat-input-area">
 
-<!-- IMAGE PREVIEW -->
+<!-- PREVIEW -->
 
 <div class="preview-box" id="previewBox">
 
@@ -379,7 +379,7 @@ class="file-input">
 
 <button
 class="send-btn"
-onclick="sendMessage()">
+onclick="window.sendMessage()">
 ➤
 </button>
 
@@ -551,7 +551,7 @@ console.log(error);
 
 };
 
-/* LOAD REALTIME CHAT */
+/* LOAD CHAT */
 
 const supportQuery = query(
 
@@ -634,14 +634,12 @@ ${chat.time || ''}
 
 });
 
-/* AUTO SCROLL */
-
 chatBody.scrollTop =
 chatBody.scrollHeight;
 
 });
 
-/* ENTER KEY */
+/* ENTER KEY SEND */
 
 messageInput.addEventListener(
 "keypress",
@@ -654,7 +652,7 @@ e.key === "Enter" &&
 
 e.preventDefault();
 
-sendMessage();
+window.sendMessage();
 
 }
 
