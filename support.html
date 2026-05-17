@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wintoliz Support Chat</title>
+<title>Wintoliz Support Team</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -19,210 +19,148 @@ font-family:'Inter',sans-serif;
 
 :root{
 --primary:#0f3d2e;
---primary2:#145c46;
+--primary-light:#145c46;
 --gold:#ffb800;
 --bg:#061510;
 --card:#0b1f18;
---text:#fff;
+--text:#ffffff;
 --muted:#9ca3af;
 --border:rgba(255,255,255,0.08);
+--admin:#123b2f;
 --user:#1f7a5a;
---admin:#1b2e27;
---shadow:0 20px 50px rgba(0,0,0,0.45);
 }
 
 body{
 background:
-linear-gradient(rgba(3,10,8,0.92),rgba(3,10,8,0.95)),
+linear-gradient(rgba(3,10,8,0.94),rgba(3,10,8,0.96)),
 url('https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1400&auto=format&fit=crop') center/cover fixed;
 min-height:100vh;
+padding:20px;
+color:var(--text);
 display:flex;
 justify-content:center;
 align-items:center;
-padding:20px;
-overflow:hidden;
 }
-
-/* CONTAINER */
 
 .chat-container{
 width:100%;
-max-width:1100px;
-height:94vh;
-background:rgba(7,18,14,0.95);
+max-width:950px;
+height:92vh;
+background:rgba(7,18,14,0.94);
 border:1px solid var(--border);
-border-radius:34px;
+border-radius:30px;
 overflow:hidden;
 display:flex;
 flex-direction:column;
-backdrop-filter:blur(16px);
-box-shadow:var(--shadow);
+backdrop-filter:blur(10px);
+box-shadow:0 25px 60px rgba(0,0,0,0.45);
 }
 
-/* HEADER */
-
 .chat-header{
-padding:18px 24px;
+padding:20px 24px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:rgba(255,255,255,0.03);
 border-bottom:1px solid rgba(255,255,255,0.06);
+background:rgba(255,255,255,0.02);
 }
 
-.header-left{
+.support-info{
 display:flex;
 align-items:center;
-gap:16px;
+gap:14px;
 }
 
-.avatar{
-width:62px;
-height:62px;
-border-radius:20px;
+.support-avatar{
+width:58px;
+height:58px;
+border-radius:18px;
 background:linear-gradient(135deg,#145c46,#1f7a5a);
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:26px;
+font-size:22px;
 font-weight:900;
-box-shadow:0 10px 20px rgba(0,0,0,0.2);
 }
 
-.header-text h2{
-font-size:23px;
+.support-text h2{
+font-size:22px;
 font-weight:900;
-color:#fff;
 margin-bottom:4px;
 }
 
-.header-text p{
+.support-text p{
 font-size:13px;
 color:#8ef0aa;
 }
 
 .back-btn{
-padding:14px 18px;
+padding:12px 18px;
 border:none;
-border-radius:16px;
+border-radius:14px;
 background:#fff;
 color:var(--primary);
 font-weight:800;
 cursor:pointer;
-transition:0.3s;
 }
-
-.back-btn:hover{
-transform:translateY(-2px);
-}
-
-/* CHAT BODY */
 
 .chat-body{
 flex:1;
-overflow-y:auto;
 padding:24px;
+overflow-y:auto;
 display:flex;
 flex-direction:column;
 gap:18px;
-scroll-behavior:smooth;
-background:
-linear-gradient(rgba(0,0,0,0.08),rgba(0,0,0,0.08)),
-url('https://www.transparenttextures.com/patterns/asfalt-light.png');
-}
-
-/* MESSAGE */
-
-.message-row{
-display:flex;
-flex-direction:column;
-max-width:78%;
-animation:fadeIn .25s ease;
-}
-
-.user-row{
-align-self:flex-end;
-}
-
-.admin-row{
-align-self:flex-start;
 }
 
 .message{
-padding:16px 18px;
-border-radius:24px;
+max-width:75%;
+padding:16px;
+border-radius:22px;
 line-height:1.7;
 font-size:14px;
+word-wrap:break-word;
 position:relative;
-word-break:break-word;
-backdrop-filter:blur(8px);
-}
-
-.user-message{
-background:linear-gradient(135deg,#1f7a5a,#145c46);
-border-bottom-right-radius:8px;
-box-shadow:0 10px 20px rgba(0,0,0,0.15);
 }
 
 .admin-message{
-background:#172923;
-border-bottom-left-radius:8px;
-border:1px solid rgba(255,255,255,0.05);
+background:var(--admin);
+align-self:flex-start;
+border-bottom-left-radius:6px;
 }
 
-.sender-name{
-font-size:12px;
-font-weight:800;
-margin-bottom:8px;
-opacity:0.8;
+.user-message{
+background:var(--user);
+align-self:flex-end;
+border-bottom-right-radius:6px;
 }
 
-.message-image{
+.message-time{
+font-size:11px;
+opacity:0.7;
+margin-top:10px;
+}
+
+.chat-image{
 width:100%;
 max-width:260px;
 border-radius:18px;
 margin-top:12px;
 border:2px solid rgba(255,255,255,0.08);
-display:block;
 }
-
-.message-footer{
-display:flex;
-justify-content:flex-end;
-align-items:center;
-gap:6px;
-margin-top:10px;
-font-size:11px;
-opacity:0.72;
-}
-
-.tick{
-font-size:13px;
-font-weight:900;
-}
-
-.seen{
-color:#4ade80;
-}
-
-.not-seen{
-color:#fff;
-}
-
-/* INPUT AREA */
 
 .chat-input-area{
-padding:18px;
-background:rgba(255,255,255,0.03);
+padding:20px;
 border-top:1px solid rgba(255,255,255,0.06);
+background:rgba(255,255,255,0.02);
 }
 
 .preview-box{
 display:none;
+margin-bottom:16px;
 background:#081811;
 padding:14px;
-border-radius:20px;
-margin-bottom:14px;
+border-radius:18px;
 border:1px solid rgba(255,255,255,0.06);
 }
 
@@ -235,57 +173,53 @@ margin-top:10px;
 
 .chat-form{
 display:flex;
-align-items:flex-end;
+align-items:center;
 gap:12px;
 background:#081811;
+border:1px solid rgba(255,255,255,0.06);
 padding:12px;
 border-radius:24px;
-border:1px solid rgba(255,255,255,0.06);
 }
 
 .textarea{
 flex:1;
-background:transparent;
+height:55px;
+resize:none;
 border:none;
 outline:none;
-resize:none;
-height:56px;
-max-height:120px;
-padding:14px 6px;
-font-size:14px;
+background:transparent;
 color:#fff;
-}
-
-.textarea::placeholder{
-color:#7d8b84;
-}
-
-.action-btn{
-width:54px;
-height:54px;
-border:none;
-border-radius:18px;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:20px;
-cursor:pointer;
-transition:0.3s;
-flex-shrink:0;
+font-size:14px;
+padding:14px 6px;
 }
 
 .upload-btn{
+width:50px;
+height:50px;
+border:none;
+border-radius:16px;
 background:#123b2f;
 color:#fff;
+font-size:18px;
+cursor:pointer;
+flex-shrink:0;
 }
 
 .send-btn{
+width:55px;
+height:55px;
+border:none;
+border-radius:18px;
 background:linear-gradient(135deg,#0f3d2e,#145c46,#1f7a5a);
 color:#fff;
+font-size:18px;
 font-weight:900;
+cursor:pointer;
+flex-shrink:0;
+transition:0.3s;
 }
 
-.action-btn:hover{
+.send-btn:hover{
 transform:scale(1.05);
 }
 
@@ -293,33 +227,7 @@ transform:scale(1.05);
 display:none;
 }
 
-/* SCROLLBAR */
-
-.chat-body::-webkit-scrollbar{
-width:6px;
-}
-
-.chat-body::-webkit-scrollbar-thumb{
-background:#1f7a5a;
-border-radius:999px;
-}
-
-/* ANIMATION */
-
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(10px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
+@media(max-width:700px){
 
 body{
 padding:0;
@@ -331,14 +239,13 @@ border-radius:0;
 }
 
 .chat-header{
-padding:16px;
+padding:18px;
+flex-direction:column;
+gap:16px;
+align-items:flex-start;
 }
 
-.header-text h2{
-font-size:20px;
-}
-
-.message-row{
+.message{
 max-width:92%;
 }
 
@@ -355,24 +262,22 @@ padding:18px;
 
 <div class="chat-container">
 
-<!-- HEADER -->
-
 <div class="chat-header">
 
-<div class="header-left">
+<div class="support-info">
 
-<div class="avatar">
+<div class="support-avatar">
 🎧
 </div>
 
-<div class="header-text">
+<div class="support-text">
 
 <h2>
-Wintoliz Support
+Wintoliz Support Team
 </h2>
 
 <p>
-Online • Secure Private Chat
+Online • Payment Verification Support
 </p>
 
 </div>
@@ -387,19 +292,38 @@ Dashboard
 
 </div>
 
-<!-- CHAT BODY -->
-
 <div class="chat-body" id="chatBody">
+
+<div class="message admin-message">
+
+Hello 👋 Welcome to Wintoliz Support.
+
+<br><br>
+
+Please send:
+
+<br><br>
+
+✅ Your payment screenshot
+<br>
+✅ Your payment details
+<br>
+✅ The amount you paid
+
+<div class="message-time">
+Support Team
 </div>
 
-<!-- INPUT -->
+</div>
+
+</div>
 
 <div class="chat-input-area">
 
 <div class="preview-box" id="previewBox">
 
-<div style="font-size:13px;font-weight:700;">
-Image Preview
+<div>
+Payment Screenshot Preview
 </div>
 
 <img id="previewImage">
@@ -409,8 +333,7 @@ Image Preview
 <div class="chat-form">
 
 <button
-class="action-btn upload-btn"
-type="button"
+class="upload-btn"
 onclick="document.getElementById('fileInput').click()">
 📎
 </button>
@@ -418,7 +341,7 @@ onclick="document.getElementById('fileInput').click()">
 <textarea
 class="textarea"
 id="messageInput"
-placeholder="Type your message..."></textarea>
+placeholder="Type a message..."></textarea>
 
 <input
 type="file"
@@ -427,9 +350,8 @@ id="fileInput"
 class="file-input">
 
 <button
-class="action-btn send-btn"
-type="button"
-onclick="sendMessage()">
+class="send-btn"
+onclick="window.sendMessage()">
 ➤
 </button>
 
@@ -451,10 +373,7 @@ addDoc,
 query,
 where,
 onSnapshot,
-serverTimestamp,
-orderBy,
-updateDoc,
-doc
+serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
@@ -480,17 +399,7 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-/* USER */
-
-const currentUser =
-JSON.parse(localStorage.getItem("wintolizUser")) || {
-username:"Guest"
-};
-
-const username =
-currentUser.username || "Guest";
-
-/* PRIVATE CHAT */
+/* USER CHAT ID */
 
 let supportChatId =
 localStorage.getItem("supportChatId");
@@ -526,7 +435,7 @@ document.getElementById("previewImage");
 
 let uploadedImage = "";
 
-/* FILE */
+/* FILE UPLOAD */
 
 fileInput.addEventListener("change",(e)=>{
 
@@ -553,7 +462,7 @@ reader.readAsDataURL(file);
 
 });
 
-/* SEND */
+/* SEND MESSAGE */
 
 window.sendMessage =
 async function(){
@@ -563,7 +472,9 @@ messageInput.value.trim();
 
 if(text === "" &&
 uploadedImage === ""){
+
 return;
+
 }
 
 try{
@@ -574,15 +485,13 @@ collection(db,"supportMessages"),
 
 chatId:supportChatId,
 
-username:username,
-
 text:text,
 
 image:uploadedImage,
 
 sender:"user",
 
-seen:false,
+status:"Pending",
 
 createdAt:serverTimestamp(),
 
@@ -593,6 +502,8 @@ minute:'2-digit'
 
 }
 );
+
+/* RESET */
 
 messageInput.value = "";
 
@@ -614,102 +525,65 @@ alert(error.message);
 
 };
 
-/* QUERY */
+/* LOAD CHAT */
 
 const supportQuery = query(
-
 collection(db,"supportMessages"),
-
-where("chatId","==",supportChatId),
-
-orderBy("createdAt","asc")
-
+where("chatId","==",supportChatId)
 );
 
-/* REALTIME */
+onSnapshot(supportQuery,(snapshot)=>{
 
-onSnapshot(supportQuery,async(snapshot)=>{
-
-chatBody.innerHTML = '';
-
-/* WELCOME */
-
-chatBody.innerHTML += `
-
-<div class="message-row admin-row">
+chatBody.innerHTML = `
 
 <div class="message admin-message">
 
-<div class="sender-name">
-Support Team
-</div>
-
-Hello ${username} 👋
+Hello 👋 Welcome to Wintoliz Support.
 
 <br><br>
 
-Welcome to Wintoliz Support.
+Please send:
 
 <br><br>
 
-✅ Send payment screenshot
+✅ Your payment screenshot
 <br>
-✅ Send payment details
+✅ Your payment details
 <br>
-✅ Send amount paid
+✅ The amount you paid
 
-<div class="message-footer">
+<div class="message-time">
 Support Team
-</div>
-
 </div>
 
 </div>
 
 `;
 
-for(const item of snapshot.docs){
+const messages = [];
 
-const chat = {
-id:item.id,
-...item.data()
-};
+snapshot.forEach((doc)=>{
 
-/* MARK ADMIN MSG SEEN */
+messages.push(doc.data());
 
-if(
-chat.sender === "admin" &&
-chat.seen !== true
-){
+});
 
-await updateDoc(
-doc(db,"supportMessages",chat.id),
-{
-seen:true
-}
-);
+messages.sort((a,b)=>{
 
-}
+if(!a.createdAt || !b.createdAt) return 0;
+
+return a.createdAt.seconds - b.createdAt.seconds;
+
+});
+
+messages.forEach((chat)=>{
 
 chatBody.innerHTML += `
-
-<div class="message-row
-${chat.sender === 'admin'
-? 'admin-row'
-: 'user-row'}">
 
 <div class="message
 ${chat.sender === 'admin'
 ? 'admin-message'
 : 'user-message'}">
-
-<div class="sender-name">
-
-${chat.sender === 'admin'
-? 'Support Team'
-: chat.username}
-
-</div>
 
 ${chat.text || ''}
 
@@ -717,45 +591,26 @@ ${chat.image ? `
 
 <img
 src="${chat.image}"
-class="message-image">
+class="chat-image">
 
 ` : ''}
 
-<div class="message-footer">
-
+<div class="message-time">
 ${chat.time || ''}
-
-${chat.sender === 'user'
-? `
-
-<span class="tick
-${chat.seen ? 'seen' : 'not-seen'}">
-
-${chat.seen ? '✔✔' : '✔'}
-
-</span>
-
-`
-: ''}
-
-</div>
-
 </div>
 
 </div>
 
 `;
 
-}
-
-/* AUTO SCROLL */
+});
 
 chatBody.scrollTop =
 chatBody.scrollHeight;
 
 });
 
-/* ENTER SEND */
+/* ENTER KEY SEND */
 
 messageInput.addEventListener(
 "keydown",
