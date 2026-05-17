@@ -321,6 +321,8 @@ Dashboard
 
 Hello 👋 Welcome to Wintoliz Support.
 
+<br><br>
+
 Please send:
 <br><br>
 
@@ -387,13 +389,61 @@ Send Message
 
 </div>
 
-<script>
+<script type="module">
 
-/* STORAGE */
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 
-let chats = JSON.parse(
-localStorage.getItem("wintolizSupportChats")
-) || [];
+import {
+getFirestore,
+collection,
+addDoc,
+query,
+where,
+orderBy,
+onSnapshot,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+/* FIREBASE */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+
+authDomain: "wintoliz-2dca5.firebaseapp.com",
+
+projectId: "wintoliz-2dca5",
+
+storageBucket: "wintoliz-2dca5.firebasestorage.app",
+
+messagingSenderId: "469698295508",
+
+appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+/* USER CHAT ID */
+
+let supportChatId =
+localStorage.getItem("supportChatId");
+
+if(!supportChatId){
+
+supportChatId =
+"CHAT-" + Date.now();
+
+localStorage.setItem(
+"supportChatId",
+supportChatId
+);
+
+}
 
 /* ELEMENTS */
 
@@ -426,11 +476,14 @@ const reader = new FileReader();
 
 reader.onload = function(event){
 
-uploadedImage = event.target.result;
+uploadedImage =
+event.target.result;
 
-previewBox.style.display = "block";
+previewBox.style.display =
+"block";
 
-previewImage.src = uploadedImage;
+previewImage.src =
+uploadedImage;
 
 };
 
@@ -440,65 +493,48 @@ reader.readAsDataURL(file);
 
 /* SEND MESSAGE */
 
-function sendMessage(){
+window.sendMessage =
+async function(){
 
-const text = messageInput.value.trim();
+const text =
+messageInput.value.trim();
 
-if(text === "" && uploadedImage === ""){
+if(text === "" &&
+uploadedImage === ""){
 
-alert("Please type a message or upload a screenshot");
+alert(
+"Please type a message or upload a screenshot"
+);
 
 return;
 
 }
 
-const message = {
+try{
+
+await addDoc(
+collection(db,"supportMessages"),
+{
+
+chatId:supportChatId,
 
 text:text,
+
 image:uploadedImage,
+
 sender:"user",
+
+status:"Pending",
+
+createdAt:serverTimestamp(),
+
 time:new Date().toLocaleTimeString([],{
 hour:'2-digit',
 minute:'2-digit'
 })
 
-};
-
-chats.push(message);
-
-localStorage.setItem(
-"wintolizSupportChats",
-JSON.stringify(chats)
+}
 );
-
-renderMessages();
-
-/* AUTO REPLY */
-
-setTimeout(()=>{
-
-const adminReply = {
-
-text:"Thank you. Your payment proof has been received and is being verified by our support team.",
-image:"",
-sender:"admin",
-time:new Date().toLocaleTimeString([],{
-hour:'2-digit',
-minute:'2-digit'
-})
-
-};
-
-chats.push(adminReply);
-
-localStorage.setItem(
-"wintolizSupportChats",
-JSON.stringify(chats)
-);
-
-renderMessages();
-
-},1500);
 
 /* RESET */
 
@@ -508,13 +544,33 @@ uploadedImage = "";
 
 fileInput.value = "";
 
-previewBox.style.display = "none";
+previewBox.style.display =
+"none";
+
+}
+catch(error){
+
+console.log(error);
+
+alert("Failed to send message");
 
 }
 
-/* RENDER */
+};
 
-function renderMessages(){
+/* LOAD REALTIME CHAT */
+
+const supportQuery = query(
+
+collection(db,"supportMessages"),
+
+where("chatId","==",supportChatId),
+
+orderBy("createdAt","asc")
+
+);
+
+onSnapshot(supportQuery,(snapshot)=>{
 
 chatBody.innerHTML = `
 
@@ -541,24 +597,29 @@ Support Team
 
 `;
 
-chats.forEach(chat=>{
+snapshot.forEach((doc)=>{
+
+const chat = doc.data();
 
 chatBody.innerHTML += `
 
-<div class="message ${chat.sender === 'admin'
+<div class="message
+${chat.sender === 'admin'
 ? 'admin-message'
 : 'user-message'}">
 
-${chat.text}
+${chat.text || ''}
 
 ${chat.image ? `
+
 <img
 src="${chat.image}"
 class="chat-image">
+
 ` : ''}
 
 <div class="message-time">
-${chat.time}
+${chat.time || ''}
 </div>
 
 </div>
@@ -572,13 +633,18 @@ ${chat.time}
 chatBody.scrollTop =
 chatBody.scrollHeight;
 
-}
+});
 
 /* ENTER KEY */
 
-messageInput.addEventListener("keypress",(e)=>{
+messageInput.addEventListener(
+"keypress",
+(e)=>{
 
-if(e.key === "Enter" && !e.shiftKey){
+if(
+e.key === "Enter" &&
+!e.shiftKey
+){
 
 e.preventDefault();
 
@@ -586,11 +652,8 @@ sendMessage();
 
 }
 
-});
-
-/* INITIAL RENDER */
-
-renderMessages();
+}
+);
 
 </script>
 
