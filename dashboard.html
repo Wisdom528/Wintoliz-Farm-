@@ -23,6 +23,7 @@ font-family:'Inter',sans-serif;
 :root{
 --primary:#0f3d2e;
 --primary-light:#145c46;
+--gold:#ffb800;
 --bg:#f4f7f5;
 --card:#ffffff;
 --text:#111827;
@@ -44,33 +45,50 @@ overflow-x:hidden;
 position:sticky;
 top:0;
 z-index:1000;
-background:rgba(15,61,46,0.96);
+background:rgba(15,61,46,0.97);
 backdrop-filter:blur(12px);
 padding:16px 24px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
 }
 
-.logo{
+/* LOGO */
+
+.logo-area{
 display:flex;
 align-items:center;
-gap:12px;
-color:#fff;
-font-weight:900;
-font-size:24px;
+gap:14px;
 }
 
-.logo-icon{
-width:48px;
-height:48px;
-border-radius:14px;
-background:rgba(255,255,255,0.1);
+.logo-box{
+width:58px;
+height:58px;
+border-radius:18px;
+overflow:hidden;
+background:rgba(255,255,255,0.08);
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:24px;
+padding:6px;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.logo-box img{
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+.logo-text{
+font-size:26px;
+font-weight:900;
+color:#fff;
+}
+
+.logo-text span{
+color:var(--gold);
 }
 
 /* NAV */
@@ -87,22 +105,42 @@ border-radius:14px;
 font-weight:800;
 cursor:pointer;
 color:var(--primary);
+font-size:14px;
 }
 
 .dropdown{
 position:absolute;
-top:60px;
+top:65px;
 right:0;
 width:260px;
 background:#fff;
-border-radius:20px;
-box-shadow:0 20px 40px rgba(0,0,0,0.15);
+border-radius:22px;
+box-shadow:0 25px 50px rgba(0,0,0,0.18);
 padding:12px;
 display:none;
+overflow:hidden;
 }
 
 .dropdown.active{
 display:block;
+}
+
+.user-box{
+padding:16px;
+background:#f7faf8;
+border-radius:16px;
+margin-bottom:10px;
+}
+
+.user-box h3{
+font-size:18px;
+margin-bottom:4px;
+}
+
+.user-box p{
+font-size:13px;
+color:var(--muted);
+word-break:break-word;
 }
 
 .dropdown a,
@@ -131,7 +169,7 @@ background:#f3f4f6;
 /* HERO */
 
 .hero{
-padding:40px 24px;
+padding:45px 24px;
 background:
 linear-gradient(rgba(10,30,20,0.85),rgba(10,30,20,0.88)),
 url('https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1400&auto=format&fit=crop') center/cover;
@@ -139,27 +177,26 @@ color:#fff;
 }
 
 .hero h1{
-font-size:38px;
+font-size:40px;
 font-weight:900;
-margin-bottom:10px;
+margin-bottom:12px;
 }
 
 .hero p{
-max-width:700px;
-line-height:1.7;
+max-width:720px;
+line-height:1.8;
 opacity:0.92;
+font-size:15px;
 }
 
-/* MAIN */
+/* STATS */
 
 .container{
 padding:24px;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
 }
-
-/* CARDS */
 
 .card{
 background:#fff;
@@ -167,25 +204,30 @@ border-radius:24px;
 padding:24px;
 box-shadow:var(--shadow);
 border:1px solid rgba(0,0,0,0.04);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
 }
 
 .card-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:20px;
+margin-bottom:18px;
 }
 
 .card-title{
-font-size:15px;
-color:var(--muted);
+font-size:14px;
 font-weight:700;
+color:var(--muted);
 }
 
 .icon{
-width:52px;
-height:52px;
-border-radius:16px;
+width:54px;
+height:54px;
+border-radius:18px;
 background:#eef7f2;
 display:flex;
 justify-content:center;
@@ -194,10 +236,10 @@ font-size:24px;
 }
 
 .card-number{
-font-size:34px;
+font-size:36px;
 font-weight:900;
 color:var(--primary);
-margin-bottom:8px;
+margin-bottom:6px;
 }
 
 .card-sub{
@@ -205,7 +247,7 @@ font-size:13px;
 color:var(--muted);
 }
 
-/* BIG SECTION */
+/* SECTION */
 
 .full-section{
 padding:0 24px 30px;
@@ -213,7 +255,7 @@ padding:0 24px 30px;
 
 .section-card{
 background:#fff;
-border-radius:24px;
+border-radius:26px;
 padding:24px;
 box-shadow:var(--shadow);
 }
@@ -242,7 +284,7 @@ gap:16px;
 .order{
 padding:18px;
 border:1px solid #eee;
-border-radius:18px;
+border-radius:20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -256,8 +298,8 @@ margin-bottom:6px;
 }
 
 .order-left p{
-color:var(--muted);
 font-size:14px;
+color:var(--muted);
 }
 
 .status{
@@ -277,7 +319,7 @@ background:#ecfdf5;
 color:#16a34a;
 }
 
-/* BUTTONS */
+/* ACTION BUTTONS */
 
 .action-buttons{
 display:grid;
@@ -302,6 +344,94 @@ transition:0.3s;
 transform:translateY(-4px);
 }
 
+/* PROFILE MODAL */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.45);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:3000;
+padding:20px;
+}
+
+.modal.active{
+display:flex;
+}
+
+.modal-content{
+width:100%;
+max-width:480px;
+background:#fff;
+border-radius:28px;
+padding:28px;
+animation:popup 0.3s ease;
+}
+
+@keyframes popup{
+from{
+transform:scale(0.9);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+.modal-content h2{
+font-size:28px;
+margin-bottom:20px;
+}
+
+.form-group{
+margin-bottom:18px;
+}
+
+.form-group label{
+display:block;
+margin-bottom:8px;
+font-weight:700;
+font-size:14px;
+}
+
+.form-group input{
+width:100%;
+padding:15px;
+border-radius:14px;
+border:1px solid #ddd;
+outline:none;
+font-size:15px;
+}
+
+.save-btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+color:#fff;
+font-weight:800;
+font-size:15px;
+cursor:pointer;
+}
+
+.close-btn{
+margin-top:12px;
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+background:#f3f4f6;
+font-weight:700;
+cursor:pointer;
+}
+
 /* EMPTY */
 
 .empty{
@@ -319,7 +449,7 @@ padding:16px;
 }
 
 .hero{
-padding:30px 16px;
+padding:32px 16px;
 }
 
 .hero h1{
@@ -334,7 +464,11 @@ padding-right:16px;
 
 .dropdown{
 width:230px;
-right:-10px;
+right:-8px;
+}
+
+.logo-text{
+font-size:22px;
 }
 
 }
@@ -348,9 +482,16 @@ right:-10px;
 
 <div class="topbar">
 
-<div class="logo">
-<div class="logo-icon">🌾</div>
-Wintoliz
+<div class="logo-area">
+
+<div class="logo-box">
+<img src="./asset/image/image.png" alt="Logo">
+</div>
+
+<div class="logo-text">
+<span>Wintoliz</span> Farms
+</div>
+
 </div>
 
 <div class="nav-area">
@@ -361,21 +502,27 @@ Wintoliz
 
 <div class="dropdown" id="dropdownMenu">
 
+<div class="user-box">
+<h3 id="menuUsername">
+User
+</h3>
+
+<p id="menuEmail">
+user@gmail.com
+</p>
+</div>
+
 <a href="product.html">
 🏪 Marketplace
 </a>
 
-<a href="#">
+<a href="#ordersSection">
 📦 My Orders
 </a>
 
-<a href="#">
-👤 My Account
-</a>
-
-<a href="#">
-⚙ Settings
-</a>
+<button onclick="openProfileModal()">
+👤 Edit Profile
+</button>
 
 <button onclick="logout()">
 🚪 Logout
@@ -393,11 +540,14 @@ Wintoliz
 
 <h1>
 Welcome back,
-<span id="usernameDisplay">User</span> 👋
+<span id="usernameDisplay">
+User
+</span> 👋
 </h1>
 
 <p>
-Track your orders, monitor purchases, access your marketplace account and manage your Wintoliz activities professionally.
+Track your marketplace orders, manage your Wintoliz account,
+monitor purchases and enjoy a professional shopping experience.
 </p>
 
 </div>
@@ -409,6 +559,7 @@ Track your orders, monitor purchases, access your marketplace account and manage
 <div class="card">
 
 <div class="card-top">
+
 <div class="card-title">
 Total Orders
 </div>
@@ -416,6 +567,7 @@ Total Orders
 <div class="icon">
 📦
 </div>
+
 </div>
 
 <div class="card-number" id="totalOrders">
@@ -431,6 +583,7 @@ Orders you have placed
 <div class="card">
 
 <div class="card-top">
+
 <div class="card-title">
 Total Spent
 </div>
@@ -438,6 +591,7 @@ Total Spent
 <div class="icon">
 💰
 </div>
+
 </div>
 
 <div class="card-number" id="totalSpent">
@@ -453,6 +607,7 @@ Amount spent on marketplace
 <div class="card">
 
 <div class="card-top">
+
 <div class="card-title">
 Pending Orders
 </div>
@@ -460,6 +615,7 @@ Pending Orders
 <div class="icon">
 🕒
 </div>
+
 </div>
 
 <div class="card-number" id="pendingOrders">
@@ -467,7 +623,7 @@ Pending Orders
 </div>
 
 <div class="card-sub">
-Currently processing
+Orders processing
 </div>
 
 </div>
@@ -475,6 +631,7 @@ Currently processing
 <div class="card">
 
 <div class="card-top">
+
 <div class="card-title">
 Completed Orders
 </div>
@@ -482,6 +639,7 @@ Completed Orders
 <div class="icon">
 ✅
 </div>
+
 </div>
 
 <div class="card-number" id="completedOrders">
@@ -489,7 +647,7 @@ Completed Orders
 </div>
 
 <div class="card-sub">
-Delivered successfully
+Delivered orders
 </div>
 
 </div>
@@ -498,7 +656,7 @@ Delivered successfully
 
 <!-- ORDERS -->
 
-<div class="full-section">
+<div class="full-section" id="ordersSection">
 
 <div class="section-card">
 
@@ -536,7 +694,7 @@ Track Orders
 
 <button
 class="action-btn"
-onclick="openAccount()"
+onclick="openProfileModal()"
 >
 My Account
 </button>
@@ -547,15 +705,65 @@ My Account
 
 </div>
 
+<!-- PROFILE MODAL -->
+
+<div class="modal" id="profileModal">
+
+<div class="modal-content">
+
+<h2>
+Edit Profile
+</h2>
+
+<div class="form-group">
+<label>Username</label>
+<input type="text" id="editUsername">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="editEmail">
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="editPassword">
+</div>
+
+<button class="save-btn" onclick="saveProfile()">
+Save Changes
+</button>
+
+<button class="close-btn" onclick="closeProfileModal()">
+Close
+</button>
+
+</div>
+
+</div>
+
 <script>
 
-/* USERNAME */
+/* USER DATA */
 
-const username =
-localStorage.getItem("wintolizUsername") || "User";
+let userData = JSON.parse(
+localStorage.getItem("wintolizUser")
+) || {
+username:"User",
+email:"user@gmail.com",
+password:""
+};
+
+/* DISPLAY USER */
 
 document.getElementById("usernameDisplay").innerText =
-username;
+userData.username;
+
+document.getElementById("menuUsername").innerText =
+userData.username;
+
+document.getElementById("menuEmail").innerText =
+userData.email;
 
 /* MENU */
 
@@ -571,9 +779,7 @@ document
 
 window.addEventListener("click",(e)=>{
 
-if(
-!e.target.closest(".nav-area")
-){
+if(!e.target.closest(".nav-area")){
 
 document
 .getElementById("dropdownMenu")
@@ -583,19 +789,17 @@ document
 
 });
 
-/* SAMPLE USER ORDERS */
+/* ORDERS */
 
 let orders = JSON.parse(
 localStorage.getItem("wintolizOrders")
 ) || [];
 
-/* LOAD DASHBOARD */
-
 function loadDashboard(){
 
 const userOrders =
 orders.filter(
-o => o.username === username
+o => o.username === userData.username
 );
 
 document.getElementById("totalOrders").innerText =
@@ -603,7 +807,7 @@ userOrders.length;
 
 const totalSpent =
 userOrders.reduce(
-(sum,o)=>sum + o.total,
+(sum,o)=>sum + Number(o.total || 0),
 0
 );
 
@@ -654,11 +858,11 @@ ordersList.innerHTML += `
 <div class="order-left">
 
 <h3>
-${order.product}
+${order.product || 'Marketplace Order'}
 </h3>
 
 <p>
-${order.date}
+${order.date || 'No Date'}
 </p>
 
 </div>
@@ -670,11 +874,11 @@ font-weight:900;
 margin-bottom:8px;
 text-align:right;
 ">
-₦${Number(order.total).toLocaleString()}
+₦${Number(order.total || 0).toLocaleString()}
 </div>
 
 <div class="status ${order.status === 'Completed' ? 'completed' : 'pending'}">
-${order.status}
+${order.status || 'Pending'}
 </div>
 
 </div>
@@ -689,31 +893,95 @@ ${order.status}
 
 loadDashboard();
 
+/* PROFILE MODAL */
+
+function openProfileModal(){
+
+document.getElementById("profileModal")
+.classList.add("active");
+
+document.getElementById("editUsername").value =
+userData.username;
+
+document.getElementById("editEmail").value =
+userData.email;
+
+document.getElementById("editPassword").value =
+userData.password;
+
+}
+
+function closeProfileModal(){
+
+document.getElementById("profileModal")
+.classList.remove("active");
+
+}
+
+/* SAVE PROFILE */
+
+function saveProfile(){
+
+const newUsername =
+document.getElementById("editUsername").value;
+
+const newEmail =
+document.getElementById("editEmail").value;
+
+const newPassword =
+document.getElementById("editPassword").value;
+
+if(!newUsername || !newEmail){
+
+alert("Fill all required fields");
+return;
+
+}
+
+userData = {
+username:newUsername,
+email:newEmail,
+password:newPassword
+};
+
+localStorage.setItem(
+"wintolizUser",
+JSON.stringify(userData)
+);
+
+/* UPDATE DISPLAY */
+
+document.getElementById("usernameDisplay").innerText =
+newUsername;
+
+document.getElementById("menuUsername").innerText =
+newUsername;
+
+document.getElementById("menuEmail").innerText =
+newEmail;
+
+closeProfileModal();
+
+alert("Profile updated successfully");
+
+}
+
 /* FUNCTIONS */
 
 function scrollToOrders(){
 
-window.scrollTo({
-top:700,
+document.getElementById("ordersSection")
+.scrollIntoView({
 behavior:"smooth"
 });
 
 }
 
-function openAccount(){
-
-alert(
-"Account settings coming soon"
-);
-
-}
-
 function logout(){
 
-localStorage.removeItem("wintolizUsername");
+localStorage.removeItem("wintolizUser");
 
-window.location.href =
-"index.html";
+window.location.href = "index.html";
 
 }
 
