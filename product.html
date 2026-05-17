@@ -9,13 +9,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:'Inter',sans-serif;
 }
 
 :root{
@@ -47,8 +49,6 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 box-shadow:0 5px 20px rgba(0,0,0,0.1);
-flex-wrap:wrap;
-gap:15px;
 }
 
 /* LOGO */
@@ -60,9 +60,9 @@ gap:12px;
 }
 
 .logo-image-wrapper{
-width:54px;
-height:54px;
-border-radius:14px;
+width:55px;
+height:55px;
+border-radius:16px;
 overflow:hidden;
 background:rgba(255,255,255,0.1);
 padding:6px;
@@ -84,7 +84,7 @@ color:#fff;
 color:var(--gold);
 }
 
-/* NAVIGATION */
+/* NAV */
 
 nav{
 display:flex;
@@ -93,26 +93,21 @@ gap:12px;
 position:relative;
 }
 
-/* MOBILE BUTTON */
-
 .menu-toggle{
 display:none;
 background:var(--gold);
 border:none;
 padding:10px 14px;
 border-radius:12px;
-font-size:20px;
+font-size:22px;
 font-weight:900;
 cursor:pointer;
 }
-
-/* MENU */
 
 .nav-menu{
 display:flex;
 align-items:center;
 gap:12px;
-flex-wrap:wrap;
 }
 
 .nav-link{
@@ -158,7 +153,7 @@ cursor:pointer;
 /* HERO */
 
 .hero{
-padding:60px 20px;
+padding:70px 20px;
 text-align:center;
 background:
 linear-gradient(rgba(10,30,20,0.85),rgba(10,30,20,0.9)),
@@ -167,16 +162,16 @@ color:#fff;
 }
 
 .hero h1{
-font-size:44px;
+font-size:48px;
 font-weight:900;
-margin-bottom:10px;
+margin-bottom:12px;
 }
 
 .hero p{
 max-width:700px;
 margin:auto;
-opacity:0.9;
-line-height:1.7;
+line-height:1.8;
+opacity:0.95;
 }
 
 /* LAYOUT */
@@ -184,7 +179,7 @@ line-height:1.7;
 .wrapper{
 display:grid;
 grid-template-columns:260px 1fr;
-gap:20px;
+gap:24px;
 padding:25px;
 }
 
@@ -193,25 +188,30 @@ padding:25px;
 .sidebar{
 background:#fff;
 padding:20px;
-border-radius:20px;
+border-radius:24px;
 height:fit-content;
 box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+.sidebar h3{
+margin-bottom:14px;
+font-size:18px;
 }
 
 .search-box input{
 width:100%;
 padding:14px;
-border-radius:12px;
+border-radius:14px;
 border:1px solid #ddd;
 outline:none;
-margin-bottom:18px;
+margin-bottom:20px;
 }
 
 .filter-item{
 display:flex;
-gap:8px;
-margin-bottom:10px;
-font-size:14px;
+gap:10px;
+margin-bottom:12px;
+font-size:15px;
 cursor:pointer;
 }
 
@@ -219,15 +219,15 @@ cursor:pointer;
 
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:22px;
 }
 
 /* CARD */
 
 .card{
 background:#fff;
-border-radius:20px;
+border-radius:22px;
 overflow:hidden;
 box-shadow:0 10px 25px rgba(0,0,0,0.06);
 transition:0.3s;
@@ -239,7 +239,7 @@ transform:translateY(-6px);
 }
 
 .card-image{
-height:190px;
+height:210px;
 overflow:hidden;
 background:#f3f6f4;
 }
@@ -251,50 +251,50 @@ object-fit:cover;
 }
 
 .card-content{
-padding:16px;
+padding:18px;
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:12px;
 }
 
 .category{
 display:inline-block;
-padding:6px 10px;
+padding:7px 12px;
 border-radius:999px;
 background:#eef7f2;
 color:var(--primary);
-font-size:11px;
+font-size:12px;
 font-weight:800;
 width:fit-content;
 }
 
 .card h3{
-font-size:17px;
+font-size:19px;
 font-weight:900;
 }
 
 .description{
-font-size:13px;
+font-size:14px;
 color:var(--muted);
-line-height:1.5;
-min-height:38px;
+line-height:1.6;
 }
 
 .price{
-font-size:20px;
+font-size:24px;
 font-weight:900;
 color:var(--primary);
 }
 
 .btn{
 width:100%;
-padding:13px;
+padding:14px;
 border:none;
-border-radius:14px;
+border-radius:16px;
 background:linear-gradient(135deg,#0f3d2e,#145c46);
 color:#fff;
 font-weight:800;
 cursor:pointer;
+font-size:15px;
 }
 
 /* CART */
@@ -319,7 +319,7 @@ right:0;
 
 .cart-header{
 padding:20px;
-font-size:20px;
+font-size:22px;
 font-weight:900;
 border-bottom:1px solid #eee;
 }
@@ -333,10 +333,10 @@ padding:15px;
 .cart-item{
 display:flex;
 justify-content:space-between;
-padding:14px;
+padding:15px;
 background:#f7faf8;
-border-radius:14px;
-margin-bottom:10px;
+border-radius:16px;
+margin-bottom:12px;
 }
 
 .cart-footer{
@@ -345,19 +345,19 @@ border-top:1px solid #eee;
 }
 
 .total{
-font-size:18px;
+font-size:20px;
 font-weight:900;
 margin-bottom:12px;
 }
 
 .cart-btn{
 width:100%;
-padding:12px;
+padding:14px;
 border:none;
-border-radius:12px;
+border-radius:14px;
 font-weight:800;
 cursor:pointer;
-margin-bottom:8px;
+margin-bottom:10px;
 }
 
 .checkout{
@@ -386,7 +386,7 @@ display:block;
 
 .empty{
 text-align:center;
-padding:30px;
+padding:40px;
 color:#666;
 }
 
@@ -399,16 +399,16 @@ grid-template-columns:1fr;
 }
 
 .hero h1{
-font-size:32px;
-}
-
-header{
-padding:16px;
+font-size:34px;
 }
 
 }
 
 @media(max-width:768px){
+
+header{
+padding:16px;
+}
 
 .menu-toggle{
 display:block;
@@ -610,17 +610,17 @@ from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 const firebaseConfig = {
 
-apiKey: "YOUR_API_KEY",
+apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
 
-authDomain: "YOUR_AUTH_DOMAIN",
+authDomain: "wintoliz-2dca5.firebaseapp.com",
 
-projectId: "YOUR_PROJECT_ID",
+projectId: "wintoliz-2dca5",
 
-storageBucket: "YOUR_STORAGE_BUCKET",
+storageBucket: "wintoliz-2dca5.firebasestorage.app",
 
-messagingSenderId: "YOUR_MESSAGING_ID",
+messagingSenderId: "469698295508",
 
-appId: "YOUR_APP_ID"
+appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
 
 };
 
@@ -640,16 +640,17 @@ onAuthStateChanged(auth, (user) => {
 
 if(user){
 
+console.log("User logged in");
+
 if(user.email === ADMIN_EMAIL){
 
 document.getElementById("adminBtn").style.display = "block";
 
 }
 
-}
-else{
+}else{
 
-window.location.href = "index.html";
+console.log("No active session");
 
 }
 
@@ -685,11 +686,26 @@ console.log(error);
 
 /* CART */
 
-let cart = [];
+let cart = JSON.parse(
+localStorage.getItem("wintolizCart")
+) || [];
+
+updateCart();
+
+function saveCart(){
+
+localStorage.setItem(
+"wintolizCart",
+JSON.stringify(cart)
+);
+
+}
 
 window.addToCart = function(name, price){
 
 cart.push({name, price});
+
+saveCart();
 
 updateCart();
 
@@ -704,6 +720,16 @@ let box = document.getElementById("cartItems");
 box.innerHTML = "";
 
 let total = 0;
+
+if(cart.length === 0){
+
+box.innerHTML = `
+<div class="empty">
+Cart is empty
+</div>
+`;
+
+}
 
 cart.forEach(i=>{
 
@@ -749,6 +775,8 @@ document.getElementById("overlay")
 window.clearCart = () => {
 
 cart = [];
+
+saveCart();
 
 updateCart();
 
@@ -943,9 +971,14 @@ try{
 
 await addDoc(collection(db,"orders"),{
 
+username:
+localStorage.getItem("wintolizUsername") || "Guest",
+
 items: cart,
 
 total: cart.reduce((s,i)=>s+i.price,0),
+
+status:"Pending",
 
 createdAt: serverTimestamp()
 
@@ -954,6 +987,8 @@ createdAt: serverTimestamp()
 alert("Order placed successfully!");
 
 cart = [];
+
+saveCart();
 
 updateCart();
 
