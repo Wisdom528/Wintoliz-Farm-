@@ -626,6 +626,8 @@ No orders placed yet
 
 </div>
 
+
+
 <script>
 
 /* MOBILE NAV */
@@ -643,19 +645,24 @@ document
 const user = JSON.parse(
 localStorage.getItem('wintolizUser')
 ) || {
-username:'User'
+username:'Guest'
 };
+
+/* UNIQUE STORAGE KEYS FOR EACH USER */
+
+const CART_KEY = `wintolizCart_${user.username}`;
+const ORDER_KEY = `wintolizOrders_${user.username}`;
 
 /* CART */
 
 let cart = JSON.parse(
-localStorage.getItem('wintolizCart')
+localStorage.getItem(CART_KEY)
 ) || [];
 
 /* ORDERS */
 
 let orders = JSON.parse(
-localStorage.getItem('wintolizOrders')
+localStorage.getItem(ORDER_KEY)
 ) || [];
 
 /* RENDER CART */
@@ -816,8 +823,19 @@ renderCart();
 function saveCart(){
 
 localStorage.setItem(
-'wintolizCart',
+CART_KEY,
 JSON.stringify(cart)
+);
+
+}
+
+/* SAVE ORDERS */
+
+function saveOrders(){
+
+localStorage.setItem(
+ORDER_KEY,
+JSON.stringify(orders)
 );
 
 }
@@ -838,6 +856,13 @@ localStorage.setItem(
 JSON.stringify(cart)
 );
 
+/* SAVE CURRENT USER */
+
+localStorage.setItem(
+'wintolizCheckoutUser',
+JSON.stringify(user)
+);
+
 /* GO TO PAYMENT PAGE */
 
 window.location.href = 'payment.html';
@@ -851,10 +876,7 @@ function renderOrders(){
 const ordersList =
 document.getElementById('ordersList');
 
-const userOrders =
-orders.filter(o=>o.username === user.username);
-
-if(userOrders.length === 0){
+if(orders.length === 0){
 
 ordersList.innerHTML = `
 <div class="empty">
@@ -868,7 +890,7 @@ return;
 
 ordersList.innerHTML = '';
 
-userOrders.forEach(order=>{
+orders.forEach(order=>{
 
 ordersList.innerHTML += `
 
@@ -925,6 +947,7 @@ renderCart();
 renderOrders();
 
 </script>
+
 
 </body>
 </html>
