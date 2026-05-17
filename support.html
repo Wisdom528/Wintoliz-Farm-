@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Wintoliz Support Team</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+:root{
+--primary:#0f3d2e;
+--primary-light:#145c46;
+--gold:#ffb800;
+--bg:#061510;
+--card:#0b1f18;
+--text:#ffffff;
+--muted:#9ca3af;
+--border:rgba(255,255,255,0.08);
+--admin:#123b2f;
+--user:#1f7a5a;
+}
+
+body{
+background:
+linear-gradient(rgba(3,10,8,0.94),rgba(3,10,8,0.96)),
+url('https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1400&auto=format&fit=crop') center/cover fixed;
+min-height:100vh;
+padding:20px;
+color:var(--text);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* CHAT CONTAINER */
+
+.chat-container{
+width:100%;
+max-width:950px;
+height:92vh;
+background:rgba(7,18,14,0.94);
+border:1px solid var(--border);
+border-radius:30px;
+overflow:hidden;
+display:flex;
+flex-direction:column;
+backdrop-filter:blur(10px);
+box-shadow:0 25px 60px rgba(0,0,0,0.45);
+}
+
+/* HEADER */
+
+.chat-header{
+padding:20px 24px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid rgba(255,255,255,0.06);
+background:rgba(255,255,255,0.02);
+}
+
+.support-info{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.support-avatar{
+width:58px;
+height:58px;
+border-radius:18px;
+background:linear-gradient(135deg,#145c46,#1f7a5a);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:22px;
+font-weight:900;
+}
+
+.support-text h2{
+font-size:22px;
+font-weight:900;
+margin-bottom:4px;
+}
+
+.support-text p{
+font-size:13px;
+color:#8ef0aa;
+}
+
+.back-btn{
+padding:12px 18px;
+border:none;
+border-radius:14px;
+background:#fff;
+color:var(--primary);
+font-weight:800;
+cursor:pointer;
+}
+
+/* CHAT BODY */
+
+.chat-body{
+flex:1;
+padding:24px;
+overflow-y:auto;
+display:flex;
+flex-direction:column;
+gap:18px;
+}
+
+/* MESSAGE */
+
+.message{
+max-width:75%;
+padding:16px;
+border-radius:22px;
+line-height:1.7;
+font-size:14px;
+word-wrap:break-word;
+position:relative;
+}
+
+.admin-message{
+background:var(--admin);
+align-self:flex-start;
+border-bottom-left-radius:6px;
+}
+
+.user-message{
+background:var(--user);
+align-self:flex-end;
+border-bottom-right-radius:6px;
+}
+
+.message-time{
+font-size:11px;
+opacity:0.7;
+margin-top:10px;
+}
+
+/* IMAGE */
+
+.chat-image{
+width:100%;
+max-width:260px;
+border-radius:18px;
+margin-top:12px;
+border:2px solid rgba(255,255,255,0.08);
+}
+
+/* INPUT AREA */
+
+.chat-input-area{
+padding:20px;
+border-top:1px solid rgba(255,255,255,0.06);
+background:rgba(255,255,255,0.02);
+}
+
+.preview-box{
+display:none;
+margin-bottom:16px;
+background:#081811;
+padding:14px;
+border-radius:18px;
+border:1px solid rgba(255,255,255,0.06);
+}
+
+.preview-box img{
+width:100%;
+max-width:180px;
+border-radius:14px;
+margin-top:10px;
+}
+
+.chat-form{
+display:flex;
+gap:12px;
+align-items:flex-end;
+flex-wrap:wrap;
+}
+
+.textarea{
+flex:1;
+min-height:65px;
+max-height:160px;
+resize:none;
+border:none;
+outline:none;
+background:#081811;
+padding:18px;
+border-radius:20px;
+color:#fff;
+font-size:14px;
+border:1px solid rgba(255,255,255,0.05);
+}
+
+.upload-btn{
+padding:16px 18px;
+border:none;
+border-radius:18px;
+background:#1a2d26;
+color:#fff;
+font-weight:800;
+cursor:pointer;
+}
+
+.send-btn{
+padding:16px 24px;
+border:none;
+border-radius:18px;
+background:linear-gradient(135deg,#0f3d2e,#145c46,#1f7a5a);
+color:#fff;
+font-weight:900;
+cursor:pointer;
+transition:0.3s;
+}
+
+.send-btn:hover{
+transform:translateY(-2px);
+}
+
+.file-input{
+display:none;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+body{
+padding:0;
+}
+
+.chat-container{
+height:100vh;
+border-radius:0;
+}
+
+.chat-header{
+padding:18px;
+flex-direction:column;
+gap:16px;
+align-items:flex-start;
+}
+
+.message{
+max-width:92%;
+}
+
+.chat-body{
+padding:18px;
+}
+
+.chat-form{
+flex-direction:column;
+align-items:stretch;
+}
+
+.send-btn,
+.upload-btn{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+
+<!-- HEADER -->
+
+<div class="chat-header">
+
+<div class="support-info">
+
+<div class="support-avatar">
+🎧
+</div>
+
+<div class="support-text">
+
+<h2>
+Wintoliz Support Team
+</h2>
+
+<p>
+Online • Payment Verification Support
+</p>
+
+</div>
+
+</div>
+
+<button
+class="back-btn"
+onclick="window.location.href='dashboard.html'">
+Dashboard
+</button>
+
+</div>
+
+<!-- CHAT BODY -->
+
+<div class="chat-body" id="chatBody">
+
+<div class="message admin-message">
+
+Hello 👋 Welcome to Wintoliz Support.
+
+Please send:
+<br><br>
+
+✅ Your payment screenshot
+<br>
+✅ Your payment details
+<br>
+✅ The amount you paid
+
+<div class="message-time">
+Support Team
+</div>
+
+</div>
+
+</div>
+
+<!-- INPUT AREA -->
+
+<div class="chat-input-area">
+
+<!-- IMAGE PREVIEW -->
+
+<div class="preview-box" id="previewBox">
+
+<div>
+Payment Screenshot Preview
+</div>
+
+<img id="previewImage">
+
+</div>
+
+<!-- FORM -->
+
+<div class="chat-form">
+
+<textarea
+class="textarea"
+id="messageInput"
+placeholder="Type a message to the support team..."></textarea>
+
+<input
+type="file"
+accept="image/*"
+id="fileInput"
+class="file-input">
+
+<button
+class="upload-btn"
+onclick="document.getElementById('fileInput').click()">
+📎 Upload Screenshot
+</button>
+
+<button
+class="send-btn"
+onclick="sendMessage()">
+Send Message
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* STORAGE */
+
+let chats = JSON.parse(
+localStorage.getItem("wintolizSupportChats")
+) || [];
+
+/* ELEMENTS */
+
+const chatBody =
+document.getElementById("chatBody");
+
+const messageInput =
+document.getElementById("messageInput");
+
+const fileInput =
+document.getElementById("fileInput");
+
+const previewBox =
+document.getElementById("previewBox");
+
+const previewImage =
+document.getElementById("previewImage");
+
+let uploadedImage = "";
+
+/* FILE UPLOAD */
+
+fileInput.addEventListener("change",(e)=>{
+
+const file = e.target.files[0];
+
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+
+uploadedImage = event.target.result;
+
+previewBox.style.display = "block";
+
+previewImage.src = uploadedImage;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+/* SEND MESSAGE */
+
+function sendMessage(){
+
+const text = messageInput.value.trim();
+
+if(text === "" && uploadedImage === ""){
+
+alert("Please type a message or upload a screenshot");
+
+return;
+
+}
+
+const message = {
+
+text:text,
+image:uploadedImage,
+sender:"user",
+time:new Date().toLocaleTimeString([],{
+hour:'2-digit',
+minute:'2-digit'
+})
+
+};
+
+chats.push(message);
+
+localStorage.setItem(
+"wintolizSupportChats",
+JSON.stringify(chats)
+);
+
+renderMessages();
+
+/* AUTO REPLY */
+
+setTimeout(()=>{
+
+const adminReply = {
+
+text:"Thank you. Your payment proof has been received and is being verified by our support team.",
+image:"",
+sender:"admin",
+time:new Date().toLocaleTimeString([],{
+hour:'2-digit',
+minute:'2-digit'
+})
+
+};
+
+chats.push(adminReply);
+
+localStorage.setItem(
+"wintolizSupportChats",
+JSON.stringify(chats)
+);
+
+renderMessages();
+
+},1500);
+
+/* RESET */
+
+messageInput.value = "";
+
+uploadedImage = "";
+
+fileInput.value = "";
+
+previewBox.style.display = "none";
+
+}
+
+/* RENDER */
+
+function renderMessages(){
+
+chatBody.innerHTML = `
+
+<div class="message admin-message">
+
+Hello 👋 Welcome to Wintoliz Support.
+
+<br><br>
+
+Please send:
+<br><br>
+
+✅ Your payment screenshot
+<br>
+✅ Your payment details
+<br>
+✅ The amount you paid
+
+<div class="message-time">
+Support Team
+</div>
+
+</div>
+
+`;
+
+chats.forEach(chat=>{
+
+chatBody.innerHTML += `
+
+<div class="message ${chat.sender === 'admin'
+? 'admin-message'
+: 'user-message'}">
+
+${chat.text}
+
+${chat.image ? `
+<img
+src="${chat.image}"
+class="chat-image">
+` : ''}
+
+<div class="message-time">
+${chat.time}
+</div>
+
+</div>
+
+`;
+
+});
+
+/* AUTO SCROLL */
+
+chatBody.scrollTop =
+chatBody.scrollHeight;
+
+}
+
+/* ENTER KEY */
+
+messageInput.addEventListener("keypress",(e)=>{
+
+if(e.key === "Enter" && !e.shiftKey){
+
+e.preventDefault();
+
+sendMessage();
+
+}
+
+});
+
+/* INITIAL RENDER */
+
+renderMessages();
+
+</script>
+
+</body>
+</html>
