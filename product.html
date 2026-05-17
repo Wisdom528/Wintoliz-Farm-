@@ -535,7 +535,7 @@ document.getElementById("adminBtn").style.display = "block";
 
 }
 
-/* SAVE USER FOR CART SYSTEM */
+/* SAVE USER */
 
 const savedUser = {
 
@@ -588,7 +588,7 @@ console.log(error);
 
 };
 
-/* GET CURRENT USER */
+/* CURRENT USER */
 
 const currentUser = JSON.parse(
 localStorage.getItem("wintolizUser")
@@ -596,7 +596,7 @@ localStorage.getItem("wintolizUser")
 username:"guest"
 };
 
-/* UNIQUE USER CART KEY */
+/* UNIQUE USER CART */
 
 const CART_KEY =
 `wintolizCart_${currentUser.username}`;
@@ -647,7 +647,7 @@ qty: 1
 
 saveCart();
 
-alert(product.name + " added to cart");
+/* DIRECTLY GO TO CART */
 
 window.location.href = "cart.html";
 
