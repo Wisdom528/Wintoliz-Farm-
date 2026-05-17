@@ -167,6 +167,8 @@ border-top:1px solid rgba(255,255,255,0.06);
 background:rgba(255,255,255,0.02);
 }
 
+/* PREVIEW */
+
 .preview-box{
 display:none;
 margin-bottom:16px;
@@ -183,51 +185,58 @@ border-radius:14px;
 margin-top:10px;
 }
 
+/* CHAT INPUT LIKE CHATGPT */
+
 .chat-form{
 display:flex;
+align-items:center;
 gap:12px;
-align-items:flex-end;
-flex-wrap:wrap;
+background:#081811;
+border:1px solid rgba(255,255,255,0.06);
+padding:12px;
+border-radius:24px;
 }
 
 .textarea{
 flex:1;
-min-height:65px;
-max-height:160px;
+height:55px;
 resize:none;
 border:none;
 outline:none;
-background:#081811;
-padding:18px;
-border-radius:20px;
+background:transparent;
 color:#fff;
 font-size:14px;
-border:1px solid rgba(255,255,255,0.05);
+padding:14px 6px;
 }
 
 .upload-btn{
-padding:16px 18px;
+width:50px;
+height:50px;
 border:none;
-border-radius:18px;
-background:#1a2d26;
+border-radius:16px;
+background:#123b2f;
 color:#fff;
-font-weight:800;
+font-size:18px;
 cursor:pointer;
+flex-shrink:0;
 }
 
 .send-btn{
-padding:16px 24px;
+width:55px;
+height:55px;
 border:none;
 border-radius:18px;
 background:linear-gradient(135deg,#0f3d2e,#145c46,#1f7a5a);
 color:#fff;
+font-size:18px;
 font-weight:900;
 cursor:pointer;
+flex-shrink:0;
 transition:0.3s;
 }
 
 .send-btn:hover{
-transform:translateY(-2px);
+transform:scale(1.05);
 }
 
 .file-input{
@@ -260,16 +269,6 @@ max-width:92%;
 
 .chat-body{
 padding:18px;
-}
-
-.chat-form{
-flex-direction:column;
-align-items:stretch;
-}
-
-.send-btn,
-.upload-btn{
-width:100%;
 }
 
 }
@@ -324,6 +323,7 @@ Hello 👋 Welcome to Wintoliz Support.
 <br><br>
 
 Please send:
+
 <br><br>
 
 ✅ Your payment screenshot
@@ -356,14 +356,20 @@ Payment Screenshot Preview
 
 </div>
 
-<!-- FORM -->
+<!-- CHAT FORM -->
 
 <div class="chat-form">
+
+<button
+class="upload-btn"
+onclick="document.getElementById('fileInput').click()">
+📎
+</button>
 
 <textarea
 class="textarea"
 id="messageInput"
-placeholder="Type a message to the support team..."></textarea>
+placeholder="Type a message..."></textarea>
 
 <input
 type="file"
@@ -372,15 +378,9 @@ id="fileInput"
 class="file-input">
 
 <button
-class="upload-btn"
-onclick="document.getElementById('fileInput').click()">
-📎 Upload Screenshot
-</button>
-
-<button
 class="send-btn"
 onclick="sendMessage()">
-Send Message
+➤
 </button>
 
 </div>
@@ -400,7 +400,6 @@ collection,
 addDoc,
 query,
 where,
-orderBy,
 onSnapshot,
 serverTimestamp
 }
@@ -502,10 +501,6 @@ messageInput.value.trim();
 if(text === "" &&
 uploadedImage === ""){
 
-alert(
-"Please type a message or upload a screenshot"
-);
-
 return;
 
 }
@@ -552,8 +547,6 @@ catch(error){
 
 console.log(error);
 
-alert("Failed to send message");
-
 }
 
 };
@@ -564,9 +557,7 @@ const supportQuery = query(
 
 collection(db,"supportMessages"),
 
-where("chatId","==",supportChatId),
-
-orderBy("createdAt","asc")
+where("chatId","==",supportChatId)
 
 );
 
@@ -581,6 +572,7 @@ Hello 👋 Welcome to Wintoliz Support.
 <br><br>
 
 Please send:
+
 <br><br>
 
 ✅ Your payment screenshot
@@ -597,9 +589,23 @@ Support Team
 
 `;
 
+const messages = [];
+
 snapshot.forEach((doc)=>{
 
-const chat = doc.data();
+messages.push(doc.data());
+
+});
+
+messages.sort((a,b)=>{
+
+if(!a.createdAt || !b.createdAt) return 0;
+
+return a.createdAt.seconds - b.createdAt.seconds;
+
+});
+
+messages.forEach((chat)=>{
 
 chatBody.innerHTML += `
 
