@@ -353,6 +353,101 @@ background:#ecfdf5;
 color:#16a34a;
 }
 
+.support-meta{
+display:grid;
+gap:10px;
+margin-bottom:18px;
+font-size:14px;
+color:#555;
+}
+
+.support-message{
+background:#f7faf8;
+padding:18px;
+border-radius:18px;
+line-height:1.8;
+margin-bottom:18px;
+font-size:14px;
+}
+
+.support-image{
+width:100%;
+max-height:350px;
+object-fit:cover;
+border-radius:20px;
+margin-bottom:18px;
+border:1px solid #eee;
+}
+
+/* ADMIN REPLY */
+
+.admin-reply-box{
+margin-top:20px;
+}
+
+.admin-reply{
+background:#ecfdf5;
+padding:18px;
+border-radius:18px;
+border:1px solid #bbf7d0;
+margin-bottom:18px;
+}
+
+.reply-label{
+font-size:13px;
+font-weight:900;
+color:#15803d;
+margin-bottom:10px;
+}
+
+.reply-message{
+font-size:14px;
+line-height:1.8;
+color:#14532d;
+}
+
+.reply-time{
+margin-top:12px;
+font-size:12px;
+color:#666;
+}
+
+.reply-textarea{
+width:100%;
+min-height:110px;
+padding:16px;
+border-radius:18px;
+border:1px solid #ddd;
+resize:none;
+outline:none;
+margin-bottom:12px;
+font-size:14px;
+}
+
+.reply-textarea:focus{
+border-color:#0f3d2e;
+}
+
+.send-reply-btn{
+padding:14px 18px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+color:#fff;
+font-weight:800;
+cursor:pointer;
+width:100%;
+}
+
+/* ACTIONS */
+
+.support-actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-top:18px;
+}
+
 .review-btn{
 padding:14px 18px;
 border:none;
@@ -378,6 +473,8 @@ padding:50px 20px;
 text-align:center;
 color:#666;
 }
+
+/* RESPONSIVE */
 
 @media(max-width:1100px){
 
@@ -407,6 +504,11 @@ align-items:stretch;
 width:100%;
 }
 
+.product-actions,
+.support-actions{
+flex-direction:column;
+}
+
 }
 
 </style>
@@ -416,11 +518,13 @@ width:100%;
 
 <div class="container">
 
+<!-- TOPBAR -->
+
 <div class="topbar">
 
 <div>
 <h1>🧑‍💼 Wintoliz Admin</h1>
-<p>Manage products and customer support chats</p>
+<p>Manage products, orders and customer payment reviews</p>
 </div>
 
 <button class="logout-btn" onclick="logoutAdmin()">
@@ -428,6 +532,8 @@ Logout
 </button>
 
 </div>
+
+<!-- STATS -->
 
 <div class="stats">
 
@@ -442,13 +548,17 @@ Logout
 </div>
 
 <div class="stat-card">
-<div class="stat-title">Pending Chats</div>
+<div class="stat-title">Pending Support</div>
 <div class="stat-number" id="pendingMessages">0</div>
 </div>
 
 </div>
 
+<!-- DASHBOARD -->
+
 <div class="dashboard">
+
+<!-- LEFT -->
 
 <div class="card">
 
@@ -495,11 +605,14 @@ Add Product
 <button
 class="btn primary-btn"
 id="submitBtn"
-onclick="saveProduct()">
+onclick="saveProduct()"
+>
 Add Product
 </button>
 
 </div>
+
+<!-- RIGHT -->
 
 <div class="card">
 
@@ -513,7 +626,8 @@ Marketplace Products
 <input
 type="text"
 id="searchInput"
-placeholder="Search products...">
+placeholder="Search products..."
+>
 </div>
 
 </div>
@@ -530,16 +644,18 @@ Loading products...
 
 </div>
 
+<!-- SUPPORT SECTION -->
+
 <div class="card">
 
 <h2 class="section-title">
-💬 Customer Support Chats
+💬 Customer Payment Support
 </h2>
 
 <div id="supportMessages">
 
 <div class="empty">
-Loading chats...
+Loading support messages...
 </div>
 
 </div>
@@ -632,6 +748,26 @@ return;
 
 });
 
+/* INPUTS */
+
+const nameInput =
+document.getElementById("name");
+
+const priceInput =
+document.getElementById("price");
+
+const categoryInput =
+document.getElementById("category");
+
+const imageInput =
+document.getElementById("image");
+
+const descriptionInput =
+document.getElementById("description");
+
+const submitBtn =
+document.getElementById("submitBtn");
+
 /* STATUS */
 
 const statusBox =
@@ -652,7 +788,343 @@ statusBox.innerHTML = "";
 
 }
 
-/* SUPPORT CHAT SYSTEM */
+/* VALIDATE */
+
+function validate(){
+
+if(
+!nameInput.value ||
+!priceInput.value ||
+!categoryInput.value
+){
+
+showStatus(
+"Fill all required fields",
+"error"
+);
+
+return false;
+
+}
+
+return true;
+
+}
+
+/* PRODUCTS */
+
+const productsList =
+document.getElementById("productsList");
+
+const totalProducts =
+document.getElementById("totalProducts");
+
+const totalCategories =
+document.getElementById("totalCategories");
+
+const searchInput =
+document.getElementById("searchInput");
+
+let allProducts = [];
+
+let editingProductId = null;
+
+/* SAVE PRODUCT */
+
+window.saveProduct = async function(){
+
+if(!validate()) return;
+
+const productData = {
+
+name:nameInput.value,
+
+price:Number(priceInput.value),
+
+category:categoryInput.value,
+
+image:
+imageInput.value ||
+"https://via.placeholder.com/500x400",
+
+description:
+descriptionInput.value || ""
+
+};
+
+try{
+
+if(editingProductId){
+
+await updateDoc(
+doc(db,"products",editingProductId),
+productData
+);
+
+showStatus(
+"Product updated ✔",
+"success"
+);
+
+submitBtn.innerHTML =
+"Add Product";
+
+editingProductId = null;
+
+}else{
+
+await addDoc(
+collection(db,"products"),
+{
+...productData,
+createdAt:serverTimestamp()
+}
+);
+
+showStatus(
+"Product added ✔",
+"success"
+);
+
+}
+
+nameInput.value = "";
+priceInput.value = "";
+categoryInput.value = "";
+imageInput.value = "";
+descriptionInput.value = "";
+
+}
+catch(error){
+
+console.log(error);
+
+showStatus(
+"Operation failed",
+"error"
+);
+
+}
+
+};
+
+/* LOAD PRODUCTS */
+
+onSnapshot(
+
+collection(db,"products"),
+
+(snapshot)=>{
+
+allProducts = [];
+
+snapshot.forEach((docSnap)=>{
+
+allProducts.push({
+
+id:docSnap.id,
+...docSnap.data()
+
+});
+
+});
+
+renderProducts(allProducts);
+
+}
+
+);
+
+/* RENDER PRODUCTS */
+
+function renderProducts(products){
+
+productsList.innerHTML = "";
+
+if(products.length === 0){
+
+productsList.innerHTML = `
+<div class="empty">
+No products found
+</div>
+`;
+
+totalProducts.innerHTML = 0;
+totalCategories.innerHTML = 0;
+
+return;
+
+}
+
+totalProducts.innerHTML =
+products.length;
+
+const categories = [
+...new Set(products.map(
+p => p.category
+))
+];
+
+totalCategories.innerHTML =
+categories.length;
+
+products.forEach((p)=>{
+
+productsList.innerHTML += `
+
+<div class="product-card">
+
+<div class="product-image">
+
+<img
+src="${p.image}"
+alt="${p.name}"
+>
+
+</div>
+
+<div class="product-content">
+
+<div class="badge">
+${p.category}
+</div>
+
+<div class="product-title">
+${p.name}
+</div>
+
+<div class="product-description">
+${p.description}
+</div>
+
+<div class="product-price">
+₦${Number(p.price).toLocaleString()}
+</div>
+
+<div class="product-actions">
+
+<button
+class="action-btn edit-btn"
+onclick="editProduct('${p.id}')"
+>
+Edit
+</button>
+
+<button
+class="action-btn delete-btn"
+onclick="deleteProduct('${p.id}')"
+>
+Delete
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* SEARCH */
+
+searchInput.addEventListener(
+"input",
+()=>{
+
+const keyword =
+searchInput.value.toLowerCase();
+
+const filtered =
+allProducts.filter((p)=>
+p.name.toLowerCase()
+.includes(keyword)
+);
+
+renderProducts(filtered);
+
+}
+);
+
+/* EDIT */
+
+window.editProduct = function(id){
+
+const product =
+allProducts.find(
+p => p.id === id
+);
+
+if(!product) return;
+
+editingProductId = id;
+
+nameInput.value =
+product.name;
+
+priceInput.value =
+product.price;
+
+categoryInput.value =
+product.category;
+
+imageInput.value =
+product.image;
+
+descriptionInput.value =
+product.description;
+
+submitBtn.innerHTML =
+"Update Product";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+};
+
+/* DELETE */
+
+window.deleteProduct =
+async function(id){
+
+const confirmDelete =
+confirm(
+"Delete this product?"
+);
+
+if(!confirmDelete) return;
+
+try{
+
+await deleteDoc(
+doc(db,"products",id)
+);
+
+showStatus(
+"Product deleted ✔",
+"success"
+);
+
+}
+catch(error){
+
+console.log(error);
+
+showStatus(
+"Delete failed",
+"error"
+);
+
+}
+
+};
+
+/* SUPPORT */
 
 const supportMessages =
 document.getElementById("supportMessages");
@@ -661,7 +1133,7 @@ const pendingMessages =
 document.getElementById("pendingMessages");
 
 const supportQuery = query(
-collection(db,"supportChats"),
+collection(db,"supportMessages"),
 orderBy("createdAt","desc")
 );
 
@@ -671,7 +1143,7 @@ if(snapshot.empty){
 
 supportMessages.innerHTML = `
 <div class="empty">
-No customer chats yet
+No customer messages yet
 </div>
 `;
 
@@ -681,8 +1153,9 @@ return;
 
 }
 
-supportMessages.innerHTML =
-`<div class="support-grid"></div>`;
+supportMessages.innerHTML = `
+<div class="support-grid"></div>
+`;
 
 const grid =
 supportMessages.querySelector(".support-grid");
@@ -718,47 +1191,95 @@ ${data.status || 'Pending'}
 
 </div>
 
-<div style="
-margin-bottom:18px;
-font-size:14px;
-color:#666;
-">
-Chat ID:
-<strong>${docSnap.id}</strong>
+<div class="support-meta">
+
+<div>
+📦 Order:
+<strong>${data.order || 'Farm Products'}</strong>
 </div>
 
-<div id="messages-${docSnap.id}">
-Loading messages...
+<div>
+💰 Amount:
+<strong>
+₦${Number(data.amount || 0).toLocaleString()}
+</strong>
 </div>
 
-<div style="
-margin-top:18px;
-display:flex;
-gap:12px;
-flex-wrap:wrap;
-">
+<div>
+📅 Date:
+<strong>
+${data.date || ''}
+</strong>
+</div>
+
+</div>
+
+<div class="support-message">
+${data.message || ''}
+</div>
+
+${
+data.image
+? `
+<img
+src="${data.image}"
+class="support-image"
+>
+`
+: ''
+}
+
+<div class="admin-reply-box">
+
+${data.adminReply ? `
+
+<div class="admin-reply">
+
+<div class="reply-label">
+🛡 Admin Reply
+</div>
+
+<div class="reply-message">
+${data.adminReply}
+</div>
+
+<div class="reply-time">
+${data.replyTime || ''}
+</div>
+
+</div>
+
+` : `
 
 <textarea
+class="reply-textarea"
 id="reply-${docSnap.id}"
-placeholder="Reply customer..."
-style="
-flex:1;
-min-height:70px;
-padding:14px;
-border-radius:14px;
-border:1px solid #ddd;
-"></textarea>
+placeholder="Type a reply to customer..."></textarea>
 
 <button
-class="review-btn"
+class="send-reply-btn"
 onclick="sendReply('${docSnap.id}')">
 Send Reply
 </button>
 
+`}
+
+</div>
+
+<div class="support-actions">
+
+<button
+class="review-btn"
+onclick="markReviewed('${docSnap.id}')"
+>
+✔ Mark Reviewed
+</button>
+
 <button
 class="delete-support-btn"
-onclick="deleteChat('${docSnap.id}')">
-Delete Chat
+onclick="deleteSupport('${docSnap.id}')"
+>
+🗑 Delete
 </button>
 
 </div>
@@ -766,8 +1287,6 @@ Delete Chat
 </div>
 
 `;
-
-loadMessages(docSnap.id);
 
 });
 
@@ -776,141 +1295,73 @@ pendingCount;
 
 });
 
-/* LOAD MESSAGES */
+/* MARK REVIEWED */
 
-function loadMessages(chatId){
-
-const messagesBox =
-document.getElementById(`messages-${chatId}`);
-
-const messagesQuery = query(
-collection(
-db,
-"supportChats",
-chatId,
-"messages"
-),
-orderBy("createdAt","asc")
-);
-
-onSnapshot(messagesQuery,(snapshot)=>{
-
-messagesBox.innerHTML = "";
-
-snapshot.forEach((msg)=>{
-
-const data = msg.data();
-
-messagesBox.innerHTML += `
-
-<div style="
-background:${data.sender === 'admin'
-? '#eef7f2'
-: '#f7faf8'};
-padding:16px;
-border-radius:16px;
-margin-bottom:12px;
-">
-
-<div style="
-font-weight:800;
-margin-bottom:8px;
-color:#0f3d2e;
-">
-${data.sender === 'admin'
-? 'Admin'
-: 'Customer'}
-</div>
-
-<div style="
-line-height:1.7;
-margin-bottom:10px;
-">
-${data.text || ''}
-</div>
-
-${
-data.image
-? `
-<img
-src="${data.image}"
-style="
-width:100%;
-max-height:250px;
-object-fit:cover;
-border-radius:16px;
-margin-top:10px;
-">
-`
-: ''
-}
-
-<div style="
-font-size:12px;
-color:#666;
-margin-top:10px;
-">
-${data.time || ''}
-</div>
-
-</div>
-
-`;
-
-});
-
-});
-
-}
-
-/* SEND ADMIN REPLY */
-
-window.sendReply =
-async function(chatId){
-
-const replyInput =
-document.getElementById(`reply-${chatId}`);
-
-const text =
-replyInput.value.trim();
-
-if(!text) return;
+window.markReviewed =
+async function(id){
 
 try{
 
-await addDoc(
-
-collection(
-db,
-"supportChats",
-chatId,
-"messages"
-),
-
-{
-sender:"admin",
-text:text,
-image:"",
-time:new Date().toLocaleTimeString([],{
-hour:'2-digit',
-minute:'2-digit'
-}),
-createdAt:serverTimestamp()
-}
-
-);
-
 await updateDoc(
-doc(db,"supportChats",chatId),
+doc(db,"supportMessages",id),
 {
 status:"Reviewed"
 }
 );
 
-replyInput.value = "";
+showStatus(
+"Message reviewed ✔",
+"success"
+);
+
+}
+catch(error){
+
+console.log(error);
 
 showStatus(
-"Reply sent ✔",
+"Failed to update",
+"error"
+);
+
+}
+
+};
+
+/* SEND REPLY */
+
+window.sendReply = async function(id){
+
+const textarea =
+document.getElementById(`reply-${id}`);
+
+const message =
+textarea.value.trim();
+
+if(message === ""){
+
+showStatus(
+"Reply cannot be empty",
+"error"
+);
+
+return;
+
+}
+
+try{
+
+await updateDoc(
+doc(db,"supportMessages",id),
+{
+adminReply:message,
+replyTime:new Date().toLocaleString(),
+status:"Reviewed"
+}
+);
+
+showStatus(
+"Reply sent successfully ✔",
 "success"
 );
 
@@ -928,24 +1379,26 @@ showStatus(
 
 };
 
-/* DELETE CHAT */
+/* DELETE SUPPORT */
 
-window.deleteChat =
-async function(chatId){
+window.deleteSupport =
+async function(id){
 
 const confirmDelete =
-confirm("Delete this chat?");
+confirm(
+"Delete this support message?"
+);
 
 if(!confirmDelete) return;
 
 try{
 
 await deleteDoc(
-doc(db,"supportChats",chatId)
+doc(db,"supportMessages",id)
 );
 
 showStatus(
-"Chat deleted ✔",
+"Message deleted ✔",
 "success"
 );
 
