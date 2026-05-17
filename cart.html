@@ -1,0 +1,845 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wintoliz Cart & Orders</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+:root{
+--primary:#0f3d2e;
+--primary-light:#145c46;
+--gold:#ffb800;
+--bg:#f4f7f5;
+--card:#ffffff;
+--text:#111827;
+--muted:#6b7280;
+--border:#e5e7eb;
+--danger:#ef4444;
+--success:#16a34a;
+--shadow:0 10px 30px rgba(0,0,0,0.06);
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+overflow-x:hidden;
+}
+
+/* TOPBAR */
+
+.topbar{
+background:rgba(15,61,46,0.97);
+padding:16px 24px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.logo-box{
+width:58px;
+height:58px;
+border-radius:18px;
+overflow:hidden;
+background:rgba(255,255,255,0.1);
+padding:6px;
+}
+
+.logo-box img{
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+.logo-text{
+font-size:26px;
+font-weight:900;
+color:#fff;
+}
+
+.logo-text span{
+color:var(--gold);
+}
+
+.nav-buttons{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.nav-btn{
+padding:12px 18px;
+border:none;
+border-radius:14px;
+font-weight:800;
+cursor:pointer;
+background:#fff;
+color:var(--primary);
+}
+
+.logout-btn{
+background:var(--danger);
+color:#fff;
+}
+
+/* HERO */
+
+.hero{
+padding:45px 24px;
+background:
+linear-gradient(rgba(10,30,20,0.82),rgba(10,30,20,0.85)),
+url('https://images.unsplash.com/photo-1548767797-d8c844163c4c?q=80&w=1400&auto=format&fit=crop') center/cover;
+color:#fff;
+}
+
+.hero h1{
+font-size:40px;
+font-weight:900;
+margin-bottom:12px;
+}
+
+.hero p{
+max-width:700px;
+line-height:1.8;
+opacity:0.9;
+}
+
+/* MAIN */
+
+.wrapper{
+padding:24px;
+display:grid;
+grid-template-columns:1fr 360px;
+gap:24px;
+}
+
+/* CART */
+
+.section-card{
+background:#fff;
+border-radius:28px;
+padding:24px;
+box-shadow:var(--shadow);
+}
+
+.section-title{
+font-size:28px;
+font-weight:900;
+margin-bottom:24px;
+}
+
+.cart-items{
+display:grid;
+gap:18px;
+}
+
+.cart-item{
+display:flex;
+gap:18px;
+align-items:center;
+padding:18px;
+border:1px solid #eee;
+border-radius:22px;
+flex-wrap:wrap;
+}
+
+.cart-image{
+width:110px;
+height:110px;
+border-radius:18px;
+overflow:hidden;
+background:#f3f4f6;
+}
+
+.cart-image img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.cart-content{
+flex:1;
+}
+
+.cart-content h3{
+font-size:22px;
+margin-bottom:8px;
+}
+
+.cart-content p{
+font-size:14px;
+color:var(--muted);
+line-height:1.6;
+margin-bottom:12px;
+}
+
+.price{
+font-size:24px;
+font-weight:900;
+color:var(--primary);
+}
+
+.cart-actions{
+display:flex;
+gap:10px;
+margin-top:14px;
+flex-wrap:wrap;
+}
+
+.quantity-box{
+display:flex;
+align-items:center;
+gap:10px;
+background:#f4f7f5;
+padding:10px 14px;
+border-radius:14px;
+font-weight:800;
+}
+
+.qty-btn{
+width:30px;
+height:30px;
+border:none;
+border-radius:10px;
+background:var(--primary);
+color:#fff;
+font-weight:900;
+cursor:pointer;
+}
+
+.remove-btn{
+padding:10px 16px;
+border:none;
+border-radius:14px;
+background:var(--danger);
+color:#fff;
+font-weight:800;
+cursor:pointer;
+}
+
+/* SUMMARY */
+
+.summary-card{
+position:sticky;
+top:100px;
+height:fit-content;
+}
+
+.summary-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:18px;
+font-size:15px;
+}
+
+.summary-total{
+font-size:30px;
+font-weight:900;
+color:var(--primary);
+margin:20px 0;
+}
+
+.checkout-btn{
+width:100%;
+padding:18px;
+border:none;
+border-radius:18px;
+background:linear-gradient(135deg,#0f3d2e,#145c46);
+color:#fff;
+font-size:16px;
+font-weight:800;
+cursor:pointer;
+margin-bottom:12px;
+}
+
+.clear-btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+background:#f3f4f6;
+font-weight:800;
+cursor:pointer;
+}
+
+/* ORDERS */
+
+.orders-section{
+padding:0 24px 30px;
+}
+
+.orders-grid{
+display:grid;
+gap:18px;
+}
+
+.order-card{
+padding:20px;
+border:1px solid #eee;
+border-radius:22px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:14px;
+}
+
+.order-info h3{
+font-size:20px;
+margin-bottom:6px;
+}
+
+.order-info p{
+color:var(--muted);
+font-size:14px;
+}
+
+.status{
+padding:8px 14px;
+border-radius:999px;
+font-size:12px;
+font-weight:800;
+}
+
+.pending{
+background:#fff7ed;
+color:#ea580c;
+}
+
+.completed{
+background:#ecfdf5;
+color:var(--success);
+}
+
+.empty{
+padding:50px 20px;
+text-align:center;
+color:var(--muted);
+}
+
+@media(max-width:950px){
+
+.wrapper{
+grid-template-columns:1fr;
+}
+
+.summary-card{
+position:relative;
+top:0;
+}
+
+}
+
+@media(max-width:700px){
+
+.topbar{
+padding:16px;
+flex-direction:column;
+gap:14px;
+align-items:flex-start;
+}
+
+.hero{
+padding:32px 16px;
+}
+
+.hero h1{
+font-size:30px;
+}
+
+.wrapper,
+.orders-section{
+padding-left:16px;
+padding-right:16px;
+}
+
+.cart-item{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.cart-image{
+width:100%;
+height:220px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div class="logo-area">
+
+<div class="logo-box">
+<img src="./asset/image/image.png" alt="Logo">
+</div>
+
+<div class="logo-text">
+<span>Wintoliz</span> Farms
+</div>
+
+</div>
+
+<div class="nav-buttons">
+
+<button
+class="nav-btn"
+onclick="window.location.href='product.html'">
+Marketplace
+</button>
+
+<button
+class="nav-btn"
+onclick="window.location.href='dashboard.html'">
+My Dashboard
+</button>
+
+<button
+class="nav-btn logout-btn"
+onclick="logout()">
+Logout
+</button>
+
+</div>
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+<h1>
+My Cart & Orders 🛒
+</h1>
+
+<p>
+Review your selected products, place marketplace orders and track your recent Wintoliz purchases professionally.
+</p>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="wrapper">
+
+<!-- CART -->
+
+<div class="section-card">
+
+<h2 class="section-title">
+Shopping Cart
+</h2>
+
+<div class="cart-items" id="cartItems">
+
+<div class="empty">
+Your cart is empty
+</div>
+
+</div>
+
+</div>
+
+<!-- SUMMARY -->
+
+<div class="section-card summary-card">
+
+<h2 class="section-title">
+Order Summary
+</h2>
+
+<div class="summary-row">
+<span>Items</span>
+<span id="totalItems">0</span>
+</div>
+
+<div class="summary-row">
+<span>Delivery</span>
+<span>₦2,000</span>
+</div>
+
+<div class="summary-row">
+<span>Subtotal</span>
+<span id="subtotal">₦0</span>
+</div>
+
+<div class="summary-total" id="grandTotal">
+₦0
+</div>
+
+<button
+class="checkout-btn"
+onclick="checkout()">
+Place Order
+</button>
+
+<button
+class="clear-btn"
+onclick="clearCart()">
+Clear Cart
+</button>
+
+</div>
+
+</div>
+
+<!-- ORDERS -->
+
+<div class="orders-section">
+
+<div class="section-card">
+
+<h2 class="section-title">
+Recent Orders
+</h2>
+
+<div class="orders-grid" id="ordersList">
+
+<div class="empty">
+No orders placed yet
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* USER */
+
+const user = JSON.parse(
+localStorage.getItem('wintolizUser')
+) || {
+username:'User'
+};
+
+/* CART */
+
+let cart = JSON.parse(
+localStorage.getItem('wintolizCart')
+) || [];
+
+/* ORDERS */
+
+let orders = JSON.parse(
+localStorage.getItem('wintolizOrders')
+) || [];
+
+/* RENDER CART */
+
+function renderCart(){
+
+const cartItems =
+document.getElementById('cartItems');
+
+if(cart.length === 0){
+
+cartItems.innerHTML = `
+<div class="empty">
+Your cart is empty
+</div>
+`;
+
+updateSummary();
+return;
+
+}
+
+cartItems.innerHTML = '';
+
+cart.forEach((item,index)=>{
+
+cartItems.innerHTML += `
+
+<div class="cart-item">
+
+<div class="cart-image">
+<img
+src="${item.image || 'https://via.placeholder.com/400'}"
+onerror="this.src='https://via.placeholder.com/400'"
+>
+</div>
+
+<div class="cart-content">
+
+<h3>${item.name}</h3>
+
+<p>
+${item.description || 'Fresh marketplace product'}
+</p>
+
+<div class="price">
+₦${Number(item.price).toLocaleString()}
+</div>
+
+<div class="cart-actions">
+
+<div class="quantity-box">
+
+<button
+class="qty-btn"
+onclick="changeQty(${index},-1)">
+-
+</button>
+
+<span>${item.qty || 1}</span>
+
+<button
+class="qty-btn"
+onclick="changeQty(${index},1)">
++
+</button>
+
+</div>
+
+<button
+class="remove-btn"
+onclick="removeItem(${index})">
+Remove
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+updateSummary();
+
+}
+
+/* SUMMARY */
+
+function updateSummary(){
+
+const totalItems =
+cart.reduce((sum,item)=>sum + (item.qty || 1),0);
+
+const subtotal =
+cart.reduce((sum,item)=>sum + (Number(item.price) * (item.qty || 1)),0);
+
+const delivery = cart.length > 0 ? 2000 : 0;
+
+const total = subtotal + delivery;
+
+
+document.getElementById('totalItems').innerText =
+totalItems;
+
+
+document.getElementById('subtotal').innerText =
+'₦' + subtotal.toLocaleString();
+
+
+document.getElementById('grandTotal').innerText =
+'₦' + total.toLocaleString();
+
+}
+
+/* CHANGE QUANTITY */
+
+function changeQty(index,change){
+
+if(!cart[index].qty){
+cart[index].qty = 1;
+}
+
+cart[index].qty += change;
+
+if(cart[index].qty <= 0){
+cart.splice(index,1);
+}
+
+saveCart();
+renderCart();
+
+}
+
+/* REMOVE ITEM */
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+saveCart();
+renderCart();
+
+}
+
+/* CLEAR */
+
+function clearCart(){
+
+cart = [];
+
+saveCart();
+renderCart();
+
+}
+
+/* SAVE CART */
+
+function saveCart(){
+
+localStorage.setItem(
+'wintolizCart',
+JSON.stringify(cart)
+);
+
+}
+
+/* CHECKOUT */
+
+function checkout(){
+
+if(cart.length === 0){
+alert('Cart is empty');
+return;
+}
+
+cart.forEach(item=>{
+
+orders.unshift({
+product:item.name,
+total:Number(item.price) * (item.qty || 1),
+status:'Pending',
+date:new Date().toLocaleDateString(),
+username:user.username
+});
+
+});
+
+localStorage.setItem(
+'wintolizOrders',
+JSON.stringify(orders)
+);
+
+cart = [];
+
+saveCart();
+renderCart();
+renderOrders();
+
+alert('Order placed successfully');
+
+}
+
+/* RENDER ORDERS */
+
+function renderOrders(){
+
+const ordersList =
+document.getElementById('ordersList');
+
+const userOrders =
+orders.filter(o=>o.username === user.username);
+
+if(userOrders.length === 0){
+
+ordersList.innerHTML = `
+<div class="empty">
+No orders placed yet
+</div>
+`;
+
+return;
+
+}
+
+ordersList.innerHTML = '';
+
+userOrders.forEach(order=>{
+
+ordersList.innerHTML += `
+
+<div class="order-card">
+
+<div class="order-info">
+
+<h3>
+${order.product}
+</h3>
+
+<p>
+${order.date}
+</p>
+
+</div>
+
+<div>
+
+<div style="
+font-size:22px;
+font-weight:900;
+margin-bottom:10px;
+text-align:right;
+">
+₦${Number(order.total).toLocaleString()}
+</div>
+
+<div class="status ${order.status === 'Completed' ? 'completed' : 'pending'}">
+${order.status}
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* LOGOUT */
+
+function logout(){
+
+localStorage.removeItem('wintolizUser');
+
+window.location.href = 'index.html';
+
+}
+
+renderCart();
+renderOrders();
+
+</script>
+
+</body>
+</html>
+```

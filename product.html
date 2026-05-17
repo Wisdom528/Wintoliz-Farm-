@@ -212,6 +212,7 @@ display:flex;
 gap:8px;
 margin-bottom:10px;
 font-size:14px;
+cursor:pointer;
 }
 
 /* PRODUCTS */
@@ -609,17 +610,17 @@ from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
 const firebaseConfig = {
 
-apiKey: "AIzaSyDVFSZlzB8F9xzt2eWQAVKtS8BBgJ5FCu8",
+apiKey: "YOUR_API_KEY",
 
-authDomain: "wintoliz-2dca5.firebaseapp.com",
+authDomain: "YOUR_AUTH_DOMAIN",
 
-projectId: "wintoliz-2dca5",
+projectId: "YOUR_PROJECT_ID",
 
-storageBucket: "wintoliz-2dca5.firebasestorage.app",
+storageBucket: "YOUR_STORAGE_BUCKET",
 
-messagingSenderId: "469698295508",
+messagingSenderId: "YOUR_MESSAGING_ID",
 
-appId: "1:469698295508:web:5724ec6c9f88dc88fe6d41"
+appId: "YOUR_APP_ID"
 
 };
 
@@ -638,10 +639,6 @@ const ADMIN_EMAIL = "wisdomotoide41@gmail.com";
 onAuthStateChanged(auth, (user) => {
 
 if(user){
-
-console.log("User logged in");
-
-/* SHOW ADMIN BUTTON */
 
 if(user.email === ADMIN_EMAIL){
 
@@ -757,35 +754,102 @@ updateCart();
 
 };
 
-/* LOAD PRODUCTS */
+/* FILTERS */
 
-function loadProducts(){
+const filters =
+document.querySelectorAll(".filter");
+
+const searchInput =
+document.getElementById("searchInput");
+
+let allProducts = [];
+
+/* FILTER PRODUCTS */
+
+function filterProducts(){
+
+const keyword =
+searchInput.value.toLowerCase();
+
+const activeFilters =
+[...filters]
+.filter(f => f.checked)
+.map(f => f.value);
+
+const filtered =
+allProducts.filter(product => {
+
+const matchesSearch =
+(product.name || "")
+.toLowerCase()
+.includes(keyword);
+
+const matchesCategory =
+
+activeFilters.length === 0 ||
+
+activeFilters.includes(product.category);
+
+return matchesSearch && matchesCategory;
+
+});
+
+renderProducts(filtered);
+
+}
+
+/* SEARCH */
+
+searchInput.addEventListener(
+"input",
+filterProducts
+);
+
+/* CATEGORY FILTER */
+
+filters.forEach(filter => {
+
+filter.addEventListener(
+"change",
+filterProducts
+);
+
+});
+
+/* RENDER PRODUCTS */
+
+function renderProducts(products){
 
 const container =
 document.getElementById("products");
 
-onSnapshot(collection(db, "products"), (snapshot)=>{
-
 container.innerHTML = "";
 
-if(snapshot.empty){
+if(products.length === 0){
 
-container.innerHTML =
-"<div class='empty'>No products found</div>";
+container.innerHTML = `
+<div class="empty">
+No matching products found
+</div>
+`;
 
 return;
 
 }
 
-snapshot.forEach((doc)=>{
-
-const p = doc.data();
+products.forEach((p)=>{
 
 container.innerHTML += `
+
 <div class="card">
 
 <div class="card-image">
-<img src="${p.image || 'https://via.placeholder.com/400'}">
+
+<img
+src="${p.image || 'https://via.placeholder.com/400'}"
+onerror="this.src='https://via.placeholder.com/400'"
+>
+
 </div>
 
 <div class="card-content">
@@ -806,25 +870,58 @@ ${p.description || ''}
 ₦${Number(p.price || 0).toLocaleString()}
 </div>
 
-<button class="btn"
-onclick="addToCart('${p.name || ''}', ${p.price || 0})">
+<button
+class="btn"
+onclick="addToCart('${p.name}', ${p.price})"
+>
 Add to Cart
 </button>
 
 </div>
+
 </div>
+
 `;
 
 });
 
-}, (error)=>{
+}
+
+/* LOAD PRODUCTS */
+
+function loadProducts(){
+
+onSnapshot(
+
+collection(db,"products"),
+
+(snapshot)=>{
+
+allProducts = [];
+
+snapshot.forEach((doc)=>{
+
+allProducts.push(doc.data());
+
+});
+
+filterProducts();
+
+},
+
+(error)=>{
 
 console.log(error);
 
-container.innerHTML =
-"<div class='empty'>Failed to load products</div>";
+document.getElementById("products").innerHTML = `
+<div class="empty">
+Failed to load products
+</div>
+`;
 
-});
+}
+
+);
 
 }
 
