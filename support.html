@@ -121,6 +121,18 @@ line-height:1.7;
 font-size:14px;
 word-wrap:break-word;
 position:relative;
+animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
 .admin-message{
@@ -135,10 +147,25 @@ align-self:flex-end;
 border-bottom-right-radius:6px;
 }
 
+.sender-name{
+font-size:12px;
+font-weight:800;
+opacity:0.75;
+margin-bottom:8px;
+}
+
 .message-time{
 font-size:11px;
 opacity:0.7;
 margin-top:10px;
+display:flex;
+justify-content:flex-end;
+align-items:center;
+gap:6px;
+}
+
+.tick{
+font-size:13px;
 }
 
 .chat-image{
@@ -293,29 +320,6 @@ Dashboard
 </div>
 
 <div class="chat-body" id="chatBody">
-
-<div class="message admin-message">
-
-Hello 👋 Welcome to Wintoliz Support.
-
-<br><br>
-
-Please send:
-
-<br><br>
-
-✅ Your payment screenshot
-<br>
-✅ Your payment details
-<br>
-✅ The amount you paid
-
-<div class="message-time">
-Support Team
-</div>
-
-</div>
-
 </div>
 
 <div class="chat-input-area">
@@ -334,6 +338,7 @@ Payment Screenshot Preview
 
 <button
 class="upload-btn"
+type="button"
 onclick="document.getElementById('fileInput').click()">
 📎
 </button>
@@ -351,6 +356,7 @@ class="file-input">
 
 <button
 class="send-btn"
+type="button"
 onclick="window.sendMessage()">
 ➤
 </button>
@@ -373,7 +379,10 @@ addDoc,
 query,
 where,
 onSnapshot,
-serverTimestamp
+serverTimestamp,
+updateDoc,
+doc,
+orderBy
 }
 from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
@@ -399,7 +408,17 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-/* USER CHAT ID */
+/* USER */
+
+const currentUser =
+JSON.parse(localStorage.getItem("wintolizUser")) || {
+username:"Guest"
+};
+
+const username =
+currentUser.username || "Guest";
+
+/* PRIVATE CHAT ID */
 
 let supportChatId =
 localStorage.getItem("supportChatId");
@@ -472,9 +491,7 @@ messageInput.value.trim();
 
 if(text === "" &&
 uploadedImage === ""){
-
 return;
-
 }
 
 try{
@@ -485,13 +502,15 @@ collection(db,"supportMessages"),
 
 chatId:supportChatId,
 
+username:username,
+
 text:text,
 
 image:uploadedImage,
 
 sender:"user",
 
-status:"Pending",
+seen:false,
 
 createdAt:serverTimestamp(),
 
@@ -525,20 +544,33 @@ alert(error.message);
 
 };
 
-/* LOAD CHAT */
+/* PRIVATE USER CHAT */
 
 const supportQuery = query(
+
 collection(db,"supportMessages"),
-where("chatId","==",supportChatId)
+
+where("chatId","==",supportChatId),
+
+orderBy("createdAt","asc")
+
 );
 
-onSnapshot(supportQuery,(snapshot)=>{
+onSnapshot(supportQuery,async(snapshot)=>{
 
-chatBody.innerHTML = `
+chatBody.innerHTML = '';
+
+/* WELCOME */
+
+chatBody.innerHTML += `
 
 <div class="message admin-message">
 
-Hello 👋 Welcome to Wintoliz Support.
+<div class="sender-name">
+Support Team
+</div>
+
+Hello ${username} 👋
 
 <br><br>
 
@@ -550,7 +582,7 @@ Please send:
 <br>
 ✅ Your payment details
 <br>
-✅ The amount you paid
+✅ Amount paid
 
 <div class="message-time">
 Support Team
@@ -560,23 +592,30 @@ Support Team
 
 `;
 
-const messages = [];
+for(const item of snapshot.docs){
 
-snapshot.forEach((doc)=>{
+const chat = {
+id:item.id,
+...item.data()
+};
 
-messages.push(doc.data());
+/* MARK ADMIN MESSAGE AS SEEN */
 
-});
+if(
+chat.sender === "admin" &&
+chat.seen !== true
+){
 
-messages.sort((a,b)=>{
+await updateDoc(
+doc(db,"supportMessages",chat.id),
+{
+seen:true
+}
+);
 
-if(!a.createdAt || !b.createdAt) return 0;
+}
 
-return a.createdAt.seconds - b.createdAt.seconds;
-
-});
-
-messages.forEach((chat)=>{
+/* CHAT UI */
 
 chatBody.innerHTML += `
 
@@ -584,6 +623,12 @@ chatBody.innerHTML += `
 ${chat.sender === 'admin'
 ? 'admin-message'
 : 'user-message'}">
+
+<div class="sender-name">
+${chat.sender === 'admin'
+? 'Support Team'
+: chat.username}
+</div>
 
 ${chat.text || ''}
 
@@ -596,21 +641,33 @@ class="chat-image">
 ` : ''}
 
 <div class="message-time">
+
 ${chat.time || ''}
+
+${chat.sender === 'user'
+? `
+<span class="tick">
+${chat.seen ? '✔✔' : '✔'}
+</span>
+`
+: ''}
+
 </div>
 
 </div>
 
 `;
 
-});
+}
+
+/* AUTO SCROLL */
 
 chatBody.scrollTop =
 chatBody.scrollHeight;
 
 });
 
-/* ENTER KEY SEND */
+/* ENTER SEND */
 
 messageInput.addEventListener(
 "keydown",
