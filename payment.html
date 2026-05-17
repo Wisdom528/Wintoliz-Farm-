@@ -441,14 +441,25 @@ function copyText(text){
 
 navigator.clipboard.writeText(text);
 
-alert("Copied: " + text);
-
 }
+
+/* GET CURRENT USER */
+
+const currentUser = JSON.parse(
+localStorage.getItem("wintolizUser")
+) || {
+username:"guest"
+};
+
+/* USER CART KEY */
+
+const CART_KEY =
+`wintolizCart_${currentUser.username}`;
 
 /* GET CART */
 
 const cart = JSON.parse(
-localStorage.getItem("wintolizCart")
+localStorage.getItem(CART_KEY)
 ) || [];
 
 /* CALCULATE TOTAL */
@@ -476,11 +487,6 @@ document.getElementById("copyAmountBtn")
 .addEventListener("click",()=>{
 
 navigator.clipboard.writeText(totalAmount);
-
-alert(
-"Amount copied: ₦" +
-totalAmount.toLocaleString()
-);
 
 });
 
@@ -511,10 +517,6 @@ timer.innerText =
 
 document.getElementById("paidBtn").disabled = true;
 
-alert(
-"Payment session expired"
-);
-
 }
 
 time--;
@@ -541,6 +543,5 @@ window.location.href =
 });
 
 </script>
-
 </body>
 </html>
